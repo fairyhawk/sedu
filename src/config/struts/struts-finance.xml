@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="finance" namespace="/finance" extends="edu-default">
+    <!-- add by shixiaofeng -->
+    	<action name="financeBuyLog" class="com.shangde.edu.finance.web.FinanceBuyLogAction">  		              
+            <result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+			<interceptor-ref name="loginStack" />
+        </action>
+        <action name="contract" class="com.shangde.edu.finance.web.ContractWebAction">
+            <!-- <result name="listContract">/static/usercenter/jsp/contract/caiwu.jsp</result> -->
+            <result name="listContract" type="tiles">contract</result>
+              <result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+			 <result name="getstatus" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="getoder" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="getuseroder" type="json">
+				<param name="root">result</param>
+			</result>
+           	<interceptor-ref name="eduStackForWeb" />
+        </action>
+        <action name="cashRecord" class="com.shangde.edu.finance.web.CashRecordWebAction">
+            <result name="listCashRecord">/static/usercenter/jsp/contract/caiwu_info.jsp</result>
+            <result name="payContract">/static/usercenter/jsp/contract/shop3.jsp</result>
+            <result name="invalid" type="redirect">/static/usercenter/jsp/invalid.jsp</result>
+            <result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+            
+            <interceptor-ref name="eduStackForWeb" />
+        </action>
+        <action name="backContract" class="com.shangde.edu.finance.action.ContractAction">
+            <result name="listContract">/back/jsp/finance/contract/contract_list.jsp</result>
+            <result name="contractCODList">/back/jsp/finance/contract/contract_cod_list.jsp</result>
+            <result name="getContractCOD" type="redirect">
+                backContract!getContractList.action?queryContractCondition.currentPage=1&amp;payType=2
+            </result>
+             <result name="getContractUserCOD" type="redirect">
+                backContract!getContractCODList.action?queryContractCondition.currentPage=1
+            </result>
+            <result name="getContractCancel" type="redirect">
+            	backContract!getContractList.action?queryContractCondition.currentPage=1&amp;payType=2
+            </result>
+            <result name="getUserContractCancel" type="redirect">
+            	backContract!getContractCODList.action?queryContractCondition.currentPage=1
+            </result>
+            <result name="getContractView">/back/jsp/finance/contract/contract_view.jsp</result>
+              <result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="exportExcel" type="stream">
+				<param name="inputName">downloadStream</param>
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>							
+			</result>
+			
+			 <result name="exportExcelqb" type="stream">
+			    <param name="contentType">application/vnd.ms-excel</param>
+			    <param name="inputName">excelFile</param>       
+			    <param name="contentDisposition">attachment;filename="AllUsers.xls"</param>
+			 </result> 
+			 <result name="exportExcelhdfk" type="stream">
+			    <param name="contentType">application/vnd.ms-excel</param>
+			    <param name="inputName">excelFile</param>       
+			    <param name="contentDisposition">attachment;filename="AllUsers.xls"</param>
+			 </result> 
+        </action>
+        <action name="backCashRecord" class="com.shangde.edu.finance.action.CashRecordAction">
+            <result name="listCashRecord">/back/jsp/finance/cashrecord/cashrecord_list.jsp</result> 
+            <result name="userlistCashRecord">/back/jsp/finance/cashrecord/cashrecord_cod_list.jsp</result> 
+        </action>
+        
+        <action name="backCashRecordNoLogin" class="com.shangde.edu.finance.action.CashRecordAction">
+        	<!--不用登入后台直接可以访问-->
+        	<interceptor-ref name="loginStack"/>																
+            <result name="getCashRecordListNoLogin">/back/jsp/finance/cashrecord/cashrecord_list_nologin.jsp</result> 
+        </action>
+        
+        <action name="wml" class="com.shangde.edu.finance.action.ContractAction" method="getwml">
+            <result name="wmlistContract">/back/jsp/finance/contract/contract_list_wm.jsp</result>
+            <interceptor-ref name="loginStack"/>
+        </action>
+        <action name="coupon" class="com.shangde.edu.finance.action.CouponAction">
+          	<result name="list">/back/jsp/finance/coupon/coupon_list.jsp</result>
+           <result name="couponCode">/back/jsp/finance/coupon/coupon_code.jsp</result>
+            <result name="exportcoupon" type="stream">
+			    <param name="contentType">application/vnd.ms-excel</param>
+			    <param name="inputName">excelFile</param>       
+			    <param name="contentDisposition">attachment;filename="${exportName}"</param>
+			 </result> 
+			 <result name="json" type="json">
+			 	<param name="root">result</param>
+			</result>
+			<result name="treadSuccess">/back/jsp/finance/coupon/coupon_new.jsp</result>  
+          	<result name="addCreateCoupon">/back/jsp/finance/coupon/coupon_make.jsp</result>    
+          	<result name="xiugai">/back/jsp/finance/coupon/coupon_new1.jsp</result>  
+          	<result name="codexx">/back/jsp/finance/coupon/coupon_code_xx.jsp</result>    
+          	<result name="couponSMS">/back/jsp/finance/coupon/coupon_sendsms.jsp</result>   
+        </action>
+        
+        <action name="sendCpsData" class="com.shangde.edu.finance.web.WebCpsDataAction">
+        	<result name="json" type="json">
+        		<param name="root">result</param>
+        	</result>
+        	<interceptor-ref name="loginStack" />
+        </action>
+     </package>
+     <package name="query" namespace="/query">
+     	<action name="queryData" class="com.shangde.edu.finance.web.OtherSiteQueryAction">	
+        </action>
+     </package>
+</struts>

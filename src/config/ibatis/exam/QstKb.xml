@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="QstKb_NS">
+        <!--table:EXAM_QST_KB_TBL-->
+        <typeAlias alias="QstKb" type="com.shangde.edu.exam.domain.QstKb"/>
+        
+        <typeAlias alias="QueryQstKbCondition" type="com.shangde.edu.exam.condition.QueryQstKbCondition"/>
+        <typeAlias alias="QueryQstKbExamRecordCondition" type="com.shangde.edu.exam.condition.QueryQstKbExamRecordCondition"/>
+
+        <resultMap id="QstKbResult" class="QstKb">
+            <result property="id" column="ID"/>
+            <result property="kId" column="K_ID"/>
+            <result property="qstId" column="QST_ID"/>
+        </resultMap>
+
+        <sql id="EXAM_QST_KB_TBL_columns">
+            EXAM_QST_KB_TBL.ID,
+            EXAM_QST_KB_TBL.K_ID,
+            EXAM_QST_KB_TBL.QST_ID
+        </sql>
+        
+      
+
+        <sql id="EXAM_QST_KB_TBL_properties">
+            #id#,
+            #kId#,
+            #qstId#
+        </sql>
+
+        <insert id="createQstKb" parameterClass="QstKb">
+            INSERT INTO EXAM_QST_KB_TBL (<include refid="QstKb_NS.EXAM_QST_KB_TBL_columns"/>) VALUES (<include refid="QstKb_NS.EXAM_QST_KB_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteQstKbById" parameterClass="int">
+            DELETE FROM EXAM_QST_KB_TBL
+            WHERE
+                ID = #value#
+
+
+        </delete>
+
+        <update id="updateQstKb" parameterClass="QstKb">
+            UPDATE EXAM_QST_KB_TBL SET
+                ID = #id#,
+                K_ID = #kId#,
+                QST_ID = #qstId#
+            WHERE
+                ID = #id#
+
+
+        </update>
+
+        <select id="getQstKbById" resultMap="QstKb_NS.QstKbResult" parameterClass="int">
+            SELECT
+            <include refid="QstKb_NS.EXAM_QST_KB_TBL_columns"/>
+            FROM EXAM_QST_KB_TBL
+            WHERE
+                ID = #value#
+
+
+        </select>
+        
+        
+           <select id="getQstKbByEpId" resultClass="int" parameterClass="int">
+            SELECT COUNT(1)
+            FROM EXAM_QST_KB_TBL,EXAM_QST_TBL 
+            WHERE  EXAM_QST_TBL.QST_ID=EXAM_QST_KB_TBL.QST_ID and EXAM_QST_TBL.EP_ID=#value#
+              
+
+
+        </select>
+        
+        <select id="getQstKbExamRecordCount" resultClass="int" parameterClass="QueryQstKbExamRecordCondition">
+        	SELECT COUNT(1)
+        	FROM EXAM_QST_TBL,EXAM_OPT_RECORD_TBL,EXAM_QST_KB_TBL where  EXAM_QST_KB_TBL.QST_ID=EXAM_QST_TBL.QST_ID 
+        	and exam_opt_record_tbl.QST_ID=EXAM_QST_TBL.QST_ID 
+        	and exam_opt_record_tbl.CUS_ID=#cusid#  
+        	and  exam_opt_record_tbl.USER_EP_ID=#userepid# 
+        	and  exam_qst_kb_tbl.K_ID=#kid# 
+        </select>
+        
+         <select id="QstKbExamRecordRightCount" resultClass="int" parameterClass="QueryQstKbExamRecordCondition">
+        	SELECT COUNT(1)
+        	FROM EXAM_QST_TBL,EXAM_OPT_RECORD_TBL,EXAM_QST_KB_TBL where  EXAM_QST_KB_TBL.QST_ID=EXAM_QST_TBL.QST_ID 
+        	and exam_opt_record_tbl.QST_ID=EXAM_QST_TBL.QST_ID 
+        	and exam_opt_record_tbl.CUS_ID=#cusid#  
+        	and  exam_opt_record_tbl.USER_EP_ID=#userepid# 
+        	and  exam_qst_kb_tbl.K_ID=#kid#
+        	and EXAM_QST_TBL.IS_ASR=exam_opt_record_tbl.USER_ANSWER
+        </select>
+        
+         <select id="getQstKbExamRecordIsNOCount" resultClass="int" parameterClass="QueryQstKbExamRecordCondition">
+        	SELECT COUNT(1)
+        	FROM EXAM_QST_TBL,EXAM_OPT_RECORD_TBL,EXAM_QST_KB_TBL where  EXAM_QST_KB_TBL.QST_ID=EXAM_QST_TBL.QST_ID 
+        	and exam_opt_record_tbl.QST_ID=EXAM_QST_TBL.QST_ID 
+        	and exam_opt_record_tbl.CUS_ID=#cusid#  
+        	and  exam_opt_record_tbl.USER_EP_ID=#userepid# 
+        	and  exam_qst_kb_tbl.K_ID=#kid#
+        	and exam_opt_record_tbl.USER_ANSWER=#isnull#
+        </select>
+        
+        
+
+        <select id="getQstKbList" resultMap="QstKb_NS.QstKbResult" parameterClass="QueryQstKbCondition">
+            SELECT
+            <include refid="QstKb_NS.EXAM_QST_KB_TBL_columns"/>
+            FROM EXAM_QST_KB_TBL
+            WHERE
+             <isNotNull property="id">
+            	<isNotEqual property="id" compareValue="0">
+            		 ID= #id#
+            	</isNotEqual>
+            </isNotNull>
+             <isNotNull property="kId">
+            	<isNotEqual prepend="and" property="kId" compareValue="0">
+            		 K_ID= #kId#
+            	</isNotEqual>
+            </isNotNull>
+            
+               <isNotNull property="qstId">
+            	<isNotEqual property="qstId" compareValue="0">
+            		 QST_ID= #qstId#
+            	</isNotEqual>
+            </isNotNull>
+            
+        </select>
+        
+        <!--end-->
+</sqlMap>

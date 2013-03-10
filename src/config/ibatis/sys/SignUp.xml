@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SignUp_NS">
+        <!--table:SYS_ROLE_TBL-->
+        <typeAlias alias="SignUp" type="com.shangde.edu.sys.domain.SignUp"/>
+        <typeAlias alias="QuerySignUpCondition" type="com.shangde.edu.sys.condition.QuerySignUpCondition"/>
+        <resultMap id="SignUpResult" class="SignUp">
+            <result property="id" column="id" />
+            <result property="subjectId" column="subject_id"/>
+            <result property="education" column="education"/>
+            <result property="age" column="age"/>
+            <result property="phoneNumber" column="phone_number"/>
+            <result property="createDate" column="create_date"/>
+        </resultMap>
+
+        <sql id="SYS_EXAM_QUERY_TBL_columns">
+            SYS_EXAM_QUERY_TBL.id,
+            SYS_EXAM_QUERY_TBL.subject_id,
+            SYS_EXAM_QUERY_TBL.education,
+            SYS_EXAM_QUERY_TBL.age,
+            SYS_EXAM_QUERY_TBL.phone_number,
+            SYS_EXAM_QUERY_TBL.create_date
+        </sql>
+
+        <sql id="SYS_EXAM_QUERY_TBL_properties">
+            #id#,
+            #subjectId#,
+            #education#,
+            #age#,
+            #phoneNumber#,
+            #createDate#
+        </sql>
+        
+        <insert id="createSignUp" parameterClass="SignUp">
+        	INSERT INTO SYS_EXAM_QUERY_TBL (<include refid="SignUp_NS.SYS_EXAM_QUERY_TBL_columns"/>) VALUES (<include
+            refid="SignUp_NS.SYS_EXAM_QUERY_TBL_properties"/>)
+       		<selectKey resultClass="int" type="post" keyProperty="id">
+            	<include refid="public_sql.increment_sql"/>
+        	</selectKey>
+   		 </insert>  
+</sqlMap>

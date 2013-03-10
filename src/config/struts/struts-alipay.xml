@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="alipay" namespace="/alipay" extends="edu-default">
+        <action name="zfb" class="com.shangde.edu.alipay.action.ZfbAction">
+        	<result name="toIndex" type="dispatcher">/static/web/shop/index.jsp</result>
+        	<result name="zfbReturn" type="dispatcher">/static/web/global/payok.jsp</result>
+        	<result name="goToZFB" type="dispatcher">/static/web/global/zhifubao.jsp</result>
+        	  <result name="yesoder" type="json">
+				<param name="root">result</param>
+			</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+		<action name="chinaBank" class="com.shangde.edu.alipay.action.ChinaBankAction">
+        	<result name="goToChinaBank" type="dispatcher">/static/web/global/chinaBank.jsp</result>
+        	<result name="cbReturn" type="dispatcher">/static/web/global/payok.jsp</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+		<!-- 快钱接口 START -->
+		<action name="KQ" class="com.shangde.edu.alipay.action.KQAction">
+        	<result name="goToKQ" type="dispatcher">/static/web/global/kuaiQian.jsp</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+    	<!-- 快钱接口 END -->
+    	
+    	<!-- 真友信用接口 START -->
+		<action name="trueu" class="com.shangde.edu.alipay.action.TrueUAction">
+			<result name="trueuReturn" type="dispatcher">/static/web/global/payok.jsp</result>
+        	<result name="gototrueu" type="dispatcher">/static/web/global/trueu.jsp</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+    	<!-- 真友信用接口 END -->
+    	
+    	<!-- 银联接口 START -->
+		<action name="unionpay" class="com.shangde.edu.alipay.action.UnionPayAction">
+			<result name="success" type="redirect">/cus/cuslimit!toPayOk.action?msg=success</result>
+			<result name="invalid" type="redirect">/cus/cuslimit!toPayOk.action?msg=false</result>
+        	<result name="gotoUnionPay" type="dispatcher">/static/web/global/unionpay.jsp</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+		
+		<!-- 子订单 START -->
+		<action name="subsc" class="com.shangde.edu.alipay.action.ChildKQAction">
+			 <result name="goToKQ" type="dispatcher">/static/web/global/kuaiQian.jsp</result>
+			 <result name="gotoSub">/static/usercenter/jsp/contract/subContractList.jsp</result>
+			 <result name="404" type="redirect">/static/web/global/toIndex.html</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+    	<!-- 子订单 END -->
+    	
+    	<!-- 易联语音支付 -->
+    	<action name="unionVoice" class="com.shangde.edu.alipay.action.UnionVoicePayAction">
+			<result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+    	
+    </package>
+</struts>

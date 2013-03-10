@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="accountService" class="com.shangde.edu.finance.service.AccountImpl" parent="baseService"/>
+    <bean id="cashRecordService" class="com.shangde.edu.finance.service.CashRecordImpl" parent="baseService"/>
+    <bean id="contractService" class="com.shangde.edu.finance.service.ContractImpl" parent="baseService"/>
+    <bean id="codService" class="com.shangde.edu.finance.service.CodImpl" parent="baseService"/>
+    
+    <bean id="contractWebService" class="com.shangde.edu.finance.webService.ContractWebImpl" parent="baseService"/>
+    <bean id="cashRecordWebService" class="com.shangde.edu.finance.webService.CashRecordWebImpl" parent="baseService"/>
+    <bean id="sellService" class="com.shangde.edu.cou.service.SellCouImpl" parent="baseService"/>
+    <bean id="financeCouponService" class="com.shangde.edu.finance.service.CouponImpl" parent="baseService"/>
+    <bean id="financeCoursesortService" class="com.shangde.edu.cou.service.CoursesortImpl" parent="baseService"/>
+    
+    <bean id="childContractService" class="com.shangde.edu.finance.service.ChildContractImpl" parent="baseService"/>
+    
+    <bean id="dsContractService" class="com.shangde.edu.finance.webService.ContractDSImpl" parent="baseService" />
+    <!-- add by shixiaofeng -->
+    <bean id="finaceLogService" class="com.shangde.edu.finance.service.FinanceBuyLogImpl" parent="baseService">
+     <!--  <property name="memcachedClient" ref="memcachedClient"/> -->
+    </bean>
+    
+    <bean id="cpsDataService" class="com.shangde.edu.finance.service.CpsDataServiceImpl" parent="baseService"/>
+</beans>

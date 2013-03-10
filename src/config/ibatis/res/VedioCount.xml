@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="VedioCount_NS">
+	<!--table:video_count_tbl-->
+	<typeAlias alias="VedioCount" type="com.shangde.edu.res.domain.VedioCount" />
+	
+	
+
+	<sql id="video_count_TBL_columns">
+		video_count_TBL.id, 
+		video_count_TBL.cus_id, 
+		video_count_TBL.count_num, 
+		video_count_TBL.count_time, 
+		video_count_TBL.status 
+		
+	</sql>
+
+	<sql id="video_COUNT_TBL_properties">
+		#id#,
+		#cusId#,
+		#countNum#,
+		#countTime#,
+		#status#
+	</sql>
+	
+	<insert id="createVedioCount" parameterClass="VedioCount">
+            INSERT INTO VIDEO_COUNT_TBL (<include refid="VedioCount_NS.video_count_TBL_columns"/>) VALUES (<include refid="VedioCount_NS.video_COUNT_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+    </insert>
+   
+</sqlMap>

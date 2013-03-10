@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Record_NS">
+        <!--table:CRM_RECORD_TBL-->
+        <typeAlias alias="Record" type="com.shangde.edu.crm.domain.Record"/>
+
+        <resultMap id="RecordResult" class="Record">
+            <result property="id" column="ID"/>
+            <result property="crmChanceId" column="CRM_CHANCE_ID"/>
+            <result property="commStatus" column="COMM_STATUS"/>
+            <result property="whyLearm" column="WHY_LEARM"/>
+            <result property="concerns" column="CONCERNS"/>
+            <result property="remarks" column="REMARKS"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="leyuId" column="LEYU_ID"/>
+            <result property="createTime" column="CREATE_TIME"/>
+        </resultMap>
+         
+        <sql id="CRM_RECORD_TBL_columns">
+            CRM_RECORD_TBL.ID,
+            CRM_RECORD_TBL.CRM_CHANCE_ID,
+            CRM_RECORD_TBL.COMM_STATUS,
+            CRM_RECORD_TBL.WHY_LEARM,
+            CRM_RECORD_TBL.CONCERNS,
+            CRM_RECORD_TBL.REMARKS,
+            CRM_RECORD_TBL.USER_ID,
+            CRM_RECORD_TBL.LEYU_ID,
+            CRM_RECORD_TBL.CREATE_TIME
+        </sql>
+
+        <sql id="CRM_RECORD_TBL_properties">
+            #id#,
+            #crmChanceId#,
+            #commStatus#,
+            #whyLearm#,
+            #concerns#,
+            #remarks#,
+            #userId#,
+            #leyuId#,
+            #createTime#
+        </sql>
+
+     
+
+ <insert id="createRecord" parameterClass="Record">
+            INSERT INTO CRM_RECORD_TBL (<include refid="Record_NS.CRM_RECORD_TBL_columns"/>) VALUES (<include refid="Record_NS.CRM_RECORD_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+       <!--end-->
+</sqlMap>

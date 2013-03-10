@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="card" namespace="/card" extends="edu-default">
+        <action name="cardMain" class="com.shangde.edu.card.action.CardMainAction"> 
+        	<result name="cardInfo">/static/usercenter/jsp/contract/caiwu.jsp</result>
+        	<result name="activateCardCourse" type="json">
+        		<param name="root">result</param>
+        	</result>
+        	<interceptor-ref name="eduStackForWeb" />
+        </action>
+    </package>
+</struts>

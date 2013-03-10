@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans default-autowire="byName">
+    <bean id="customerService" class="com.shangde.edu.cus.service.CustomerImpl" parent="baseService">
+    	<property name="mailService" ref="mailService"></property>
+    	<property name="cashRecordService" ref="cashRecordService"></property>
+    	<property name="notesService" ref="notesService"></property>
+    	<property name="cpCusService" ref="cpCusService"></property>
+    	<property name="studyPlanService" ref="studyPlanService"></property>
+    	<property name="exampaperRecordService" ref="exampaperRecordService"></property>
+    	<property name="optRecordService" ref="optRecordService"></property>
+    	<property name="tsRecordService" ref="tsRecordService"></property>
+    	<property name="totolsScoreService" ref="totolsScoreService"></property>
+    	<property name="taskCusService" ref="taskCusService"></property>
+    </bean>
+    <bean id="studyPlanService" class="com.shangde.edu.cus.service.StudyPlanImpl" parent="baseService"/>
+    <bean id="problemService" class="com.shangde.edu.cus.service.ProblemImpl" parent="baseService">
+    <!-- 
+    	<property name="actionRecordService" ref="actionRecordService"/>
+    	 -->
+    </bean>
+    <bean id="reProblemService" class="com.shangde.edu.cus.service.ReProblemImpl" parent="baseService"/>
+    <bean id="smsService" class="com.shangde.edu.sms.service.SmsServiceImpl"/>
+    <bean id="totolsScoreService" class="com.shangde.edu.cus.service.TotolsScoreImpl" parent="baseService"/>
+    <bean id="tsRecordService" class="com.shangde.edu.cus.service.TsRecordImpl" parent="baseService"/>
+    <bean id="loginRecordService" class="com.shangde.edu.cus.service.LoginRecordImpl" parent="baseService"/>
+    <bean id="addressService" class="com.shangde.edu.cus.service.AddressImpl" parent="baseService"/>
+    <bean id="areaService" class="com.shangde.edu.cus.service.AreaImpl" parent="baseService"/>
+    <bean id="microVideoService" class="com.shangde.edu.feed.service.impl.MicroVideoImpl" parent="baseService"/>
+    <bean id="cusProtocalService" class="com.shangde.edu.cus.service.CusProtocalDetailImpl" parent="baseService"/>
+    <bean id="cusProtocalCashService" class="com.shangde.edu.cus.service.CusProtocalCashImpl" parent="baseService"/>
+    <bean id="officialCustomer" class="com.shangde.edu.cus.service.OfficialCustomerImpl" parent="baseService"/>
+	<bean id="videoStatisService" class="com.shangde.edu.stu.service.VideoStatisticsImpl" parent="baseService"/>
+</beans>  

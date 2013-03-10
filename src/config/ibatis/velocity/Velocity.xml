@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Velocity_NS">
+	<typeAlias alias="Velocity"
+		type="com.shangde.edu.velocity.domain.Velocity" />
+
+	<sql id="SYS_TEST_VELOCITY_TBL_columns">
+		SYS_TEST_VELOCITY_TBL.ID, SYS_TEST_VELOCITY_TBL.EMAIL,
+		SYS_TEST_VELOCITY_TBL.MOBILE, SYS_TEST_VELOCITY_TBL.PROVINCE,
+		SYS_TEST_VELOCITY_TBL.DISTRICT, SYS_TEST_VELOCITY_TBL.SUBJECT,
+		SYS_TEST_VELOCITY_TBL.BROWSER, SYS_TEST_VELOCITY_TBL.NETWORK,
+		SYS_TEST_VELOCITY_TBL.BROAD_BAND, SYS_TEST_VELOCITY_TBL.PROBLEM,
+		SYS_TEST_VELOCITY_TBL.SUBMIT_TIME,
+		SYS_TEST_VELOCITY_TBL.SOLVE_DEPARTMENT,
+		SYS_TEST_VELOCITY_TBL.SOLVE_SCHEME,
+		SYS_TEST_VELOCITY_TBL.SOLVE_TIME
+	</sql>
+	<sql id="SYS_TEST_VELOCITY_TBL_col">
+		SYS_TEST_VELOCITY_TBL.EMAIL,
+		SYS_TEST_VELOCITY_TBL.MOBILE, SYS_TEST_VELOCITY_TBL.PROVINCE,
+		SYS_TEST_VELOCITY_TBL.DISTRICT, SYS_TEST_VELOCITY_TBL.SUBJECT,
+		SYS_TEST_VELOCITY_TBL.BROWSER, SYS_TEST_VELOCITY_TBL.NETWORK,
+		SYS_TEST_VELOCITY_TBL.BROAD_BAND, SYS_TEST_VELOCITY_TBL.PROBLEM,
+		SYS_TEST_VELOCITY_TBL.SUBMIT_TIME,
+		SYS_TEST_VELOCITY_TBL.SOLVE_DEPARTMENT,
+		SYS_TEST_VELOCITY_TBL.SOLVE_SCHEME,
+		SYS_TEST_VELOCITY_TBL.SOLVE_TIME
+	</sql>
+
+	<sql id="SYS_TEST_VELOCITY_TBL_pro">
+		#mail#, #mobile#, #province#, #district#, #subject#,
+		#browser#, #netWork#, #broadBand#, #problem#, #submitTime#,
+		#solveDepartment#,#solveScheme#, #solveTime#
+	</sql>
+	<sql id="SYS_TEST_VELOCITY_TBL_propertie">
+		#id#, #mail#, #mobile#, #province#, #district#, #subject#,
+		#browser#, #netWork#, #broadBand#, #problem#, #submitTime#,
+		#solveDepartment#,#solveScheme#, #solveTime#
+	</sql>
+	<resultMap class="Velocity" id="VelocityReulst">
+		<result property="id" column="ID" />
+		<result property="mail" column="EMAIL" />
+		<result property="mobile" column="MOBILE" />
+		<result property="province" column="PROVINCE" />
+		<result property="district" column="DISTRICT" />
+		<result property="subject" column="SUBJECT" />
+		<result property="browser" column="BROWSER" />
+		<result property="netWork" column="NETWORK" />
+		<result property="broadBand" column="BROAD_BAND" />
+		<result property="problem" column="PROBLEM" />
+		<result property="submitTime" column="SUBMIT_TIME" />
+		<result property="solveDepartment" column="SOLVE_DEPARTMENT" />
+		<result property="solveScheme" column="SOLVE_SCHEME" />
+		<result property="solveTime" column="SOLVE_TIME" />
+	</resultMap>
+
+
+
+	<insert id="addVelocity" parameterClass="Velocity">
+            INSERT INTO SYS_TEST_VELOCITY_TBL (<include refid="Velocity_NS.SYS_TEST_VELOCITY_TBL_col"/>) VALUES (<include refid="Velocity_NS.SYS_TEST_VELOCITY_TBL_pro"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+    </insert>
+</sqlMap>

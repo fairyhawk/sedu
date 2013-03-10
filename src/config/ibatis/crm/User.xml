@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+        <sqlMap namespace="Chance_User_NS"  >
+        <!--table:CRM_USER_TBL-->
+        <typeAlias alias="Chance_User" type="com.shangde.edu.crm.domain.ChanceUser"/>
+         <typeAlias alias="Chance" type="com.shangde.edu.crm.domain.Chance"/>
+        <typeAlias alias="QueryChanceUserCondition" type="com.shangde.edu.crm.condition.QueryUserCondition"/>
+
+        <resultMap id="UserResult" class="Chance_User">
+            <result property="id" column="ID"/>
+            <result property="cusId" column="CUS_ID"/>
+            <result property="email" column="EMAIL"/>
+            <result property="mobile" column="MOBILE"/>
+            <result property="realName" column="REAL_NAME"/>
+            <result property="sex" column="SEX"/>
+            <result property="regTime" column="REG_TIME"/>
+            <result property="qq" column="QQ"/>
+            <result property="userType" column="USER_TYPE"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="age" column="AGE"/>
+            <result property="birthday" column="birthday"/>
+            <result property="mesStatus" column="MES_STATUS"/>
+        </resultMap>
+
+        <sql id="CRM_USER_TBL_columns">
+            CRM_USER_TBL.ID,
+            CRM_USER_TBL.CUS_ID,
+            CRM_USER_TBL.EMAIL,
+            CRM_USER_TBL.MOBILE,
+            CRM_USER_TBL.REAL_NAME,
+            CRM_USER_TBL.SEX,
+            CRM_USER_TBL.REG_TIME,
+            CRM_USER_TBL.QQ,
+            CRM_USER_TBL.USER_TYPE,
+            CRM_USER_TBL.SUBJECT_ID,
+            CRM_USER_TBL.AGE,
+            CRM_USER_TBL.BIRTHDAY,
+           	CRM_USER_TBL.MES_STATUS,
+           	CRM_USER_TBL.CREATE_TIME
+        </sql>
+
+        <sql id="CRM_USER_TBL_properties">
+            #id#,
+            #cusId#,
+            #email#,
+            #mobile#,
+            #realName#,
+            #sex#,
+            #regTime#,
+            #qq#,
+            #userType#,
+            #subjectId#,
+            #age#,
+            #birthday#,
+            #mesStatus#,
+            #createTime#
+        </sql>
+
+        <insert id="createUser"   parameterClass="Chance_User">
+            INSERT INTO CRM_USER_TBL (<include refid="CRM_USER_TBL_columns"/>) VALUES (<include refid="CRM_USER_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteUserById" parameterClass="int">
+            DELETE FROM CRM_USER_TBL
+            WHERE
+                ID = #value#
+        </delete>
+
+        <update id="updateUser" parameterClass="Chance_User">
+            UPDATE CRM_USER_TBL SET
+                ID = #id#,
+                CUS_ID = #cusId#,
+                EMAIL = #email#,
+                MOBILE = #mobile#,
+                REAL_NAME = #realName#,
+                SEX = #sex#,
+                REG_TIME = #regTime#,
+                QQ = #qq#,
+                USER_TYPE = #userType#,
+                SUBJECT_ID = #subjectId#,
+                AGE = #age#,
+                BIRTHDAY= #birthday#
+            WHERE
+                ID = #id#
+        </update>
+
+        <select id="getUserById" resultMap="UserResult" parameterClass="int">
+            SELECT
+            <include refid="CRM_USER_TBL_columns"/>
+            FROM CRM_USER_TBL
+            WHERE
+                ID = #value#
+        </select>
+        
+         <select id="getUserByCusId" resultMap="UserResult" parameterClass="int">
+            SELECT
+            <include refid="CRM_USER_TBL_columns"/>
+            FROM CRM_USER_TBL
+            WHERE
+                cus_id = #value#
+        </select>
+
+       <select id="getUserByPhone" resultMap="UserResult" parameterClass="String">
+            SELECT
+            <include refid="CRM_USER_TBL_columns"/>
+            FROM CRM_USER_TBL
+            WHERE
+                mobile = #value#
+        </select>
+        <select id="getUserList" resultMap="UserResult" parameterClass="QueryChanceUserCondition">
+            SELECT
+            <include refid="CRM_USER_TBL_columns"/>
+            FROM CRM_USER_TBL 
+          <dynamic prepend="WHERE"> 
+          <isNotEmpty property="phone">
+            mobile=#phone#
+          </isNotEmpty>
+          </dynamic>
+        </select>
+        
+        <!-- 按规则(根据转换率转换)获取项目相对人员 -->
+      <!--   <select id="getUserByGuiZe" parameterClass="int" resultClass="int">
+        select   user_id from (select count(crm_chance_tbl.user_id) as mycount,crm_chance_tbl.user_id from crm_chance_tbl 
+        left join sys_user_tbl on crm_chance_tbl.USER_ID=sys_user_tbl.user_id  where sys_user_tbl.GROUP_ID=(select group_id from sys_sub_group_tbl where subject_id=#value# ) 
+         group by user_id,CRM_USER_ID) as result  group by user_id   order by count(result.mycount)   LIMIT 1
+        </select> -->
+        <select id="getUserByGuiZe" parameterClass="int" resultClass="int">
+      <!--  select zong.user_id,zong.bili from (
+       SELECT a.USER_ID,
+       ((a.sell_count/(select sum(d.chancesum) from (SELECT count(*) as  chancesum FROM `crm_chance_tbl` where  DATE_FORMAT(crm_chance_tbl.CHANCE_STIME,'%Y-%m-%d')=curdate() and crm_chance_tbl.subject_id=#value# GROUP BY crm_chance_tbl.`USER_ID`,crm_chance_tbl.crm_user_id ) d))
+       -(IFNULL(b.successcount,0)/a.SELL_COUNT)) as bili
+       FROM (SELECT crm_chance_tbl.`USER_ID`,COUNT(crm_chance_tbl.CRM_USER_ID) SELL_COUNT FROM `crm_chance_tbl` where ORIGIN=1 and DATE_FORMAT(CHANCE_STIME,'%Y-%m-%d')=curdate()  and crm_chance_tbl.subject_id=#value# GROUP BY crm_chance_tbl.`USER_ID`,crm_chance_tbl.crm_user_id) a  
+       LEFT JOIN 
+       ( SELECT crm_chance_tbl.`USER_ID`,COUNT(DISTINCT finance_contract_tbl.CONTRACT_ID) successcount FROM crm_chance_tbl LEFT JOIN crm_user_tbl ON crm_user_tbl.`ID`=crm_chance_tbl.`CRM_USER_ID`  and DATE_FORMAT(CHANCE_STIME,'%Y-%m-%d')=curdate()  and crm_chance_tbl.subject_id=#value# left JOIN finance_contract_tbl
+	   ON crm_user_tbl.`CUS_ID`=finance_contract_tbl.CUS_ID AND ((finance_contract_tbl.PAY_TYPE=2 AND finance_contract_tbl.`STATUS`!=3 )OR(finance_contract_tbl.PAY_TYPE!=2 AND finance_contract_tbl.`STATUS`=1 )) GROUP BY crm_chance_tbl.`USER_ID`)b
+		ON a.USER_ID=b.USER_ID  
+        ) as zong , sys_user_tbl where zong.user_id=sys_user_tbl.user_id and sys_user_tbl.user_type=2 group by zong.user_id order by bili desc  limit 1
+ -->        
+<!-- a为分配了多少单,b 为成了多少单 -->
+
+ SELECT a.BACK_USER_ID as user_id,IFNULL(b.successcount,0)/a.SELL_COUNT  as bili,a.SELL_COUNT FROM (  
+select count(BACK_USER_ID) as SELL_COUNT,BACK_USER_ID from (
+ SELECT crm_chance_tbl.`BACK_USER_ID`,COUNT(crm_chance_tbl.CRM_USER_ID) SELL_COUNT,(SELECT mobile from crm_user_tbl  where id=crm_user_id) as mobile
+  FROM `crm_chance_tbl` where  user_id!=0  and crm_chance_tbl.FOLLOW_STATUS!=1 and DATE_FORMAT(CHANCE_STIME,'%Y-%m-%d')=curdate() GROUP BY mobile,BACK_USER_ID order by SELL_COUNT) as  liceng group by BACK_USER_ID) a
+  LEFT JOIN (
+            SELECT crm_chance_tbl.`BACK_USER_ID`,COUNT(DISTINCT finance_contract_tbl.CONTRACT_ID) successcount
+	        FROM crm_chance_tbl LEFT JOIN crm_user_tbl ON (crm_user_tbl.`ID`=crm_chance_tbl.`CRM_USER_ID` and   crm_chance_tbl.FOLLOW_STATUS!=1) JOIN finance_contract_tbl
+			ON ((crm_user_tbl.`CUS_ID`=finance_contract_tbl.CUS_ID and DATE_FORMAT(finance_contract_tbl.create_TIME,'%Y-%m-%d')=curdate()  and (DATE_FORMAT(PAY_TIME,'%Y-%m-%d')=curdate() or finance_contract_tbl.PAY_TYPE=2 )
+			AND ((finance_contract_tbl.PAY_TYPE=2 AND finance_contract_tbl.`STATUS`!=4 )OR(finance_contract_tbl.PAY_TYPE not in (0,2,5) AND finance_contract_tbl.`STATUS`=1 ))))
+			GROUP BY crm_chance_tbl.`BACK_USER_ID`)b
+			ON a.BACK_USER_ID=b.BACK_USER_ID left join sys_user_tbl  on a.BACK_USER_ID=sys_user_tbl.user_id    where  a.BACK_USER_ID!=0   and sys_user_tbl.user_type=2  
+			and sys_user_tbl.GROUP_ID in(select GROUP_id from sys_sub_group_tbl where subject_id=#value#) 			
+			order by  bili  desc ,sell_count    limit 1 
+ </select>
+        <!-- 查询某项目下从未被分配的人  条件是只查询只接受自然注册 -->
+         <select id="getZeroChance" parameterClass="int" resultClass="int">
+         select sys_user_tbl.user_id from sys_user_tbl   where user_type=2   and GROUP_ID=(select group_id from sys_sub_group_tbl where subject_id=#value# )  and  not EXISTS (select user_id from crm_chance_tbl where sys_user_tbl.user_id=crm_chance_tbl.BACK_USER_ID and crm_chance_tbl.FOLLOW_STATUS!=1 and DATE_FORMAT(crm_chance_tbl.CHANCE_STIME,'%Y-%m-%d')=curdate() ) limit 1
+         </select>
+         <!-- 查询某项目下机会小于5的人 -->
+          <select id="getFiveChance" parameterClass="int" resultClass="int">
+           select   BACK_USER_ID as user_id,result.mycount  from ( 
+           select count(DISTINCT(mobile)) as mycount,liceng.BACK_USER_ID from (
+           select crm_chance_tbl.BACK_USER_ID,(SELECT mobile from crm_user_tbl  where id=crm_user_id) as mobile from crm_chance_tbl 
+           left join sys_user_tbl on crm_chance_tbl.BACK_USER_ID=sys_user_tbl.user_id and user_type=2  and crm_chance_tbl.ORIGIN=1 
+           and crm_chance_tbl.FOLLOW_STATUS!=1 and DATE_FORMAT(crm_chance_tbl.CHANCE_STIME,'%Y-%m-%d')=curdate() 
+           where  sys_user_tbl.GROUP_ID=(select group_id from sys_sub_group_tbl where subject_id=#value# ) 
+          group by BACK_USER_ID,CRM_USER_ID
+          ) as liceng group by BACK_USER_ID
+          ) as result          
+           <![CDATA[   where result.mycount<5 ]]>
+          order by  result.mycount  limit 1
+           </select>
+         
+         <!-- 获取乐语帐号 -->
+           <select id="getUserByPhoneForLY" resultMap="UserResult" parameterClass="String">
+            SELECT
+            <include refid="CRM_USER_TBL_columns"/>
+            FROM CRM_USER_TBL
+            WHERE
+                mobile = #value# and (user_type=2 || user_type=3)  limit 1
+        </select>
+        
+        <!-- 获取因意外情况没能分配的学员 -->
+        <select id="getYiWaiCus" resultClass="int">
+        select cus_id from cus_customer_tbl where  DATE_FORMAT(REG_TIME,'%Y-%m-%d')=curdate() and  not EXISTS (select * from crm_user_tbl where crm_user_tbl.CUS_ID=cus_customer_tbl.CUS_ID )  group by cus_id      
+        </select>
+        <!-- 最终找不到坐席的补齐 -->
+        <select id="getBuQi" parameterClass="int" resultClass="int">
+         select sys_user_tbl.user_id from sys_user_tbl   where user_type=2   and GROUP_ID=(select group_id from sys_sub_group_tbl where subject_id=#value# )  
+         </select>
+         <!-- 获取左右时间注册的人 -->
+         <select id="getCusTime"  resultClass="Integer" >
+       <![CDATA[     select cus_customer_tbl.cus_id  from cus_customer_tbl where  cus_customer_tbl.cus_type=0 and cus_customer_tbl.CUS_FROM_URL != 'haixue.com' and SUBJECT_ID !=0 and cus_customer_tbl.mobile != "" and   cus_customer_tbl.mobile is not null  and   cus_customer_tbl.reg_time<=TIMESTAMPADD(minute,60,NOW()) and cus_customer_tbl.reg_time>=TIMESTAMPADD(minute,-720,NOW()) and not EXISTS (select crm_user_tbl.cus_id from crm_user_tbl where crm_user_tbl.cus_id=cus_customer_tbl.cus_id)  group by   cus_customer_tbl.cus_id ]]>
+         </select>
+         
+        <select id="getCusTimeAll"  resultClass="Integer"  parameterClass="java.util.HashMap">
+         select cus_customer_tbl.cus_id  from cus_customer_tbl where cus_customer_tbl.cus_type=0 and SUBJECT_ID !=0 and cus_customer_tbl.mobile != ""  and cus_customer_tbl.mobile is not null
+       <isNotEmpty property="begin">
+       <![CDATA[and cus_customer_tbl.reg_time>= #begin#  ]]>
+       </isNotEmpty>
+       <isEmpty property="begin">
+       <![CDATA[and cus_customer_tbl.reg_time>='2012-1-1 00:00:00' ]]>
+       </isEmpty>
+       <isNotEmpty property="end">
+       <![CDATA[and cus_customer_tbl.reg_time<= #end# ]]>
+       </isNotEmpty>
+         and  not EXISTS (select crm_user_tbl.cus_id from crm_user_tbl where crm_user_tbl.cus_id=cus_customer_tbl.cus_id)
+         group by   cus_customer_tbl.cus_id 
+         </select>
+         <!-- 获取定时延时数 -->
+         <select id="getTimingNum" resultClass="java.util.HashMap" >
+         select timing_num,update_time from crm_timing_tbl limit 1       
+         </select>
+         
+         <update id="updateCusState" parameterClass="int">
+         update cus_customer_tbl set cus_type=5 where cus_id=#value#
+         </update>
+         
+         <!-- 更新最新取的定时时间 -->
+         <update id="updateCrmTime">
+         update  crm_timing_tbl set update_time=NOW()
+         </update>
+
+         <!-- 更新 MES_STATUS wd -->
+         <update id="updateMes" parameterClass="java.util.HashMap">
+         update  crm_user_tbl set MES_STATUS=#mes# where mobile=#mobile#
+         </update>
+         <!-- 判断email是否存在于crm系统 -->
+       <select id="searchCusInCrm" parameterClass="String" resultClass="Integer">
+          select count(*) from crm_user_tbl where email=#value#
+      </select>
+        <!--end-->
+</sqlMap>

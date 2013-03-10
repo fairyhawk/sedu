@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SubjectIPhone_NS">
+	<!--table:SYS_SUBJECT_TBL-->
+	<typeAlias alias="IphoneModel" type="com.shangde.edu.iphone.dto.IphoneModel" />
+	<typeAlias alias="QueryCourseIPhoneCondition"
+		type="com.shangde.edu.iphone.condition.QueryCourseIPhoneCondition" />
+
+	<resultMap id="SubjectResult" class="IphoneModel">
+		<result property="videoId" column="SUBJECT_ID" />
+		<result property="videoName" column="SUBJECT_NAME" />
+		<result property="imageURL" column="IMAGES_URL" />
+	</resultMap>
+
+	<sql id="SYS_SUBJECT_TBL_columns">
+		SYS_SUBJECT_TBL.SUBJECT_ID, SYS_SUBJECT_TBL.SUBJECT_NAME,
+		SYS_SUBJECT_TBL.STATUS, SYS_SUBJECT_TBL.CREATE_TIME,
+		SYS_SUBJECT_TBL.UPDATE_TIME,SYS_SUBJECT_TBL.TEST_TIME
+	</sql>
+
+	<sql id="SYS_SUBJECT_TBL_properties">
+		#subjectId#, #subjectName#, #status#, #createTime#, #updateTime# ,#testTime#
+	</sql>
+	
+	<select id="getAllSubject" resultMap="SubjectIPhone_NS.SubjectResult" parameterClass="QueryCourseIPhoneCondition">
+	<include refid="public_sql.page_begin" />
+		SELECT
+		SYS_SUBJECT_TBL.SUBJECT_ID, SYS_SUBJECT_TBL.SUBJECT_NAME,SYS_SUBJECT_TBL.IMAGES_URL
+		FROM SYS_SUBJECT_TBL  where SUBJECT_ID!=#subjectId#
+	<include refid="public_sql.page_end" />
+	</select>
+	
+	<select id="getCountSubject" resultClass="int">
+		SELECT
+		count(*)
+		FROM SYS_SUBJECT_TBL  where SUBJECT_ID!=6
+	</select>
+	
+</sqlMap>

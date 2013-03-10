@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ChildContract_NS">
+        <!--table:FINANCE_CHILD_CONTRACT_TBL-->
+        <typeAlias alias="ChildContract" type="com.shangde.edu.finance.domain.ChildContract"/>
+        <typeAlias alias="QueryChildContractCondition" type="com.shangde.edu.finance.condition.QueryChildContractCondition"/>
+
+        <resultMap id="ChildContractResult" class="ChildContract">
+            <result property="id" column="ID"/>
+            <result property="contractId" column="CONTRACT_ID"/>
+            <result property="childContractId" column="CHILD_CONTRACT_ID"/>
+            <result property="cusId" column="CUS_ID"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="payTime" column="PAY_TIME"/>
+            <result property="payType" column="PAY_TYPE"/>
+            <result property="status" column="STATUS"/>
+            <result property="money" column="MONEY"/>
+            <result property="ctId" column="CT_ID"/>
+        </resultMap>
+
+        <sql id="FINANCE_CHILD_CONTRACT_TBL_columns">
+            FINANCE_CHILD_CONTRACT_TBL.ID,
+            FINANCE_CHILD_CONTRACT_TBL.CONTRACT_ID,
+            FINANCE_CHILD_CONTRACT_TBL.CHILD_CONTRACT_ID,
+            FINANCE_CHILD_CONTRACT_TBL.CUS_ID,
+            FINANCE_CHILD_CONTRACT_TBL.CREATE_TIME,
+            FINANCE_CHILD_CONTRACT_TBL.PAY_TIME,
+            FINANCE_CHILD_CONTRACT_TBL.PAY_TYPE,
+            FINANCE_CHILD_CONTRACT_TBL.STATUS,
+            FINANCE_CHILD_CONTRACT_TBL.MONEY,
+            FINANCE_CHILD_CONTRACT_TBL.CT_ID
+        </sql>
+
+        <sql id="FINANCE_CHILD_CONTRACT_TBL_properties">
+            #id#,
+            #contractId#,
+            #childContractId#,
+            #cusId#,
+            #createTime#,
+            #payTime#,
+            #payType#,
+            #status#,
+            #money#,
+            #ctId#
+        </sql>
+
+        <insert id="createChildContract" parameterClass="ChildContract">
+            INSERT INTO FINANCE_CHILD_CONTRACT_TBL (<include refid="ChildContract_NS.FINANCE_CHILD_CONTRACT_TBL_columns"/>) VALUES (<include refid="ChildContract_NS.FINANCE_CHILD_CONTRACT_TBL_properties"/>)
+             <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+
+        <select id="getChildContractById" resultMap="ChildContract_NS.ChildContractResult" parameterClass="int">
+            SELECT
+            <include refid="ChildContract_NS.FINANCE_CHILD_CONTRACT_TBL_columns"/>
+            FROM FINANCE_CHILD_CONTRACT_TBL
+            WHERE
+      			ID = #id#
+        </select>
+        
+        
+        <select id="getChildContract" resultMap="ChildContract_NS.ChildContractResult" parameterClass="QueryChildContractCondition">
+            SELECT
+            <include refid="ChildContract_NS.FINANCE_CHILD_CONTRACT_TBL_columns"/>
+            FROM FINANCE_CHILD_CONTRACT_TBL
+             <dynamic prepend="WHERE">
+             	<isNotNull property="ctId" >
+	            	<isGreaterThan property="ctId" compareValue="0" prepend="and"> 
+		               FINANCE_CHILD_CONTRACT_TBL.CT_ID = #ctId#
+			    	</isGreaterThan>
+            	</isNotNull>
+            	<isGreaterThan property="cusId" compareValue="0" prepend="and"> 
+            		FINANCE_CHILD_CONTRACT_TBL.CUS_ID = #cusId#
+            	</isGreaterThan>
+            	<isNotNull property="contractId" > 
+            		<isNotEqual property="contractId" compareValue=" " prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.CONTRACT_ID = #contractId#
+			    	</isNotEqual>
+	            </isNotNull> 
+	            <isNotNull property="childContractId" > 	
+	            	<isNotEqual property="childContractId" compareValue=" " prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.CHILD_CONTRACT_ID = #childContractId#
+			    	</isNotEqual>
+            	</isNotNull>
+            </dynamic>
+            ORDER BY FINANCE_CHILD_CONTRACT_TBL.CREATE_TIME DESC   LIMIT 0,1
+        </select>
+                
+                
+          <select id="getChildContractList" resultMap="ChildContract_NS.ChildContractResult" parameterClass="QueryChildContractCondition">
+            SELECT
+            <include refid="ChildContract_NS.FINANCE_CHILD_CONTRACT_TBL_columns"/>
+            FROM FINANCE_CHILD_CONTRACT_TBL
+            <dynamic prepend="WHERE">
+            	<isGreaterThan property="id" compareValue="0" prepend="and"> 
+            		 FINANCE_CHILD_CONTRACT_TBL.ID = #id#
+            	</isGreaterThan>
+             	<isNotNull property="ctId" >
+	            	<isNotEqual property="ctId" compareValue="0" prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.CT_ID = #ctId#
+			    	</isNotEqual>
+            	</isNotNull>
+            	<isNotNull property="cusId" > 
+	            	<isNotEqual property="cusId" compareValue="0" prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.CUS_ID = #cusId#
+			    	</isNotEqual>
+            	</isNotNull>
+            	<isNotEmpty property="contractId" prepend="and">
+            		 FINANCE_CHILD_CONTRACT_TBL.CONTRACT_ID = #contractId#
+            	</isNotEmpty>
+            	<!-- 
+            	<isNotNull property="contractId" > 
+            		<isNotEqual property="contractId" compareValue=" " prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.CONTRACT_ID = #contractId#
+			    	</isNotEqual>
+	            </isNotNull>
+	             -->
+	            <isNotNull property="childContractId" > 	
+	            	<isNotEqual property="childContractId" compareValue=" " prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.CHILD_CONTRACT_ID = #childContractId#
+			    	</isNotEqual>
+            	</isNotNull>
+            	 <isNotNull property="childContractId" > 	
+	            	<isNotEqual property="childContractId" compareValue=" " prepend="and">
+		               FINANCE_CHILD_CONTRACT_TBL.status = #status#
+			    	</isNotEqual>
+            	</isNotNull>
+            </dynamic>
+            ORDER BY FINANCE_CHILD_CONTRACT_TBL.CREATE_TIME DESC
+        </select>
+        
+        
+         <select id="getChildContractByNo" resultMap="ChildContract_NS.ChildContractResult" parameterClass="String">
+            SELECT
+            <include refid="ChildContract_NS.FINANCE_CHILD_CONTRACT_TBL_columns"/>
+            FROM FINANCE_CHILD_CONTRACT_TBL
+            WHERE
+      			CHILD_CONTRACT_ID = #value#
+      		LIMIT 1
+        </select>
+     
+    
+        <update id="updateChildContract" parameterClass="ChildContract">
+            UPDATE FINANCE_CHILD_CONTRACT_TBL SET 
+                CONTRACT_ID = #contractId#,
+                CHILD_CONTRACT_ID = #childContractId#,
+                CUS_ID = #cusId#,
+                CREATE_TIME = #createTime#,
+                PAY_TIME = #payTime#,
+                PAY_TYPE = #payType#,
+                STATUS = #status#,
+                MONEY = #money#
+            WHERE
+		ID = #id# 
+        </update>
+        
+        <update id="updateChildContractPayOK" parameterClass="ChildContract">
+            UPDATE FINANCE_CHILD_CONTRACT_TBL SET  
+                PAY_TIME = #payTime#,
+                PAY_TYPE = #payType#,
+                STATUS = #status#
+            WHERE 
+            ID = #id#  and
+            CUS_ID = #cusId# and 
+            CHILD_CONTRACT_ID = #childContractId#
+        </update>
+        
+ 		<select id="getPayChildContract" resultClass="QueryChildContractCondition" parameterClass="QueryChildContractCondition">
+           SELECT 
+			SUM(money) AS money,
+			COUNT(id) allcount,
+			SUM(CASE STATUS
+			WHEN 1 THEN 1
+			ELSE 0
+			END)  AS paycount
+			FROM  finance_child_contract_tbl  WHERE cus_id=#cusId# AND contract_id=#contractId# 
+        </select>
+        
+        
+        
+</sqlMap>

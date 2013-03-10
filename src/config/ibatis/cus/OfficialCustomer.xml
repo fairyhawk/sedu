@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="OfficialCustomer_NS">
+
+	<typeAlias alias="OfficialCustomer" type="com.shangde.edu.cus.domain.OfficialCustomer" />
+	<typeAlias alias="OfficialCustomerDTO" type="com.shangde.edu.cus.dto.OfficialCustomerDTO"/>
+	
+	<resultMap id="OfficialCustomerDTOResult" class="OfficialCustomerDTO">
+		<result property="id" column="ID" />
+		<result property="cusId" column="CUS_ID" />
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="portrait" column="PORTRAIT" />
+		<result property="cusName" column="CUS_NAME" />
+		<result property="score" column="SCORE" />
+		<result property="replyCount" column="REPLY_COUNT" />
+	</resultMap>
+
+	<select id="queryOfficialCustomerDTOBySubjectIds" parameterClass="java.util.List" resultMap="OfficialCustomerDTOResult">
+		SELECT 
+		    CUS_OFFICIAL_CUSTOMER_TBL.ID,
+		    CUS_OFFICIAL_CUSTOMER_TBL.CUS_ID,
+		    CUS_OFFICIAL_CUSTOMER_TBL.SUBJECT_ID,
+		    CUS_OFFICIAL_CUSTOMER_TBL.PORTRAIT,
+		    CUS_CUSTOMER_TBL.CUS_NAME,
+		    (SELECT 
+		        CUS_TOTOLS_SCORE_TBL.TS_CURRENT 
+		    FROM
+		        CUS_TOTOLS_SCORE_TBL 
+		    WHERE CUS_OFFICIAL_CUSTOMER_TBL.CUS_ID = CUS_TOTOLS_SCORE_TBL.CUS_ID) AS SCORE,
+		    (SELECT 
+		        COUNT(CUS_RE_PROBLEM_TBL.RE_ID) 
+		    FROM
+		        CUS_RE_PROBLEM_TBL 
+		    WHERE CUS_OFFICIAL_CUSTOMER_TBL.CUS_ID = CUS_RE_PROBLEM_TBL.RE_MAN_ID) AS REPLY_COUNT 
+		FROM
+		    CUS_OFFICIAL_CUSTOMER_TBL,
+		    CUS_CUSTOMER_TBL 
+		WHERE 1 = 1
+		<isNotEmpty prepend="AND">
+			CUS_OFFICIAL_CUSTOMER_TBL.SUBJECT_ID IN
+			<iterate open="(" close=")" conjunction=",">
+			#value[].subjectId#
+			</iterate>
+		</isNotEmpty>
+		    AND CUS_OFFICIAL_CUSTOMER_TBL.CUS_ID = CUS_CUSTOMER_TBL.CUS_ID
+	</select>
+	
+	<select id="checkOfficialCustomer" parameterClass="int" resultClass="int">
+		SELECT COUNT(ID) FROM CUS_OFFICIAL_CUSTOMER_TBL WHERE CUS_ID = #value#
+	</select>
+
+</sqlMap>

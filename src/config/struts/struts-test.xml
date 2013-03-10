@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="test" namespace="/" extends="edu-default">
+        <action name="test" class="com.shangde.edu.cus.web.TestAction">
+          
+			<interceptor-ref name="loginStack"/>
+		
+            <result name="success">/jsp/test_view_download.jsp</result>
+            <!-- 上传下载结束 -->
+        </action>
+    </package>
+</struts>

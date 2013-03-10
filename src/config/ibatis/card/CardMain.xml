@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CardMain_NS">
+        <typeAlias alias="CardMain" type="com.shangde.edu.card.domain.CardMain"/>
+        <resultMap id="CardMainResult" class="CardMain">
+            <result property="cardMainId" column="CARD_MAIN_ID"/>
+            <result property="cardName" column="CARD_NAME"/>
+            <result property="cardMoney" column="CARD_MONEY"/>
+            <result property="cardType" column="CARD_TYPE"/>
+            <result property="cardCount" column="CARD_COUNT"/>
+            <result property="cardUserStatus" column="CARD_USER_STATUS"/>
+            <result property="validBeginTime" column="VALID_BEGIN_TIME"/>
+            <result property="validEndTime" column="VALID_END_TIME"/>
+            <result property="remark" column="REMARK"/>
+            <result property="activateRemark" column="ACTIVATE_REMARK"/>
+            <result property="activateUser" column="ACTIVATE_USER"/>
+            <result property="imageUrl" column="IMAGE_URL"/>
+            <result property="creator" column="CREATOR"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="updateUser" column="UPDATE_USER"/>
+        	<result property="updateTime" column="UPDATE_TIME"/>
+        </resultMap>
+        <sql id="CARD_MAIN_TBL_columns">
+            CARD_MAIN_TBL.CARD_MAIN_ID,
+            CARD_MAIN_TBL.CARD_NAME,
+            CARD_MAIN_TBL.CARD_MONEY,
+            CARD_MAIN_TBL.CARD_TYPE,
+            CARD_MAIN_TBL.CARD_COUNT,
+            CARD_MAIN_TBL.CARD_USER_STATUS,
+            CARD_MAIN_TBL.VALID_BEGIN_TIME,
+            CARD_MAIN_TBL.VALID_END_TIME,
+            CARD_MAIN_TBL.REMARK,
+            CARD_MAIN_TBL.ACTIVATE_REMARK,
+            CARD_MAIN_TBL.ACTIVATE_USER,
+            CARD_MAIN_TBL.IMAGE_URL,
+            CARD_MAIN_TBL.CREATOR,
+            CARD_MAIN_TBL.CREATE_TIME,
+            CARD_MAIN_TBL.UPDATE_USER,
+            CARD_MAIN_TBL.UPDATE_TIME
+        </sql>
+        <sql id="CARD_MAIN_TBL_properties">
+            #cardMainId#,
+            #cardName#,
+            #cardMoney#,
+            #cardType#,
+            #cardCount#,
+            #cardUserStatus#,
+            #validBeginTime#,
+            #validEndTime#,
+            #remark#,
+            #activateRemark#, 
+            #activateUser#,
+            #imageUrl#,
+            #creator#,
+            #createTime#,
+            #updateUser#,
+            #updateTime#
+        </sql>
+        <select id="selectCardMain" parameterClass="int" resultMap="CardMainResult">
+        	SELECT <include refid="CARD_MAIN_TBL_columns"/> FROM CARD_MAIN_TBL WHERE CARD_MAIN_ID=#VALUE#
+        </select>
+        
+</sqlMap>

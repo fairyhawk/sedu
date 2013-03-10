@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Qst_NS">
+        <!--table:EXAM_QST_TBL-->
+        <typeAlias alias="Qst" type="com.shangde.edu.exam.domain.Qst"/>
+         <typeAlias alias="Coursesort" type="com.shangde.edu.cou.domain.Coursesort"/>
+        <typeAlias alias="QueryQstCondition" type="com.shangde.edu.exam.condition.QueryQstCondition"/>
+        <typeAlias alias="QstRightPercent" type="com.shangde.edu.exam.dto.QstRightPercent"/>
+
+		<resultMap id="CoursesortResult" class="Coursesort">
+			<result property="coursesortId" column="COURSESORT_ID"/>
+			<result property="coursesortName" column="COURSESORT_NAME"/>
+		</resultMap>
+        <resultMap id="QstResult" class="Qst">
+            <result property="qstId" column="QST_ID"/>
+            <result property="qstindexId" column="QST_INDEX_ID"/>
+            <result property="qsttype" column="QSTTYPE"/>
+            <result property="korcouId" column="KorCouId"/>
+            <result property="courseId" column="CourseId"/>
+            <result property="sortId" column="SortId"/>
+            <result property="epId" column="EP_ID"/>
+            <result property="qstContent" column="QST_CONTENT"/>
+            <result property="isAsr" column="IS_ASR"/>
+            <result property="qstType" column="QST_TYPE"/>
+            <result property="score" column="SCORE"/>
+            <result property="ctPerson" column="CT_PERSON"/>
+            <result property="level" column="LEVEL"/>
+            <result property="addtime" column="ADDTIME"/>
+            <result property="wrongJude" column="WRONG_JUDE"/>
+            <result property="note" column="NOTE"/>
+            <result property="author" column="AUTHOR"/>
+            <result property="lastEditTime" column="LAST_EDIT_TIME"/>
+        </resultMap>
+        
+        <resultMap id="QstAnsResult" class="Qst" extends="QstResult">
+            <result property="optContent" column="OPT_CONTENT"/>
+        </resultMap>
+        <resultMap id="qstIdResult" class="Qst">
+		   <result property="qstId" column="QST_ID"/>
+		</resultMap>
+        
+        <resultMap id="ErrorQstResult" class="Qst">
+            <result property="qstId" column="QST_ID"/>
+            <result property="subjectId" column="subject_id"/>
+            <result property="qstContent" column="QST_CONTENT"/>
+            <result property="percent" column="right_percent"/>
+            <result property="epType" column="e.EP_TYPE"/>
+        </resultMap>
+        
+        <resultMap class="Qst" id="QstPercentResult" extends="QstResult">
+        <result property="percent" column="percent"/>
+        </resultMap>
+        
+        <resultMap class="QstRightPercent" id="rightPercentResult">
+        <result property="totalCount" column="TOTAL_COUNT"/>
+        <result property="wrongTotalCount" column="WRONG_TOTAL_COUNT"/>
+        <result property="weekTotalCount" column="WEEK_TOTAL_COUNT"/>
+        <result property="weekRightCount" column="week_right_count"/>
+        </resultMap>
+
+        <sql id="EXAM_QST_TBL_columns">
+            EXAM_QST_TBL.QST_ID,
+            EXAM_QST_TBL.QST_INDEX_ID,
+            EXAM_QST_TBL.QSTTYPE,
+            EXAM_QST_TBL.CourseId,
+            EXAM_QST_TBL.SortId,
+            EXAM_QST_TBL.KorCouId,
+            EXAM_QST_TBL.EP_ID,
+            EXAM_QST_TBL.QST_CONTENT,
+            EXAM_QST_TBL.IS_ASR,
+            EXAM_QST_TBL.QST_TYPE,
+            EXAM_QST_TBL.SCORE,
+            EXAM_QST_TBL.CT_PERSON,
+            EXAM_QST_TBL.LEVEL,
+            EXAM_QST_TBL.ADDTIME,
+            EXAM_QST_TBL.WRONG_JUDE,
+            EXAM_QST_TBL.NOTE,
+            EXAM_QST_TBL.AUTHOR,
+            EXAM_QST_TBL.LAST_EDIT_TIME
+        </sql>
+
+        <sql id="EXAM_QST_TBL_properties">
+            #qstId#,
+            #qstindexId#,
+            #qsttype#,
+            #courseId#,
+            #sortId#,
+            #korcouId#,
+            #epId#,
+            #qstContent#,
+            #isAsr#,
+            #qstType#,
+            #score#,
+            #ctPerson#,
+            #level#,
+            #addtime#,
+            #wrongJude#,
+            #note#,
+            #author#,
+            #lastEditTime#
+        </sql>
+
+        <insert id="createQst" parameterClass="Qst">
+            INSERT INTO EXAM_QST_TBL (<include refid="Qst_NS.EXAM_QST_TBL_columns"/>) VALUES (<include refid="Qst_NS.EXAM_QST_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="qstId" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteQstById" parameterClass="int">
+            DELETE FROM EXAM_QST_TBL
+            WHERE
+                QST_ID = #value#
+
+        </delete>
+
+        <update id="updateQst" parameterClass="Qst">
+            UPDATE EXAM_QST_TBL SET
+                QST_ID = #qstId#,
+                QST_INDEX_ID= #qstindexId#,
+                QSTTYPE =  #qsttype#,
+                NOTE = #note#,
+         		KorCouId = #korcouId#,
+           		CourseId = #courseId#,
+           		SortId = #sortId#,
+                EP_ID = #epId#,
+                QST_CONTENT = #qstContent#,
+                IS_ASR = #isAsr#,
+                QST_TYPE = #qstType#,
+                SCORE = #score#,
+                CT_PERSON = #ctPerson#,
+                LEVEL = #level#,
+                ADDTIME = #addtime#,
+                WRONG_JUDE = #wrongJude#
+                <isNotNull property="author">
+	            	, AUTHOR=#author#
+	        	</isNotNull>
+               <isNotNull property="lastEditTime">
+	            	,LAST_EDIT_TIME=#lastEditTime#
+	        	</isNotNull>
+            WHERE
+                QST_ID = #qstId#
+
+        </update>
+
+        <select id="getQstById" resultMap="Qst_NS.QstPercentResult" parameterClass="int">
+            SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>,EXAM_QST_TBL.RIGHT_PERCENT percent
+            FROM EXAM_QST_TBL
+            WHERE
+                QST_ID = #value#
+
+        </select>
+        
+        <select id="getQstPercentById" resultMap="Qst_NS.QstPercentResult" parameterClass="int">
+            SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>,
+			ifnull(SUM(CASE WHEN exam_qst_tbl.IS_ASR=eor.USER_ANSWER THEN 1 ELSE 0 END )*100/COUNT(eor.QST_ID),0) AS percent
+			FROM exam_qst_tbl 
+			LEFT JOIN exam_opt_record_tbl eor 
+			ON exam_qst_tbl.QST_ID=eor.QST_ID
+			WHERE
+                exam_qst_tbl.QST_ID = #value#
+			GROUP BY exam_qst_tbl.QST_ID
+            
+
+        </select>
+		
+		  <select id="getQstByindexId" resultMap="Qst_NS.QstResult" parameterClass="int">
+            SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+            FROM EXAM_QST_TBL
+            WHERE
+                QST_INDEX_ID = #value#
+
+        </select>
+		
+		<select id="getQstEpid" resultMap="Qst_NS.QstResult" parameterClass="int">
+		
+		SELECT  <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+		FROM exam_qst_tbl,exam_qst_kb_tbl where  
+		exam_qst_kb_tbl.QST_ID=exam_qst_tbl.QST_ID 
+		and exam_qst_kb_tbl.K_ID=#value# limit 1
+		
+		</select>
+
+        <select id="getQstList" resultMap="Qst_NS.QstResult" parameterClass="QueryQstCondition">
+            SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+            FROM EXAM_QST_TBL
+               <isNotNull property="epId">
+	            	<isNotEqual property="epId" compareValue="0">
+	            		WHERE EP_ID= #epId#
+	            	</isNotEqual>
+            	</isNotNull>
+            	
+            	  <isNotNull property="qstindexId">
+	            	<isNotEqual property="qstindexId" compareValue="0">
+	            		WHERE QST_INDEX_ID= #qstindexId#
+	            	</isNotEqual>
+            	</isNotNull>
+            	ORDER BY QST_TYPE ASC
+        </select>
+        
+         <select id="getQstListByEpid" resultMap="Qst_NS.QstResult" parameterClass="int">
+            SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+            FROM EXAM_QST_TBL
+            		WHERE EP_ID= #value#
+        </select>
+        
+          <select id="getQstListByEpidtypeasc" resultMap="Qst_NS.QstResult" parameterClass="int">
+            SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+            FROM EXAM_QST_TBL
+            		WHERE EP_ID= #value# ORDER BY QST_TYPE ASC
+        </select>
+        
+        <!-- 查询所有的课程 -->
+        <select  id="getCourseList" resultMap="Qst_NS.CoursesortResult">
+			SELECT COURSESORT_ID,COURSESORT_NAME FROM COU_COURSESORT_TBL  WHERE P_ID=4
+        </select>
+        
+        
+        <!-- 分页 弹出-->
+        <select id="getQstListPage" resultMap="Qst_NS.QstResult" parameterClass="QueryQstCondition">
+        <include refid="public_sql.page_begin"/>
+       		SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+            FROM EXAM_QST_TBL
+             WHERE
+             EXAM_QST_TBL.QST_INDEX_ID = 0
+               <isNotNull property="qstType">
+	            	<isGreaterThan property="qstType"  compareValue="0" prepend="and">
+	            		 EXAM_QST_TBL.QST_TYPE= #qstType#
+	            	</isGreaterThan>
+            	</isNotNull>
+            	<isNotNull property="sortId">
+	            	<isGreaterThan property="sortId"  compareValue="0" prepend="and">
+	            		 EXAM_QST_TBL.SortId= #sortId#
+	            	</isGreaterThan>
+            	</isNotNull>
+            	
+            	<isNotNull property="tiaojian">
+	            	 <isEqual  property="tiaojian" compareValue="1" prepend="and">
+			                  EXAM_QST_TBL.QST_ID like    '%$searchKey$%' 
+			          </isEqual>
+			          <isEqual  property="tiaojian" compareValue="2" prepend="and">
+			                  EXAM_QST_TBL.QST_CONTENT like   '%$searchKey$%' 
+				      </isEqual>
+				     
+			</isNotNull>
+			
+        	order by EXAM_QST_TBL.QST_ID desc
+         <include refid="public_sql.page_end"/>
+        </select>
+        
+        <select id="getQstListPageCount" resultClass="int" parameterClass="QueryQstCondition">
+        SELECT COUNT(1)
+         FROM EXAM_QST_TBL
+             WHERE
+            EXAM_QST_TBL.QST_INDEX_ID =0
+               <isNotNull property="qstType">
+	            	<isGreaterThan property="qstType"  compareValue="0" prepend="and">
+	            		 EXAM_QST_TBL.QST_TYPE= #qstType#
+	            	</isGreaterThan>
+            	</isNotNull>
+            	        	<isNotNull property="sortId">
+	            	<isGreaterThan property="sortId"  compareValue="0" prepend="and">
+	            		 EXAM_QST_TBL.SortId= #sortId#
+	            	</isGreaterThan>
+            	</isNotNull>
+            	
+            	<isNotNull property="tiaojian">
+	            	 <isEqual  property="tiaojian" compareValue="1" prepend="and">
+			                  EXAM_QST_TBL.QST_ID like    '%$searchKey$%' 
+			          </isEqual>
+			          <isEqual  property="tiaojian" compareValue="2" prepend="and">
+			                  EXAM_QST_TBL.QST_CONTENT like   '%$searchKey$%' 
+				      </isEqual>
+				     
+			</isNotNull>
+        	order by EXAM_QST_TBL.QST_ID desc
+        
+        </select>
+        
+        <!--试题查询条件 -->
+         <select id="getQstListPageqst" resultMap="Qst_NS.QstResult" parameterClass="QueryQstCondition">
+        <include refid="public_sql.page_begin"/>
+       		SELECT
+            <include refid="Qst_NS.EXAM_QST_TBL_columns"/>
+            FROM EXAM_QST_TBL
+             WHERE
+             EXAM_QST_TBL.QST_INDEX_ID !=-1
+               <isNotNull property="qstType">
+	            	<isGreaterThan property="qstType"  compareValue="0" prepend="and">
+	            		 EXAM_QST_TBL.QST_TYPE= #qstType#
+	            	</isGreaterThan>
+            	</isNotNull>
+            	
+            	<isNotNull property="tiaojian">
+	            	 <isEqual  property="tiaojian" compareValue="1" prepend="and">
+			                  EXAM_QST_TBL.QST_CONTENT like   '%$searchKey$%' 
+			          </isEqual>
+			          <isEqual  property="tiaojian" compareValue="2" prepend="and">
+			                  EXAM_QST_TBL.IS_ASR like   '%$searchKey$%' 
+				      </isEqual>
+				     
+				</isNotNull>
+				<isNotNull prepend="and" property="startTime">
+			    <![CDATA[  EXAM_QST_TBL.ADDTIME >= #startTime# ]]>
+				</isNotNull>
+				<isNotNull prepend="and" property="endTime">
+					<![CDATA[  EXAM_QST_TBL.ADDTIME <= #endTime# ]]>
+				</isNotNull>
+				
+        	order by EXAM_QST_TBL.QST_ID desc
+         <include refid="public_sql.page_end"/>
+        </select>
+        
+        <select id="getQstListPageCountqst" resultClass="int" parameterClass="QueryQstCondition">
+        SELECT COUNT(1)
+         FROM EXAM_QST_TBL
+             WHERE
+            EXAM_QST_TBL.QST_INDEX_ID !=-1
+               <isNotNull property="qstType">
+	            	<isGreaterThan property="qstType"  compareValue="0" prepend="and">
+	            		 EXAM_QST_TBL.QST_TYPE= #qstType#
+	            	</isGreaterThan>
+            	</isNotNull>
+            	
+            	<isNotNull property="tiaojian">
+	            	 <isEqual  property="tiaojian" compareValue="1" prepend="and">
+			                  EXAM_QST_TBL.QST_CONTENT like   '%$searchKey$%' 
+			          </isEqual>
+			          <isEqual  property="tiaojian" compareValue="2" prepend="and">
+			                  EXAM_QST_TBL.IS_ASR like   '%$searchKey$%' 
+				      </isEqual>
+				     
+				</isNotNull>
+        	order by EXAM_QST_TBL.QST_ID desc
+        
+        </select>
+        
+        <select id="QstRightPercent" resultClass="int" parameterClass="int">
+        	SELECT 
+       		 	IFNULL(SUM(er.QST_COUNT),0) AS total_count
+				
+			FROM
+			  exam_exampaper_record_tbl er 
+			WHERE er.CUS_ID =#value#
+        </select>
+        
+        <select id="getCurrentErrorQst" resultMap="Qst_NS.ErrorQstResult" parameterClass="int">
+        	SELECT 
+			eq.qst_id,e.EP_TYPE,eq.QST_CONTENT,eq.RIGHT_PERCENT,e.subject_id
+			FROM
+			exam_exampaper_tbl e 
+			JOIN  exam_exampaper_record_tbl er ON er.EP_ID=e.EP_ID AND e.SUBJECT_ID=#value#
+			JOIN  exam_opt_record_tbl eor FORCE INDEX (PRIMARY)  ON eor.USER_EP_ID=er.USER_EP_ID
+			  JOIN exam_qst_tbl eq FORCE INDEX (PRIMARY) 
+				ON eq.qst_id = eor.qst_id 
+				AND isright = 0 
+				AND eq.qst_type != 4 
+				AND eq.qst_type != 6 
+			ORDER BY id DESC 
+			LIMIT 5
+        </select>
+        
+        <!-- 获取试卷对应题的正确率 
+        <select id="getRightPercentByEpId" resultMap="rightPercentResult" parameterClass="int">
+        	SELECT 
+			  eq.qst_id,
+			  IFNULL(
+			    SUM(
+			      CASE
+			        WHEN eq.IS_ASR = eor.USER_ANSWER 
+			        THEN 1 
+			        ELSE 0 
+			      END
+			    ) * 100 / COUNT(eor.QST_ID),
+			    0
+			  ) AS percent ,
+			  0 rightCount,
+			  0 totalCount
+			FROM
+			  exam_qst_tbl  eq
+			JOIN exam_qstmiddle_tbl eqm ON eqm.QST_ID=eq.QST_ID AND eqm.ep_id=#value#
+			  LEFT JOIN exam_opt_record_tbl eor 
+			    ON eq.QST_ID = eor.QST_ID 
+			GROUP BY eq.QST_ID 
+			ORDER BY eq.QST_TYPE ASC,
+			  eq.QST_ID ASC 
+        </select>-->
+        
+        
+        
+        <select id="getExamQstList" resultMap="QstResult" parameterClass="int">
+        	select
+        		EXAM_QST_TBL.QST_ID,
+	            EXAM_QST_TBL.QST_INDEX_ID,
+	            EXAM_QST_TBL.QST_TYPE QSTTYPE,
+	            EXAM_QST_TBL.CourseId,
+	            EXAM_QST_TBL.SortId,
+	            EXAM_QST_TBL.KorCouId,
+	            EXAM_QST_TBL.EP_ID,
+	            EXAM_QST_TBL.QST_CONTENT,
+	            EXAM_QST_TBL.IS_ASR,
+	            eqm.QST_TYPE,
+	            eqm.QST_SCORE SCORE,
+	            EXAM_QST_TBL.CT_PERSON,
+	            EXAM_QST_TBL.LEVEL,
+	            EXAM_QST_TBL.ADDTIME,
+	            EXAM_QST_TBL.WRONG_JUDE,
+	            EXAM_QST_TBL.NOTE,
+	            EXAM_QST_TBL.AUTHOR,
+	            EXAM_QST_TBL.LAST_EDIT_TIME
+        	FROM	exam_qst_tbl 
+			JOIN exam_qstmiddle_tbl eqm 
+			ON eqm.QST_ID = exam_qst_tbl.QST_ID 
+			AND eqm.ep_id = #value#
+			ORDER BY eqm.QST_TYPE ASC,
+			  eqm.QST_ID ASC 
+        </select>
+        
+        <select id="getExamQstOptList" resultMap="QstAnsResult" parameterClass="int">
+        	select
+        		EXAM_QST_TBL.QST_ID,
+	            EXAM_QST_TBL.QST_INDEX_ID,
+	            EXAM_QST_TBL.QST_TYPE QSTTYPE,
+	            EXAM_QST_TBL.CourseId,
+	            EXAM_QST_TBL.SortId,
+	            EXAM_QST_TBL.KorCouId,
+	            EXAM_QST_TBL.EP_ID,
+	            EXAM_QST_TBL.QST_CONTENT,
+	            EXAM_QST_TBL.IS_ASR,
+	            eqm.QST_TYPE,
+	            eqm.QST_SCORE SCORE,
+	            EXAM_QST_TBL.CT_PERSON,
+	            EXAM_QST_TBL.LEVEL,
+	            EXAM_QST_TBL.ADDTIME,
+	            EXAM_QST_TBL.WRONG_JUDE,
+	            EXAM_QST_TBL.NOTE,
+	            EXAM_QST_TBL.AUTHOR,
+	            EXAM_QST_TBL.LAST_EDIT_TIME, 
+	            eo.OPT_CONTENT
+        	FROM	exam_qst_tbl 
+			JOIN exam_qstmiddle_tbl eqm 
+			ON eqm.QST_ID = exam_qst_tbl.QST_ID 
+			AND eqm.ep_id = #value#
+			left JOIN exam_options_tbl eo ON eo.QST_ID=exam_qst_tbl.QST_ID and exam_qst_tbl.qst_type=6
+			ORDER BY eqm.QST_TYPE ASC,
+			  eqm.QST_ID ASC 
+        </select>
+                 
+        <!-- 通过条件查询用户的所有试题ID -->
+       <select id="getQstIdBycondForList" resultMap="qstIdResult" parameterClass="QueryExampaperCondition">
+        select exam_qst_tbl.QST_ID from exam_qst_tbl,exam_exampaper_tbl,exam_qstmiddle_tbl where exam_qst_tbl.qst_id=exam_qstmiddle_tbl.qst_id and exam_exampaper_tbl.ep_id=exam_qstmiddle_tbl.ep_id and subject_id=#subjectId# 
+        
+        <isNotNull property="type" prepend="and">
+          exam_qst_tbl.QST_TYPE in(#qstTypeSql#)
+        </isNotNull>
+        
+        <!-- <isNotNull property="difficult_set" prepend="and">
+           exam_exampaper_tbl.COEFFCIENT=#difficult_set#
+        </isNotNull>
+         --> 
+        limit 0,10000
+        
+       </select>
+       
+       <update id="updateQuesCount" parameterClass="int">
+       		    UPDATE exam_qst_tbl SET QUES_NUM=QUES_NUM+1 WHERE qst_id=#value#
+       </update>
+       
+        <update id="updateQstDoneNum" parameterClass="java.util.ArrayList">
+       		    UPDATE exam_qst_tbl SET DONE_NUM=DONE_NUM+1 
+       		    WHERE qst_id in(
+       		    <iterate conjunction=",">
+        	 #list[].qstId#
+        	</iterate>)
+       </update>
+       
+        <!--end-->
+</sqlMap>

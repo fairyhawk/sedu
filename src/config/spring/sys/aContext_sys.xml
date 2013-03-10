@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="functionService" class="com.shangde.edu.sys.service.FunctionImpl" parent="baseService"/>
+    <bean id="gradeService" class="com.shangde.edu.sys.service.GradeImpl" parent="baseService"/>
+    <bean id="groupService" class="com.shangde.edu.sys.service.GroupImpl" parent="baseService"/>
+    <bean id="roleFunctionService" class="com.shangde.edu.sys.service.RoleFunctionImpl" parent="baseService"/>
+    <bean id="roleService" class="com.shangde.edu.sys.service.RoleImpl" parent="baseService"/>
+    <bean id="simpleDicService" class="com.shangde.edu.sys.service.SimpleDicImpl" parent="baseService"/>
+    <bean id="subjectService" class="com.shangde.edu.sys.service.SubjectImpl" parent="baseService"/>
+    <bean id="userClassService" class="com.shangde.edu.sys.service.UserClassImpl" parent="baseService"/>
+    <bean id="userGradeSubjectRoleService" class="com.shangde.edu.sys.service.UserGradeSubjectRoleImpl" parent="baseService"/>
+    <bean id="userService" class="com.shangde.edu.sys.service.UserImpl" parent="baseServiceManyDb"/>
+    <bean id="visitHistoryService" class="com.shangde.edu.sys.service.VisitHistoryImpl" parent="baseService"/>
+    <bean id="signUpService" class="com.shangde.edu.sys.service.SignUpServiceImpl" parent="baseService"/>
+    <bean id="webFromAgentLogService" class="com.shangde.edu.sys.service.WebFromAgentLogImpl" parent="baseService"/>
+    <bean id="dicCodeService" class="com.shangde.edu.sys.service.DicCodeServiceImpl" parent="baseService" />
+</beans>

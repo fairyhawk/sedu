@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+ 	<!-- 数据源1 -->
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        
+        <property name="url" value="jdbc:mysql://124.248.33.50:3306/sdedu?useUnicode=true&amp;characterEncoding=UTF-8"/>
+
+        <property name="username" value="Sunland"/>
+        <property name="password" value="Sunland"/>
+
+ 			<!-- 最大连接数量 -->
+        <property name="maxActive" value="10"/>
+        <!-- 最小空闲连接 -->
+        <property name="minIdle" value="5"/>
+        <!-- 最大空闲连接 -->
+        <property name="maxIdle" value="20"/>
+        <property name="initialSize" value="5"/>
+        <!-- 设置在自动回收超时连接的时候打印连接的超时错误  -->
+        <property name="logAbandoned" value="true"/>
+        <!-- 设置自动回收超时连接 -->
+        <property name="removeAbandoned"  value="true"/>
+        <!-- 超时时间(以秒数为单位) -->
+        <property name="removeAbandonedTimeout" value="180"/>
+        <!-- 超时等待时间以毫秒为单位 6000毫秒/1000等于60秒 -->
+        <property name="maxWait" value="1000"/>
+         <property name="validationQuery" value="SELECT NOW() FROM DUAL"/>
+        </bean>
+    <!-- 数据源2read -->
+    <bean id="dataSourceRead"
+          class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/sdedu?useUnicode=true&amp;characterEncoding=UTF-8"/>
+
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+
+        <property name="maxActive" value="100"/>
+        <property name="initialSize" value="30"/>
+        <property name="validationQuery" value="SELECT NOW() FROM DUAL"/>
+    </bean>
+
+	<!-- 根据dataSource和SqlMapConfig.xml创建一个sqlMapClient --> 
+    <bean id="sqlMapClient"
+          class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation"
+                  value="classpath:/config/ibatis/SqlMapConfig.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 根据dataSourceRead和SqlMapConfig.xml创建一个sqlMapClientRead --> 
+    <bean id="sqlMapClientRead"
+          class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation"
+                  value="classpath:/config/ibatis/SqlMapConfig.xml"/>
+        <property name="dataSource" ref="dataSourceRead"/>
+    </bean>
+	<!-- 配置DAO，并注入所使用的sqlMapClient实例 --> 
+    <bean id="simpleDao" class="com.shangde.common.dao.IbatisSimpleDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+    </bean>
+    <!-- 配置DAO，并注入所使用的sqlMapClientRead实例 --> 
+    <bean id="simpleDaoRead" class="com.shangde.common.dao.IbatisSimpleDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClientRead"/>
+    </bean>
+
+    <!-- JOTM实例 -->
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"/>
+	<!-- JTA事务管理器 -->
+    <bean id="jtaTM" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="userTransaction" ref="jotm"/>
+    </bean>
+	
+    <!-- 通知配置 --> 
+    <tx:advice id="txAdvice" transaction-manager="jtaTM">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="transfer*" propagation="REQUIRED"/>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <!-- 事务切面配置 --> 
+        <!-- 定义切面，表达式最后一个*为方法，不能省略 -->
+        <aop:pointcut id="allManagerMethod" expression="execution(* *.logic.impl.*.*(..))"/>
+        <aop:pointcut id="serviceAll" expression="execution(* com.shagnde.edu..service.*Impl.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceAll"/>
+    </aop:config>
+</beans>

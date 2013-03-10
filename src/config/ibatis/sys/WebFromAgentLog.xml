@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WebFromAgentLog_NS">
+	<typeAlias alias="WebFromAgentLog" type="com.shangde.edu.sys.domain.WebFromAgentLog" />
+	
+	
+	<update id="saveWebFromAgentLog" parameterClass="WebFromAgentLog">
+		INSERT INTO WEBFROM_AGENT_LOG_TBL (WEB_FROM, WEB_AGENT, WEB_PATH, SUBJECT_ID, DOMAIN, CLICK_TIME,ccount) VALUES (#webFrom#, #webAgent#, #webPath#, #subjectId#, #domain#, NOW(),1)
+	</update>
+	
+	<select id="getWebFromAgentLog" parameterClass="WebFromAgentLog" resultClass="WebFromAgentLog">
+		select 	* from WEBFROM_AGENT_LOG_TBL where WEB_FROM=#webFrom# and SUBJECT_ID=#subjectId# 
+		<![CDATA[ and CLICK_TIME>=#startTime# and CLICK_TIME <=#endTime# ]]> order by id desc limit 1
+	</select>
+	
+	<update id="updateWebFromAgentLog" parameterClass="WebFromAgentLog" >
+		update WEBFROM_AGENT_LOG_TBL set ccount=ccount+1
+		where id=#id#
+	</update>
+	
+	
+</sqlMap>

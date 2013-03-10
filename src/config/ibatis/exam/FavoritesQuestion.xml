@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="FavoritesQuestion_NS">
+        <!--table:exam_favorites_qst_tbl-->
+        <typeAlias alias="FavoritesQuestion" type="com.shangde.edu.exam.domain.FavoritesQuestion"/>
+        <typeAlias alias="QueryFavoritesCondition" type="com.shangde.edu.exam.condition.QueryFavoritesCondition"/>
+
+        <resultMap id="FavoritesQuestionResult" class="FavoritesQuestion">
+            <result property="qstId" column="QST_ID"/>
+            <result property="qstContent" column="QST_CONTENT"/>
+            <result property="qstType" column="QST_TYPE"/>
+            <result property="coeffcient" column="e.coeffcient"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="epId" column="EP_ID"/>
+            <result property="doneNum" column="DONE_NUM"/>
+            <result property="subjectId" column="e.SUBJECT_ID"/>
+        </resultMap>
+
+        <sql id="EXAM_FAVORITES_QST_TBL_columns">
+            EXAM_FAVORITES_QST_TBL.ID,
+            EXAM_FAVORITES_QST_TBL.USER_ID,
+            EXAM_FAVORITES_QST_TBL.QUESTION_ID,
+            EXAM_FAVORITES_QST_TBL.FLAG,
+            EXAM_FAVORITES_QST_TBL.CREATE_DATE,
+            EXAM_FAVORITES_QST_TBL.DELETE_DATE,
+            EXAM_FAVORITES_QST_TBL.EP_ID
+        </sql>
+
+        <sql id="EXAM_FAVORITES_QST_TBL_properties">
+            #id#,
+            #userId#,
+            #questionId#,
+            #flag#,
+            #createDate#,
+            #deleteDate#,
+            #epId#
+        </sql>
+		<!-- 添加试题到收藏 -->
+        <insert id="createFavorites" parameterClass="FavoritesQuestion">
+            INSERT INTO EXAM_FAVORITES_QST_TBL (<include refid="FavoritesQuestion_NS.EXAM_FAVORITES_QST_TBL_columns"/>) VALUES (<include refid="FavoritesQuestion_NS.EXAM_FAVORITES_QST_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+        
+		<!-- 移除收藏试题 -->
+        <update id="deleteFavorites" parameterClass="QueryFavoritesCondition">
+            DELETE FROM exam_favorites_qst_tbl WHERE FLAG='1' AND QUESTION_ID=#questionID# and USER_ID=#userId# and EP_ID=#epId#
+        </update>
+        
+		<!-- 试题收藏数量+1 -->
+        <update id="addCollectNum" parameterClass="int">
+             UPDATE exam_qst_tbl SET collect_num = collect_num + 1 WHERE qst_id=#value#
+        </update>
+        
+		<!-- 试题收藏数量-1 -->
+        <update id="subCollectNum" parameterClass="int">
+             UPDATE exam_qst_tbl SET collect_num = collect_num - 1 WHERE qst_id=#value#
+        </update>
+        
+        <!-- 我的收藏试题列表 add by yanghaibo 2012-07-11 15:48 -->
+        <select id="getMyFavoritesList" resultMap="FavoritesQuestionResult" parameterClass="QueryFavoritesCondition">
+        	SELECT q.QST_ID,q.QST_CONTENT,q.QST_TYPE,e.coeffcient ,e.ep_name,e.join_num,qt.EP_ID,q.`DONE_NUM`,e.SUBJECT_ID
+			FROM exam_favorites_qst_tbl qt LEFT JOIN exam_qst_tbl q ON qt.`QUESTION_ID`=q.`QST_ID` JOIN exam_exampaper_tbl e ON qt.`EP_ID` = e.`EP_ID`
+
+			WHERE   qt.`USER_ID`=#userId#
+			    <isNotNull property="type">
+	            	<isNotEqual prepend="and" property="type" compareValue="0">
+	                		q.QST_TYPE=#type#
+	                </isNotEqual>
+	        	</isNotNull>
+			    <isNotNull property="coeffcient">
+	            	<isNotEqual prepend="and" property="coeffcient" compareValue="0">
+	                		e.coeffcient=#coeffcient#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	ORDER BY qt.CREATE_DATE DESC
+	            <include refid="public_sql.page_end"/>
+        </select>
+        
+         <!-- 我的收藏试题数量 add by yanghaibo 2012-07-11 15:48 -->
+        <select id="getMyFavoritesCount" resultClass="int" parameterClass="QueryFavoritesCondition">
+        	SELECT count(q.qst_id)
+			FROM exam_favorites_qst_tbl qt LEFT JOIN exam_qst_tbl q ON qt.`QUESTION_ID`=q.`QST_ID`  JOIN exam_exampaper_tbl e ON qt.`EP_ID` = e.`EP_ID`
+
+			WHERE   qt.`USER_ID`=#userId#
+			    <isNotNull property="type">
+	            	<isNotEqual prepend="and" property="type" compareValue="0">
+	                		q.QST_TYPE=#type#
+	                </isNotEqual>
+	        	</isNotNull>
+			    <isNotNull property="coeffcient">
+	            	<isNotEqual prepend="and" property="coeffcient" compareValue="0">
+	                		e.coeffcient=#coeffcient#
+	                </isNotEqual>
+	        	</isNotNull>
+        </select>
+        
+         
+        <!--end-->
+</sqlMap>

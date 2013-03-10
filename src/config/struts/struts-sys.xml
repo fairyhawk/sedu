@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="sys" namespace="/sys" extends="edu-default">
+        <action name="group" class="com.shangde.edu.sys.action.GroupAction">
+            <result name="toAddGroup">/back/jsp/sys/user/group_add.jsp</result>
+            <result name="GroupTreeList">/back/jsp/sys/user/group_list.jsp</result>
+            <result name="techIndex">/back/jsp/sys/user/groupTree_techIndex.jsp</result>
+            <result name="techLeftframe">/back/jsp/sys/user/groupTree_techLeftframe.jsp</result>
+            <result name="techRightframe">/back/jsp/sys/user/groupTree_techRightframe.html</result>
+            <result name="switchframe">/back/jsp/sys/user/switchframe.jsp</result>
+            <result name="toDeleteGroup">/back/jsp/sys/user/group_delete.jsp</result>
+            <result name="deleteGroup" type="redirect">group!toDeleteGroup.action</result>
+            <result name="getChildGroupById" type="json">
+				<param name="root">result</param>
+			</result>
+        </action>
+        <action name="user" class="com.shangde.edu.sys.action.SysUserAction">
+        	<result name="changePwd">/back/jsp/sys/user/changePwd.jsp</result>
+            <result name="userManager">/back/jsp/sys/user/userManager.jsp</result>
+        	<result name="listAllUser">/back/jsp/sys/user/user_list.jsp</result>
+        	<result name="relistAllUser" type="redirect">/sys/user!listAllUser.action?queryUserCondition.currentPage=1</result>
+            <result name="listUserByGroupId">/back/jsp/sys/user/user_list.jsp</result>
+            <result name="toAddUser">/back/jsp/sys/user/user_add.jsp</result>
+            <result name="toEditUser">/back/jsp/sys/user/user_edit.jsp</result>
+            <result name="listAllUserForStu" type="redirect">user!listAllUserForStu.action?QueryUserCondition.currentPage=1</result>
+            <result name="toEditUserGradeSubjectRoleSec">/back/jsp/sys/user/setRole.jsp</result>
+            <result name="toViewUserGradeSubjectRoleSec">/back/jsp/sys/user/viewRole.jsp</result>
+            <result name="userAdd">/back/jsp/sys/user/userAdd.jsp</result>
+            <result name="toUpdatePwd">/back/jsp/sys/user/user_update_pwd.jsp</result>
+            <result name="toSetUserContentRole">/back/jsp/sys/user/user_setContentRole.jsp</result>
+            <result name="reshow">/sys/user!toEditUserContentRole.action</result>
+        </action>
+        <action name="roleAdmin" class="com.shangde.edu.sys.action.RoleAdminAction">
+            <result name="roleList">/back/jsp/sys/roleAdmin/roleList.jsp</result>
+            <result name="toEditRole">/back/jsp/sys/roleAdmin/role_edit.jsp</result>
+            <result name="toAddRoleRef">/back/jsp/sys/roleAdmin/role_addRef.jsp</result>
+            <result name="toEditRoleRef" type="redirect">user!toEditUserGradeSubjectRoleSec.action?user.userId=${userId}</result>
+        </action>
+        <action name="backLogin" class="com.shangde.edu.sys.action.BackLoginAction">
+        	<result name="success" type="dispatcher">/back/jsp/sys/login/login.jsp</result>
+			<result name="login" type="redirect">backMain.action</result>
+			<result name="loginError" type="dispatcher">/back/jsp/sys/login/login.jsp</result>
+			<result name="loginOut" type="redirect">/back/jsp/sys/login/loginOut.jsp</result>
+            <interceptor-ref name="loginStack" />
+		</action>
+		<action name="backMain" class="com.shangde.edu.sys.action.BackMainAction">
+			<result name="success" type="dispatcher">/back/jsp/sys/login/index.jsp</result>
+			<result name="topframe" type="dispatcher">/back/jsp/sys/login/topframe.jsp</result>
+			<result name="leftframe" type="dispatcher">/back/jsp/sys/login/leftframe.jsp</result>
+			<result name="switchframe" type="dispatcher">/back/jsp/sys/login/switchframe.jsp</result>
+			<result name="rightframe" type="dispatcher">/back/jsp/sys/login/rightframe.html</result>
+		</action>
+		<action name="visit" class="com.shangde.edu.sys.action.VisitAction">
+			<result name="visitlist">/back/jsp/sys/visit/visit_list.jsp</result>
+			<result name="deletevisit" type="redirect">visit!getVisitList.action?queryVisitHistoryCondition.currentPage=1</result>
+		</action>
+		<action name="func" class="com.shangde.edu.sys.action.FunctionAction">
+			<result name="toAddFunction">/back/jsp/sys/function/function_add.jsp</result>
+			<result name="toUpdateFunction">/back/jsp/sys/function/function_update.jsp</result>
+			<result name="showFunctionList">/back/jsp/sys/function/function_list.jsp</result>
+			<result name="reshow" type="redirect">/sys/func!showFunctionList.action</result>
+			<result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="webFromAgent" class="com.shangde.edu.sys.action.WebFromAgentAction">
+			<result name="getAllList">/back/jsp/sys/webFromAgent/showWebFromAgent.jsp</result>
+			<result name="getWebFromAgentByTiaoJian">/back/jsp/sys/webFromAgent/showWebFromAgent.jsp</result>
+			<result name="addFromSuccess" type="redirect">/sys/webFromAgent!getAllListCountPage.action?queryWebFromAgentCondition.currentPage=1</result>
+			<result name="deleteSucces" type="redirect">/sys/webFromAgent!getAllListCountPage.action?queryWebFromAgentCondition.currentPage=1</result>
+			<result name="updateSuccess" type="redirect">/sys/webFromAgent!getAllListCountPage.action?queryWebFromAgentCondition.currentPage=1</result>
+			<result name="getWebFromAgentById">/back/jsp/sys/webFromAgent/updatWebFromAgent.jsp</result>
+			<result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="webFromAgentLog" class="com.shangde.edu.sys.action.WebFromAgentLogAction">
+			<result name="json" type="json">
+				<param name="root">result</param>
+			</result>
+			<interceptor-ref name="loginStack" />
+		</action>
+		<action name="signUp" class="com.shangde.edu.sys.action.SignUpAction">
+         	<result name="signUp_toAdd">/back/jsp/sys/signUp/signUp_add.jsp</result>
+         	<result name="signUp_add" type="json">
+         		<param name="root">result</param>
+         	</result>
+         	<interceptor-ref name="loginStack" />
+         </action>
+    </package>
+</struts>

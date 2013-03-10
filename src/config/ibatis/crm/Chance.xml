@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Chance_NS">
+        <!--table:CRM_CHANCE_TBL-->
+        <typeAlias alias="Chance" type="com.shangde.edu.crm.domain.Chance"/>
+        <typeAlias alias="QueryChanceCondition" type="com.shangde.edu.crm.condition.QueryChanceCondition"/>
+
+        <resultMap id="ChanceResult" class="Chance">
+            <result property="id" column="ID"/>
+            <result property="crmUserId" column="CRM_USER_ID"/>
+            <result property="origin" column="ORIGIN"/>
+            <result property="webName" column="WEB_NAME"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="followStatus" column="FOLLOW_STATUS"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="chanceStime" column="CHANCE_STIME"/>
+            <result property="chanceUtime" column="CHANCE_UTIME"/>
+            <result property="chanceNumber" column="CHANCE_NUMBER"/>
+            <result property="backCusId" column="BACK_USER_ID"/>
+        </resultMap>
+
+        <sql id="CRM_CHANCE_TBL_columns">
+            CRM_CHANCE_TBL.ID,
+            CRM_CHANCE_TBL.CRM_USER_ID,
+            CRM_CHANCE_TBL.ORIGIN,
+            CRM_CHANCE_TBL.WEB_NAME,
+            CRM_CHANCE_TBL.SUBJECT_ID,
+            CRM_CHANCE_TBL.FOLLOW_STATUS,
+            CRM_CHANCE_TBL.USER_ID,
+            CRM_CHANCE_TBL.CHANCE_STIME,
+            CRM_CHANCE_TBL.CHANCE_UTIME,
+            CRM_CHANCE_TBL.CHANCE_NUMBER,
+            CRM_CHANCE_TBL.BACK_USER_ID,
+            CRM_CHANCE_TBL.CREATE_TIME
+        </sql>
+
+        <sql id="CRM_CHANCE_TBL_properties">
+            #id#,
+            #crmUserId#,
+            #origin#,
+            #webName#,
+            #subjectId#,
+            #followStatus#,
+            #userId#,
+            #chanceStime#,
+            #chanceUtime#,
+            #chanceNumber#,
+            #backCusId#,
+            #createTime#
+        </sql>
+
+        <insert id="createChance" parameterClass="Chance">
+            INSERT INTO CRM_CHANCE_TBL (<include refid="Chance_NS.CRM_CHANCE_TBL_columns"/>) VALUES (<include refid="Chance_NS.CRM_CHANCE_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteChanceById" parameterClass="int">
+            DELETE FROM CRM_CHANCE_TBL
+            WHERE
+                ID = #value#
+        </delete>
+
+        <update id="updateChance" parameterClass="Chance">
+            UPDATE CRM_CHANCE_TBL SET
+                ID = #id#,
+                CRM_USER_ID = #crmUserId#,
+                ORIGIN = #origin#,
+                WEB_NAME = #webName#,
+                SUBJECT_ID = #subjectId#,
+                FOLLOW_STATUS = #followStatus#,
+                USER_ID = #userId#,
+<!--                 CHANCE_STIME = #chanceStime#, -->
+                CHANCE_UTIME = #chanceUtime#,
+                CHANCE_NUMBER = #chanceNumber#,
+                BACK_USER_ID= #backCusId#
+            WHERE
+                ID = #id#
+        </update>
+
+        <select id="getChanceById" resultMap="Chance_NS.ChanceResult" parameterClass="int">
+            SELECT
+            <include refid="Chance_NS.CRM_CHANCE_TBL_columns"/>
+            FROM CRM_CHANCE_TBL
+            WHERE
+                ID = #value#
+        </select>
+
+        <select id="getChanceList" resultMap="Chance_NS.ChanceResult" parameterClass="QueryChanceCondition">
+            SELECT
+            <include refid="Chance_NS.CRM_CHANCE_TBL_columns"/>
+            FROM CRM_CHANCE_TBL
+        </select>
+        <!-- 根据学员手机获取坐席id -->
+        <select id="getXSIdByChancePhone" parameterClass="String" resultClass="int">
+       select user_id from crm_chance_tbl where crm_user_id in (select id from crm_user_tbl where mobile=#value# )     group by user_id     order by count(user_id) desc limit 1
+        </select>
+        
+                 
+ <!-- 获取没有更新分配过的学员 用户库中 -->
+         <select id="getCrmUserNoAssign" resultMap="Chance_NS.ChanceResult" parameterClass="java.util.HashMap">
+         select   <include refid="Chance_NS.CRM_CHANCE_TBL_columns"/>  from CRM_CHANCE_TBL  where  user_id=0 and crm_user_id!=0  and back_user_id !=0
+           <isNotEmpty property="alltype">
+        <isNotEmpty property="begin">
+       <![CDATA[and CHANCE_STIME>= #begin# ]]>
+       </isNotEmpty>
+       <isEmpty property="value">
+       <![CDATA[and CHANCE_STIME>=TIMESTAMPADD(minute,-120,NOW())]]>
+       </isEmpty>
+         <isNotEmpty property="end">
+         <![CDATA[  and   CHANCE_STIME<= #end#  ]]>
+       </isNotEmpty>
+       <isEmpty property="end">
+        <![CDATA[  and   CHANCE_STIME<=TIMESTAMPADD(minute,10,NOW())  ]]>
+       </isEmpty>
+         </isNotEmpty>
+          <isEmpty property="alltype">
+           <![CDATA[and CHANCE_STIME>=TIMESTAMPADD(minute,-120,NOW()) and   CHANCE_STIME<=TIMESTAMPADD(minute,10,NOW())]]>
+          </isEmpty>
+         </select>
+         
+         <update id="updateChanceForSubjectId"  parameterClass="Chance">
+         update crm_chance_tbl set SUBJECT_ID=#subjectId# where CRM_USER_ID=#crmUserId#
+         </update>
+        <!--end-->
+        
+        
+        <update id="checkChance" parameterClass="queryChanceCondition">
+       		UPDATE crm_user_tbl,crm_chance_tbl 
+       		SET crm_chance_tbl.FOLLOW_STATUS=1 
+       		WHERE crm_chance_tbl.FOLLOW_STATUS!=1 
+       		AND crm_chance_tbl.CRM_USER_ID= crm_user_tbl.ID AND crm_user_tbl.IS_BUY=0
+				
+				<isNotNull  property="drawStatus">
+				<isEqual prepend="and" property="drawStatus" compareValue="0">
+					crm_chance_tbl.DRAW_STATUS=#drawStatus#
+					<isNotNull  property="endTime">
+					<isNotEqual prepend="and" property="endTime" compareValue="">
+						<![CDATA[  crm_chance_tbl.CHANCE_STIME <= #endTime# ]]>
+					</isNotEqual>
+					</isNotNull>
+				</isEqual>
+				
+				<isEqual prepend="and" property="drawStatus" compareValue="1">
+					crm_chance_tbl.DRAW_STATUS=#drawStatus#
+					<isNotNull  property="endTime">
+					<isNotEqual prepend="and" property="endTime" compareValue="">
+						<![CDATA[  crm_chance_tbl.CHANCE_UTIME <= #endTime# ]]>
+					</isNotEqual>
+					</isNotNull>
+				</isEqual>
+				</isNotNull>
+				
+	      </update>
+	      
+	      <update id="checkIsBuy" parameterClass="queryChanceCondition">
+       		UPDATE   crm_user_tbl,   
+			(
+			  SELECT COUNT(DISTINCT finance_contract_tbl.CONTRACT_ID) paycount,finance_contract_tbl.CUS_ID        
+			  FROM  finance_contract_tbl        
+			  WHERE ((finance_contract_tbl.status=1 AND        finance_contract_tbl.PAY_TYPE!=2 AND finance_contract_tbl.PAY_TYPE!=0 AND
+			          finance_contract_tbl.PAY_TYPE!=5) OR(finance_contract_tbl.PAY_TYPE=2 
+			          AND finance_contract_tbl.status!=3))       GROUP BY finance_contract_tbl.CUS_ID       
+			 ) ss
+		    SET crm_user_tbl.IS_BUY=1
+		    WHERE
+		     ss.paycount >0      AND  crm_user_tbl.CUS_ID=ss.CUS_ID 
+									
+      </update>
+        
+</sqlMap>

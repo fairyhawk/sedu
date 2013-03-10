@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="cardMainService" class="com.shangde.edu.card.service.CardMainServiceImpl" parent="baseService">
+    	<property name="cardCourseService" ref="cardCourseService"></property>
+    	<property name="contractService" ref="contractService"></property>
+    	<property name="sellWayService" ref="sellWayService"></property>
+    	<property name="cashRecordService" ref="cashRecordService"></property>
+    </bean>
+    <bean id="cardCourseService" class="com.shangde.edu.card.service.CardCourseServiceImpl" parent="baseService">
+    	<property name="customerService" ref="customerService"></property>
+    </bean>
+</beans>

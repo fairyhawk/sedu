@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="OptRecord_NS">
+        <!--table:EXAM_OPT_RECORD_TBL-->
+        <typeAlias alias="OptRecord" type="com.shangde.edu.exam.domain.OptRecord"/>
+        <typeAlias alias="QueryOptRecordCondition" type="com.shangde.edu.exam.condition.QueryOptRecordCondition"/>
+		 <typeAlias alias="UserQst" type="com.shangde.edu.exam.dto.UserQst"/>
+
+        <resultMap id="OptRecordResult" class="OptRecord">
+            <result property="qstId" column="QST_ID"/>
+            <result property="cusId" column="CUS_ID"/>
+            <result property="addtime" column="ADDTIME"/>
+            <result property="answerContent" column="ANSWER_CONTENT"/>
+            <result property="userAnswer" column="USER_ANSWER"/>
+           	<result property="userEpId" column="USER_EP_ID"/>
+            <result property="epName" column="EP_NAME"></result>
+            <result property="qstContext" column="QST_CONTENT"></result>
+            <result property="worngJude" column="WRONG_JUDE"/>
+            <result property="nodeName" column="NODE_NAME"></result>
+            <result property="isAsr" column="IS_ASR"/>
+            <result property="epnodeName" column="EPNODE_NAME"/>
+            <result property="collectNum" column="COLLECT_NUM"></result>
+            <result property="quesNum" column="QUES_NUM"/>
+            <result property="doneNum" column="DONE_NUM"/>
+            <result property="rightPercent" column="RIGHT_PERCENT"></result>
+            <result property="epType" column="EP_TYPE"></result>
+
+            <result property="subjectId" column="SUBJECT_ID"/>
+           
+
+        </resultMap>
+        
+        <resultMap class="OptRecord" id="ErrorQstResult" extends="OptRecordResult">
+        	<result property="optContent" column="opt_content"></result>
+        	<result property="subjectId" column="SUBJECT_ID"/>
+        	<result property="qstType" column="qst_type"/>
+        	<result property="coeffcient" column="COEFFCIENT"/>
+        </resultMap>
+
+        <sql id="EXAM_OPT_RECORD_TBL_columns">
+            EXAM_OPT_RECORD_TBL.QST_ID,
+            EXAM_OPT_RECORD_TBL.ASR_ID,
+            EXAM_OPT_RECORD_TBL.CUS_ID,
+            EXAM_OPT_RECORD_TBL.ADDTIME,
+            EXAM_OPT_RECORD_TBL.USER_ANSWER,
+            EXAM_OPT_RECORD_TBL.ANSWER_CONTENT,
+            EXAM_OPT_RECORD_TBL.USER_EP_ID,
+            EXAM_OPT_RECORD_TBL.QST_TYPE,
+            
+        </sql>
+
+        <sql id="EXAM_OPT_RECORD_TBL_properties">
+            #qstId#,
+            #asrId#,
+            #cusId#,
+            #addtime#,
+            #answerContent#,
+            #userAnswer#,
+            #userEpId#,
+            #qstType#
+           </sql>
+                 
+        <resultMap id="USER_OptRecordResult" class="UserQst">
+            <result property="qstId" column="EXAM_OPT_RECORD_TBL.QST_ID"/>
+            <result property="cusId" column="EXAM_OPT_RECORD_TBL.CUS_ID"/>
+            <result property="userAsr" column="EXAM_OPT_RECORD_TBL.USER_ANSWER"/>
+            <result property="isAsr" column="EXAM_QST_TBL.IS_ASR"/>
+            <result property="qstType" column="EXAM_QST_TBL.QST_TYPE"/>
+             <result property="optqstType" column="EXAM_OPT_RECORD_TBL.QST_TYPE"/>
+            <result property="score" column="EXAM_QST_TBL.SCORE"/>
+            <result property="level" column="EXAM_QST_TBL.LEVEL"/>
+            <result property="wrongJude" column="EXAM_QST_TBL.WRONG_JUDE"/>
+            <result property="qstContent" column="EXAM_QST_TBL.QST_CONTENT"/>
+            
+        </resultMap>
+        
+        <resultMap class="UserQst" id="USERQstOptRecordResult" extends="USER_OptRecordResult">
+      		<result property="optOrder" column="OPT_ORDER"/>
+            <result property="optContent" column="OPT_CONTENT"/>
+        </resultMap>
+        
+        <sql id="USER_EXAM_OPT_RECORD_TBL_columns">
+            EXAM_OPT_RECORD_TBL.QST_ID,
+            EXAM_OPT_RECORD_TBL.CUS_ID,
+            EXAM_OPT_RECORD_TBL.USER_ANSWER,
+            EXAM_OPT_RECORD_TBL.ISRIGHT
+            EXAM_QST_TBL.IS_ASR,
+            EXAM_QST_TBL.QST_TYPE,
+            EXAM_OPT_RECORD_TBL.QST_TYPE,
+            EXAM_QST_TBL.SCORE,
+            EXAM_QST_TBL.LEVEL,
+            EXAM_QST_TBL.WRONG_JUDE,
+            EXAM_QST_TBL.QST_CONTENT,
+            
+        </sql>
+        
+     
+
+        <insert id="createOptRecord" parameterClass="OptRecord">
+            INSERT INTO EXAM_OPT_RECORD_TBL (<include refid="OptRecord_NS.EXAM_OPT_RECORD_TBL_columns"/>)
+             VALUES (<include refid="OptRecord_NS.EXAM_OPT_RECORD_TBL_properties"/>)
+            
+        </insert>
+
+        <delete id="deleteOptRecordById" parameterClass="java.util.Map">
+            DELETE FROM EXAM_OPT_RECORD_TBL WHERE QST_ID = #qstId# AND ASR_ID = #asrId# AND CUS_ID = #cusId#
+        </delete>
+        
+         <delete id="deleteOptRecordByCusId" parameterClass="int">
+            DELETE FROM EXAM_OPT_RECORD_TBL WHERE CUS_ID = #value#
+        </delete>
+
+
+        <select id="getOptRecordById" resultMap="OptRecord_NS.OptRecordResult" parameterClass="java.util.Map">
+            SELECT
+            <include refid="OptRecord_NS.EXAM_OPT_RECORD_TBL_columns"/>
+            FROM EXAM_OPT_RECORD_TBL WHERE QST_ID = #qstId# AND ASR_ID = #asrId# AND CUS_ID = #cusId#
+        </select>
+
+        <select id="getOptRecordList" resultMap="OptRecord_NS.OptRecordResult" parameterClass="QueryOptRecordCondition">
+            SELECT
+            <include refid="OptRecord_NS.EXAM_OPT_RECORD_TBL_columns"/>
+            FROM EXAM_OPT_RECORD_TBL
+        </select>
+        
+        <select id="getUserOptRecordList" resultMap="OptRecord_NS.USER_OptRecordResult" parameterClass="int">
+           select 
+			<include refid="OptRecord_NS.USER_EXAM_OPT_RECORD_TBL_columns"/> 
+           from exam_qst_tbl, exam_opt_record_tbl 
+           where exam_qst_tbl.QST_ID = exam_opt_record_tbl.QST_ID 
+           		 AND exam_opt_record_tbl.USER_EP_ID = #userEpId# order by exam_opt_record_tbl.QST_TYPE ASC;
+        </select>
+        
+        <select id="getUserQstOptionList" resultMap="OptRecord_NS.USERQstOptRecordResult" parameterClass="int">
+        	SELECT 
+        	EXAM_OPT_RECORD_TBL.QST_ID,
+            EXAM_OPT_RECORD_TBL.CUS_ID,
+            EXAM_OPT_RECORD_TBL.USER_ANSWER,
+            EXAM_QST_TBL.IS_ASR,
+            EXAM_QST_TBL.QST_TYPE,
+            EXAM_OPT_RECORD_TBL.QST_TYPE,
+            EXAM_QST_TBL.SCORE,
+            EXAM_QST_TBL.LEVEL,
+            EXAM_QST_TBL.WRONG_JUDE,
+            EXAM_QST_TBL.QST_CONTENT,
+		    exam_options_tbl.OPT_ORDER,
+		    exam_options_tbl.OPT_CONTENT
+            FROM exam_qst_tbl, exam_opt_record_tbl,exam_options_tbl  
+           WHERE exam_qst_tbl.QST_ID = exam_opt_record_tbl.QST_ID AND exam_options_tbl.qst_id=exam_qst_tbl.qst_id
+           AND exam_opt_record_tbl.USER_EP_ID =#value# ORDER BY exam_opt_record_tbl.QST_TYPE ASC,exam_opt_record_tbl.QST_ID ASC;
+        </select>
+        <insert id="addManyOptRecord" parameterClass="java.util.ArrayList">
+        	INSERT INTO exam_opt_record_tbl (QST_ID,ADDTIME,USER_ANSWER,CUS_ID,USER_EP_ID,QST_TYPE,ISRIGHT) VALUES 
+        	<iterate conjunction=",">
+        	 (#list[].qstId#,#list[].addtime#,#list[].userAnswer#,#list[].cusId#,#list[].userEpId#,#list[].qstType#,#list[].isRight#)
+        	</iterate>
+        </insert>
+        
+        <select id="getErrorQstList" resultMap="ErrorQstResult" parameterClass="QueryOptRecordCondition">
+             <include refid="public_sql.page_begin"/>     
+        SELECT 
+            eor.ID,
+            eor.QST_ID,
+            eor.CUS_ID,
+            eor.ANSWER_CONTENT,
+            eor.ADDTIME,
+            eor.USER_ANSWER,
+            eor.USER_EP_ID,
+            eq.WRONG_JUDE,
+            eq.RIGHT_PERCENT,
+            eq.IS_ASR,
+            e.EP_NAME,
+            e.EP_TYPE,
+            e.SUBJECT_ID,
+            sn.NODE_NAME as EPNODE_NAME,
+			eq.QST_CONTENT,
+			eq.COLLECT_NUM,
+			eq.QUES_NUM,
+			eq.DONE_NUM,
+			ksn.NODE_NAME,
+			op.OPT_CONTENT,
+			eq.qst_type,
+			e.COEFFCIENT
+			
+			
+		FROM
+ 		 exam_exampaper_tbl e 
+  		JOIN exam_exampaper_record_tbl er 	 ON er.EP_ID = e.EP_ID AND er.CUS_ID=#cusId#
+		LEFT JOIN kno_sys_node_tbl sn 		 ON sn.KSN_ID = e.C_ID 
+      JOIN exam_opt_record_tbl eor 			ON eor.USER_EP_ID=er.USER_EP_ID
+      JOIN exam_qst_tbl eq 					ON eq.QST_ID=eor.QST_ID
+	  LEFT JOIN kno_qst_rel_tbl kq 			ON kq.QST_ID=eq.QST_ID
+      LEFT JOIN kno_sys_node_tbl ksn    	ON ksn.KSN_ID = kq.KSN_ID
+      LEFT JOIN exam_options_tbl op ON op.QST_ID=eq.QST_ID AND eq.QST_TYPE=6
+      where eor.isright=0
+        
+		   <isNotNull property="qstType" prepend="and">
+		    <isNotEqual property="qstType" compareValue="0">
+		        eq.QST_TYPE=#qstType#
+		    </isNotEqual>
+		   </isNotNull>
+		    <isNotNull property="level" prepend="and">
+		    <isNotEqual property="level" compareValue="0">
+		     e.COEFFCIENT=#level#
+		    </isNotEqual>
+		   </isNotNull>
+		    <isNotNull property="doTime" >
+		   
+		   <isEqual property="doTime" compareValue="1" prepend="and">
+		        <![CDATA[  eor.ADDTIME >= DATE(ADDDATE(NOW(),INTERVAL -DATE_FORMAT(NOW(),'%w') DAY)) ]]>  
+			    </isEqual>
+			    <isEqual property="doTime" compareValue="2" prepend="and">
+		        <![CDATA[  eor.ADDTIME >= DATE_FORMAT(NOW(),'%Y-%m') ]]>  
+			    </isEqual>
+			    <isEqual property="doTime" compareValue="3" prepend="and">
+		              <![CDATA[  eor.ADDTIME >= DATE_FORMAT(ADDDATE(NOW(),INTERVAL -2 MONTH),'%Y-%m') ]]>  
+			    </isEqual>
+			    
+		   
+		    <isEqual property="doTime" compareValue="4" prepend="and">
+		  
+		     <![CDATA[ eor.ADDTIME <= #addTime# ]]>  
+		    </isEqual>
+		   </isNotNull>
+		   order by eor.id DESC
+		     <include refid="public_sql.page_end"/>
+        </select>
+         <select id="getErrorQstCount" resultClass="int" parameterClass="QueryOptRecordCondition">
+           SELECT COUNT(1) 
+           FROM exam_exampaper_tbl e 
+           JOIN exam_exampaper_record_tbl er ON er.EP_ID = e.EP_ID AND er.CUS_ID=#cusId# 
+           JOIN exam_opt_record_tbl eor ON eor.USER_EP_ID=er.USER_EP_ID 
+           JOIN exam_qst_tbl eq ON eq.QST_ID=eor.QST_ID AND eq.QST_TYPE=6
+		   where  eor.isright=0
+		    
+		   <isNotNull property="qstType" prepend="and">
+		    <isNotEqual property="qstType" compareValue="0">
+		    eq.QST_TYPE=#qstType#
+		    </isNotEqual>
+		   </isNotNull>
+		    <isNotNull property="level" prepend="and">
+		    <isNotEqual property="level" compareValue="0">
+		    e.COEFFCIENT=#level#
+		    </isNotEqual>
+		   </isNotNull>
+		    <isNotNull property="doTime" >
+		   
+		   <isEqual property="doTime" compareValue="1" prepend="and">
+		        <![CDATA[  eor.ADDTIME >= DATE(ADDDATE(NOW(),INTERVAL -DATE_FORMAT(NOW(),'%w') DAY)) ]]>  
+			    </isEqual>
+			    <isEqual property="doTime" compareValue="2" prepend="and">
+		        <![CDATA[  eor.ADDTIME >= DATE_FORMAT(NOW(),'%Y-%m') ]]>  
+			    </isEqual>
+			    <isEqual property="doTime" compareValue="3" prepend="and">
+		              <![CDATA[  eor.ADDTIME >= DATE_FORMAT(ADDDATE(NOW(),INTERVAL -2 MONTH),'%Y-%m') ]]>  
+			    </isEqual>
+		   
+		    <isEqual property="doTime" compareValue="4" prepend="and">
+		  
+		     <![CDATA[ eor.ADDTIME <= #addTime# ]]>  
+		    </isEqual>
+		   </isNotNull>
+		   
+        </select>
+        
+        
+        
+         <select id="getErrorQstTop3" resultMap="OptRecordResult" parameterClass="QueryOptRecordCondition">
+             <include refid="public_sql.page_begin"/>     
+        SELECT 
+            eor.ID,
+            eor.QST_ID,
+            eor.CUS_ID,
+            eor.ANSWER_CONTENT,
+            eor.ADDTIME,
+            eor.USER_ANSWER,
+            eor.USER_EP_ID,
+            eq.WRONG_JUDE,
+            eq.IS_ASR,
+            eq.RIGHT_PERCENT,
+            e.EP_NAME,
+            e.EP_TYPE,
+            sn.NODE_NAME as EPNODE_NAME,
+			eq.QST_CONTENT,
+			eq.COLLECT_NUM,
+			eq.QUES_NUM,
+			eq.DONE_NUM,
+			ksn.NODE_NAME
+			
+		FROM
+ 		 exam_exampaper_tbl e 
+  		JOIN exam_exampaper_record_tbl er 	 ON er.EP_ID = e.EP_ID AND er.CUS_ID=#cusId#
+		LEFT JOIN kno_sys_node_tbl sn 		 ON sn.KSN_ID = e.C_ID 
+      JOIN exam_opt_record_tbl eor 			ON eor.USER_EP_ID=er.USER_EP_ID
+      JOIN exam_qst_tbl eq 					ON eq.QST_ID=eor.QST_ID
+	  LEFT JOIN kno_qst_rel_tbl kq 			ON kq.QST_ID=eq.QST_ID
+      LEFT JOIN kno_sys_node_tbl ksn    	ON ksn.KSN_ID = kq.KSN_ID
+      where eor.isright=0 AND eq.QST_TYPE!=6 AND eq.QST_TYPE!=4 order by eor.ADDTIME DESC limit 0,3
+        
+		  
+        </select>
+        <select id="getErrorQstCountBycusId" resultClass="int" parameterClass="int" >
+        select count(1) from exam_opt_record_tbl eor where eor.CUS_ID=#value# and eor.isright=0
+        </select>
+              
+       
+        <!--end-->
+</sqlMap>

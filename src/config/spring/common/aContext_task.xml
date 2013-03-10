@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+	
+	<!-- 根据IP获取地址 -->
+	<bean id="IP2addressQuartz" class="com.shangde.common.task.IP2AddressQuartzTask">
+    </bean>
+
+    <bean id="IP2addressEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="IP2addressQuartz"/>
+        <property name="targetMethod" value="getAddressByIP"/>
+    </bean>
+    
+	<bean id="IP2addressTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="IP2addressEtl"/>
+        <property name="cronExpression" value="00 00 2 * * ?"/>
+    </bean>
+    
+	<!-- 根据IP获取地址 end-->
+	<!-- 通知网站管理人员 -->
+	<bean id="dayInfoQuartz" class="com.shangde.common.task.DayDataQuartzTask"/>
+    <bean id="dayInfoEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="dayInfoQuartz"/>
+        <property name="targetMethod" value="infoToManager"/>
+    </bean>
+    
+    <bean id="dayInfoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="dayInfoEtl"/>
+        <property name="cronExpression" value="20 37 17 * * ?"/>
+    </bean>
+    
+	
+	<!-- 通知网站管理人员 end -->
+	<!-- 短信提醒未付款学员 start -->
+	<bean id="messageRemindQuartz" class="com.shangde.common.task.MessageRemindQuartzTask">
+    </bean>
+	
+    <bean id="messageRemindEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="messageRemindQuartz"/>
+        <property name="targetMethod" value="messageRemind"/>
+    </bean>
+    
+	<bean id="messageRemindTime" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="messageRemindEtl"/>
+        <property name="repeatInterval" value="1800000"/>
+    </bean>
+	<!-- 短信提醒未付款学员 end //-->
+	
+	<!-- 每七天查询一次 start -->
+	<bean id="everyWeakTimes" class="com.shangde.common.task.EveryWeakTimesTask">
+    </bean>
+	
+    <bean id="everyWeakTimesEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="everyWeakTimes"/>
+        <property name="targetMethod" value="checkCustomerWeeks"/>
+    </bean>
+    
+	<bean id="everyWeakTime" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="everyWeakTimesEtl"/>        
+        <!-- 延迟激活定时器 单位mm start  
+	       	<property name="startDelay"> 
+	      		<value>100000</value> 
+	    	</property>    
+    	 -->  
+        <!-- 延迟激活定时器 end -->        
+       <!-- 按时间间隔执行 
+        	<property name="repeatInterval" value="604800000"/>
+        -->        
+       <!-- 按固定时间执行 
+        	<property name="cronExpression" value="00 00 2 * * ?"/>
+        -->               
+    </bean>
+	<!-- 每七天查询一次 end -->
+	<!-- 每天执行一次 start-->
+	<bean id="everyDayTimes" class="com.shangde.common.task.EveryDayTimesTask">
+    </bean>
+	<!-- 每天三点检查后台用户 start	 -->
+	<bean id="everyDaycheckHTCustomer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="everyDayTimes" />
+		<property name="targetMethod" value="checkHTCustomerEveryDay" />
+	</bean>
+	<bean id="everyDaycheckHTCustomerTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="everyDaycheckHTCustomer" />		
+	  	
+	 	<property name="cronExpression" value="00 00 3 * * ?" />  
+	  <!--	 	
+	 	<property name="startDelay"> 
+	      		<value>30000</value> 
+	    </property>    
+	 	 <property name="repeatInterval" value="86400000"/>	-->
+	</bean>
+	 <!-- 每天检查后台用户 end -->
+	 
+    <bean id="everyDayTimesEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="everyDayTimes"/>
+        <property name="targetMethod" value="checkCustomerWeeks"/>
+    </bean>    
+	<bean id="everyDayTime" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="everyDayTimesEtl"/>      
+        <property name="repeatInterval" value="86400000"/>
+    </bean>
+	
+	<!-- 每天执行一次end -->
+	
+	
+	<!-- 每小时执行一次 start -->
+    <bean id="everyHourTimesEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="everyWeakTimes"/>
+        <property name="targetMethod" value="initTempCus"/>
+    </bean>
+    
+	<bean id="everyHourTime" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="everyHourTimesEtl"/>        
+        <!-- 延迟激活定时器 单位mm start  -->
+	       	<property name="startDelay"> 
+	      		<value>3600000</value> 
+	    	</property>    	   
+        <!-- 延迟激活定时器 end -->       
+         
+       <!-- 按时间间隔执行 -->
+        	<property name="repeatInterval" value="3600000"/>
+                
+   
+    </bean>
+    
+    <!-- 谢添加  -->
+	<bean id="GQCouponQuartz" class="com.shangde.edu.finance.action.CouponAction">
+    </bean>
+
+    <bean id="GQCouponEtl" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="GQCouponQuartz"/>
+        <property name="targetMethod" value="couponGQ"/>
+    </bean>
+    
+	<bean id="GQCouponTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="GQCouponEtl"/>
+        <property name="cronExpression" value="00 00 1 * * ?"/><!-- 谢添加 -->
+    </bean>
+    <!-- 谢添加结束 -->
+	<!-- 每小时执行一次 end //-->	
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no"> 
+		<property name="triggers"> 
+		<list> 
+		<ref bean="dayInfoTime"/>
+		<ref bean="GQCouponTime"/>
+		<!-- 学习计划发送邮件and短信 -->
+	<!-- 	<ref  bean="dayPlanclockNoteMail"/> -->
+			<!-- 每天更新 最近学习和购买的信息 生成文件-->
+	<!-- 勿动  
+			<ref bean="learnBuyInfoDay"/>
+			<ref bean="everyDaycheckHTCustomerTime"/>			  
+			<ref bean="IP2addressTime"/>
+			<ref bean="messageRemindTime"/>					
+			
+			
+			<ref bean="everyHourTime"/>
+			<ref bean="everyWeakTime"/>
+			<ref bean="everyDayTime"/>	 			
+	-->
+		
+		</list> 
+		</property> 
+	</bean>
+	<!-- 每天更新 最近学习和购买的信息 -->
+	<bean id="learnBuyInfoDayQuartz"
+		class="com.shangde.common.task.LastLearnBuyInfo">
+	</bean>
+	<bean id="learnBuyInfoDayEtl"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="learnBuyInfoDayQuartz" />
+		<property name="targetMethod" value="getLastLearnBuyInfo" />
+	</bean> 
+	<!-- 每天更新 最近学习和购买的信息 -->
+	<bean id="learnBuyInfoDay"
+		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="learnBuyInfoDayEtl" />
+		<!-- 第一次延迟时间半小时   -->
+		<property name="startDelay">
+			<value>1000</value>
+		</property>  
+		<!-- 按时间间隔执行 -->
+		<property name="repeatInterval" value="86400000" />
+	</bean>	
+	
+	
+	
+</beans>

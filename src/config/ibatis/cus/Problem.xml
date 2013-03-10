@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Problem_NS">
+        <!--table:CUS_PROBLEM_TBL-->
+        <typeAlias alias="Problem" type="com.shangde.edu.cus.domain.Problem"/>
+        <typeAlias alias="QueryProblemCondition" type="com.shangde.edu.cus.condition.QueryProblemCondition"/>
+        
+        <resultMap id="ProblemCountByType" class="Problem">
+            <result property="pblType" column="PBL_TYPE"/>
+            <result property="pblCountByType" column="proCount"/>
+        </resultMap>
+<!-- modify by shixf20120627 start-->
+        <resultMap id="ProblemResult" class="Problem">
+            <result property="pblId" column="PBL_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="cusId" column="CUS_ID"/>
+            <result property="pblTitle" column="PBL_TITLE"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="pblType" column="PBL_TYPE"/>
+            <result property="pblTotols" column="PBL_TOTOLS"/>
+            <result property="pblSolv" column="PBL_SOLV"/>
+            <result property="pblStatus" column="PBL_STATUS"/>
+            <result property="pblContent" column="PBL_CONTENT"/>
+            <result property="pblHot" column="PBL_HOT"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="reProblemList" column="PBL_ID" select="ReProblem_NS.getReProblem"/>
+            <result property="customer" column="CUS_ID" select="Customer_NS.getCustomerById"/>
+        </resultMap>
+<!-- modify by shixf20120627 end-->
+        <resultMap id="ProblemResultWithOfficialReplyCount" class="Problem">
+            <result property="pblId" column="PBL_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="cusId" column="CUS_ID"/>
+            <result property="pblTitle" column="PBL_TITLE"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="pblType" column="PBL_TYPE"/>
+            <result property="pblTotols" column="PBL_TOTOLS"/>
+            <result property="pblSolv" column="PBL_SOLV"/>
+            <result property="pblContent" column="PBL_CONTENT"/>
+            <result property="pblHot" column="PBL_HOT"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="reProblemList" column="PBL_ID" select="ReProblem_NS.getReProblem"/>
+            <result property="customer" column="CUS_ID" select="Customer_NS.getCustomerById"/>
+            <result property="officialReplyCount" column="OFFICIAL_REPLY_COUNT" />
+            <result property="newHidePblCount" column="newHidePblCount" />
+        </resultMap>
+
+<!-- modify by shixf20120627 start-->
+        <sql id="CUS_PROBLEM_TBL_columns">
+            CUS_PROBLEM_TBL.PBL_ID,
+            CUS_PROBLEM_TBL.COURSE_ID,
+            CUS_PROBLEM_TBL.CUS_ID,
+            CUS_PROBLEM_TBL.PBL_TITLE,
+            CUS_PROBLEM_TBL.CREATE_TIME,
+            CUS_PROBLEM_TBL.PBL_TYPE,
+            CUS_PROBLEM_TBL.PBL_TOTOLS,
+            CUS_PROBLEM_TBL.PBL_SOLV,
+            CUS_PROBLEM_TBL.PBL_STATUS,
+            CUS_PROBLEM_TBL.PBL_CONTENT,
+            CUS_PROBLEM_TBL.PBL_HOT,
+            CUS_PROBLEM_TBL.SUBJECT_ID
+        </sql>
+        <sql id="CUS_PROBLEM_TBL_properties">
+            #pblId#,
+            #courseId#,
+            #cusId#,
+            #pblTitle#,
+            #createTime#,
+            #pblType#,
+            #pblTotols#,
+            #pblSolv#,
+            #pblStatus#,
+            #pblContent#,
+            #pblHot#,
+            #subjectId#
+        </sql>
+<!-- modify by shixf20120627 end-->
+        <insert id="createProblem" parameterClass="Problem">
+            INSERT INTO CUS_PROBLEM_TBL (<include refid="Problem_NS.CUS_PROBLEM_TBL_columns"/>) VALUES (<include refid="Problem_NS.CUS_PROBLEM_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="pblId" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteProblemById" parameterClass="int">
+            DELETE FROM CUS_PROBLEM_TBL
+            WHERE
+                PBL_ID = #value#
+        </delete>
+
+        <update id="updateProblem" parameterClass="Problem">
+            UPDATE CUS_PROBLEM_TBL SET
+                PBL_ID = #pblId#,
+                COURSE_ID = #courseId#,
+                CUS_ID = #cusId#,
+                PBL_TITLE = #pblTitle#,
+                CREATE_TIME = #createTime#,
+                PBL_TYPE=#pblType#,
+                PBL_TOTOLS=#pblTotols#,
+                PBL_SOLV=#pblSolv#,
+                PBL_CONTENT=#pblContent#,
+                PBL_HOT=#pblHot#,
+                SUBJECT_ID=#subjectId#
+            WHERE
+                PBL_ID = #pblId#
+        </update>
+
+        <select id="getProblemById" resultMap="Problem_NS.ProblemResult" parameterClass="int">
+            SELECT
+            <include refid="Problem_NS.CUS_PROBLEM_TBL_columns"/>
+            FROM CUS_PROBLEM_TBL
+            WHERE
+                PBL_ID = #value#
+        </select>
+
+        <select id="getProblemList" resultMap="Problem_NS.ProblemResult" parameterClass="QueryProblemCondition">
+            SELECT
+            <include refid="Problem_NS.CUS_PROBLEM_TBL_columns"/>
+            FROM CUS_PROBLEM_TBL
+            <dynamic prepend="WHERE"> 
+             <isNotNull property="courseId">
+            	<isNotEqual property="courseId" compareValue="0" prepend="and">
+		               COURSE_ID=#courseId#
+			    </isNotEqual>
+			  </isNotNull>
+			   <isNotNull property="cusId">
+            	<isNotEqual property="cusId" compareValue="0" prepend="and">
+		               CUS_ID=#cusId#
+			    </isNotEqual>
+			  </isNotNull>
+		  </dynamic>
+        </select>
+           <select id="getProblemByList" resultMap="Problem_NS.ProblemResult" parameterClass="QueryProblemCondition">
+             <include refid="public_sql.page_begin"/>
+            SELECT
+            <include refid="Problem_NS.CUS_PROBLEM_TBL_columns"/>
+            FROM CUS_PROBLEM_TBL
+             <dynamic prepend="WHERE">
+             <isNotEqual property="pblType" compareValue="0" prepend="and">
+                 PBL_TYPE=#pblType# 
+	        </isNotEqual> 
+             <isNotNull property="courseId">
+            	<isNotEqual property="courseId" compareValue="0" prepend="and">
+		               COURSE_ID=#courseId#
+			    </isNotEqual>
+			  </isNotNull>
+			   <isNotNull property="cusId">
+            	<isNotEqual property="cusId" compareValue="0" prepend="and">
+		               CUS_ID=#cusId#
+			    </isNotEqual>
+			  </isNotNull>
+			   <isNotNull property="pblTitle">
+            	<isNotEqual property="pblTitle" compareValue="0" prepend="and">
+		               PBL_TITLE like '%$pblTitle$%'
+			    </isNotEqual>
+			  </isNotNull>
+			    <isNotNull property="pblHot">
+            	<isNotEqual property="pblHot" compareValue="2" prepend="and">
+		               PBL_HOT = #pblHot#
+			    </isNotEqual>
+			  </isNotNull>
+			  <isNotEqual property="pblSolv" compareValue="0" prepend="and">
+		               PBL_SOLV=#pblSolv#
+		      </isNotEqual>
+		      <isNotEqual property="subjectId" compareValue="0" prepend="and">
+		               SUBJECT_ID=#subjectId#
+		      </isNotEqual>
+		  </dynamic>
+		    ORDER BY PBL_ID DESC
+         	 <include refid="public_sql.page_end"/>
+        </select>
+         <select id="getProblemCountByList" resultClass="int" parameterClass="QueryProblemCondition">
+            SELECT COUNT(1) FROM CUS_PROBLEM_TBL
+             <dynamic prepend="WHERE">
+             <isNotEqual property="pblType" compareValue="0" prepend="and">
+                 PBL_TYPE=#pblType# 
+	        </isNotEqual> 
+             <isNotNull property="courseId">
+            	<isNotEqual property="courseId" compareValue="0" prepend="and">
+		               COURSE_ID=#courseId#
+			    </isNotEqual>
+			  </isNotNull>
+			   <isNotNull property="cusId">
+            	<isNotEqual property="cusId" compareValue="0" prepend="and">
+		               CUS_ID=#cusId#
+			    </isNotEqual>
+			  </isNotNull>
+			   <isNotNull property="pblHot">
+            	<isNotEqual property="pblHot" compareValue="2" prepend="and">
+		               PBL_HOT = #pblHot#
+			    </isNotEqual>
+			  </isNotNull>
+			   <isNotNull property="pblTitle">
+            	<isNotEqual property="pblTitle" compareValue="0" prepend="and">
+		               PBL_TITLE like '%$pblTitle$%'
+			    </isNotEqual>
+			  </isNotNull>
+		      <isNotEqual property="pblSolv" compareValue="0" prepend="and">
+		               PBL_SOLV=#pblSolv#
+		      </isNotEqual>
+		      <isNotEqual property="subjectId" compareValue="0" prepend="and">
+		               SUBJECT_ID=#subjectId#
+		      </isNotEqual>
+		  </dynamic>
+        </select>
+        <!-- modify by shixf 20120627 start -->
+        <select id="getProblemByIdList" resultMap="Problem_NS.ProblemResultWithOfficialReplyCount" parameterClass="QueryProblemCondition">
+             <include refid="public_sql.page_begin"/>
+            SELECT
+            <include refid="Problem_NS.CUS_PROBLEM_TBL_columns"/>,
+            (SELECT 
+        		COUNT(CUS_RE_PROBLEM_TBL.RE_ID)
+    		FROM
+        		CUS_RE_PROBLEM_TBL 
+    		WHERE CUS_RE_PROBLEM_TBL.PBL_ID = CUS_PROBLEM_TBL.PBL_ID
+        	AND CUS_RE_PROBLEM_TBL.RE_MAN_ID IN 
+        		(SELECT CUS_ID FROM CUS_OFFICIAL_CUSTOMER_TBL)) AS OFFICIAL_REPLY_COUNT,
+        	(SELECT 
+        		COUNT(CUS_RE_PROBLEM_TBL.RE_ID)
+    		FROM
+        		CUS_RE_PROBLEM_TBL 
+    		WHERE CUS_RE_PROBLEM_TBL.PBL_ID = CUS_PROBLEM_TBL.PBL_ID and CUS_RE_PROBLEM_TBL.re_status=0) AS newHidePblCount 
+            FROM CUS_PROBLEM_TBL
+            left join cus_re_problem_tbl ON cus_problem_tbl.PBL_ID = cus_re_problem_tbl.PBL_ID
+            WHERE  CUS_PROBLEM_TBL.PBL_STATUS=0
+            <!--
+            AND CUS_PROBLEM_TBL.PBL_ID NOT IN (SELECT PBL_ID FROM CUS_PROBLEM_TBL WHERE CUS_ID=#cusId# AND COURSE_ID=#courseId#) 
+            -->
+            <isNotNull property="subjectIds">
+	            <isNotEqual property="subjectIds" compareValue="" prepend="and">
+			               SUBJECT_ID IN ($subjectIds$)
+			    </isNotEqual>
+		    </isNotNull>
+		    <isNotEmpty property="officialCusId" prepend="and">
+		    	cus_re_problem_tbl.RE_MAN_ID = #officialCusId#
+		    </isNotEmpty>
+            <isNotEqual property="pblType" compareValue="0" prepend="and">
+                 PBL_TYPE=#pblType# 
+	        </isNotEqual>
+            <isNotEqual property="pblSolv" compareValue="0" prepend="and">
+                 PBL_SOLV=#pblSolv# 
+	        </isNotEqual>
+	        GROUP BY cus_problem_tbl.PBL_ID
+            <isEqual property="highProblem" compareValue="0">
+		         ORDER BY PBL_ID DESC
+			</isEqual>
+            <isEqual property="highProblem" compareValue="1">
+		         ORDER BY PBL_TOTOLS DESC
+			</isEqual>
+         	 <include refid="public_sql.page_end"/>
+       </select>
+        <select id="getProblemCountByIdList" resultClass="int" parameterClass="QueryProblemCondition">
+        select count(TA.PBL_ID) from 
+            (SELECT
+            	CUS_PROBLEM_TBL.PBL_ID
+            FROM CUS_PROBLEM_TBL
+            left join cus_re_problem_tbl ON cus_problem_tbl.PBL_ID = cus_re_problem_tbl.PBL_ID
+            WHERE  CUS_PROBLEM_TBL.PBL_STATUS=0
+            <!--
+            AND CUS_PROBLEM_TBL.PBL_ID NOT IN (SELECT PBL_ID FROM CUS_PROBLEM_TBL WHERE CUS_ID=#cusId# AND COURSE_ID=#courseId#) 
+            -->
+            <isNotNull property="subjectIds">
+	            <isNotEqual property="subjectIds" compareValue="" prepend="and">
+			               SUBJECT_ID IN ($subjectIds$)
+			    </isNotEqual>
+		    </isNotNull>
+		    <isNotEmpty property="officialCusId" prepend="and">
+		    	cus_re_problem_tbl.RE_MAN_ID = #officialCusId#
+		    </isNotEmpty>
+            <isNotEqual property="pblType" compareValue="0" prepend="and">
+                 PBL_TYPE=#pblType# 
+	        </isNotEqual>
+            <isNotEqual property="pblSolv" compareValue="0" prepend="and">
+                 PBL_SOLV=#pblSolv# 
+	        </isNotEqual>
+	        GROUP BY cus_problem_tbl.PBL_ID) TA
+        </select>
+        <!-- modify by shixf 20120627 end -->
+         <select id="getProblemByHost" resultMap="Problem_NS.ProblemResult" parameterClass="QueryProblemCondition">
+            SELECT * FROM CUS_PROBLEM_TBL WHERE PBL_HOT=1 
+            <isNotEqual property="subjectId" compareValue="0" prepend="and">
+               SUBJECT_ID=#subjectId#
+	       </isNotEqual>
+            ORDER BY PBL_ID DESC LIMIT 10
+        </select>
+          <select id="getReProblemByCusId" resultMap="Problem_NS.ProblemResult" parameterClass="QueryProblemCondition">
+             <include refid="public_sql.page_begin"/>
+            SELECT 
+            <include refid="Problem_NS.CUS_PROBLEM_TBL_columns"/>
+            FROM CUS_RE_PROBLEM_TBL,CUS_PROBLEM_TBL
+            WHERE CUS_RE_PROBLEM_TBL.PBL_ID=CUS_PROBLEM_TBL.PBL_ID AND CUS_RE_PROBLEM_TBL.RE_MAN_ID=#cusId#
+             <isNotEqual property="subjectId" compareValue="0" prepend="and">
+               SUBJECT_ID=#subjectId#
+	       </isNotEqual>
+            <isNotEqual property="pblType" compareValue="0" prepend="and">
+                 PBL_TYPE=#pblType# 
+	        </isNotEqual>
+            GROUP BY CUS_RE_PROBLEM_TBL.PBL_ID
+            ORDER BY CUS_PROBLEM_TBL.CREATE_TIME DESC
+		  	<include refid="public_sql.page_end"/>
+		  </select>
+		  <select id="getReProblemCountByCusId" resultClass="int" parameterClass="QueryProblemCondition">
+           SELECT COUNT(1) FROM  (SELECT CUS_RE_PROBLEM_TBL.PBL_ID FROM CUS_RE_PROBLEM_TBL,CUS_PROBLEM_TBL  WHERE CUS_RE_PROBLEM_TBL.PBL_ID=CUS_PROBLEM_TBL.PBL_ID AND CUS_RE_PROBLEM_TBL.RE_MAN_ID=#cusId# 
+             <isNotEqual property="subjectId" compareValue="0" prepend="and">
+               SUBJECT_ID=#subjectId#
+	       </isNotEqual>
+            <isNotEqual property="pblType" compareValue="0" prepend="and">
+                 PBL_TYPE=#pblType# 
+	        </isNotEqual>
+           GROUP BY CUS_RE_PROBLEM_TBL.PBL_ID) TBL
+		  </select>
+		   <select id="getNewProblem" resultMap="Problem_NS.ProblemResult" parameterClass="QueryProblemCondition">
+            SELECT * FROM CUS_PROBLEM_TBL WHERE COURSE_ID=#courseId# AND PBL_ID NOT IN (SELECT PBL_ID FROM CUS_PROBLEM_TBL WHERE CUS_ID=#cusId# AND COURSE_ID=#courseId#)
+                 <isNotEqual property="subjectId" compareValue="0" prepend="and">
+              	 SUBJECT_ID=#subjectId#
+	       		</isNotEqual>
+                <isEqual property="highProblem" compareValue="0">
+			         ORDER BY PBL_ID DESC LIMIT 6
+				</isEqual>
+	            <isEqual property="highProblem" compareValue="1">
+			         ORDER BY PBL_TOTOLS DESC LIMIT 6
+				</isEqual>
+			    <isNotEqual property="pblSolv" compareValue="0" prepend="and">
+                     PBL_SOLV=#pblSolv# ORDER BY PBL_ID DESC LIMIT 6
+	        	</isNotEqual>
+        </select>
+		  <select id="getCusProblemBySubjectId" resultClass="int" parameterClass="int">
+           select count(1) from cus_problem_tbl c where c.SUBJECT_ID = #value#
+		  </select>
+		  
+		  <select id="getCusProblemReplyBySubjectId" resultClass="int" parameterClass="int">
+           select count(1) from cus_problem_tbl c,cus_re_problem_tbl r
+					where c.PBL_ID = r.PBL_ID
+					and c.SUBJECT_ID = #value#
+		  </select>
+		  
+		  <select id="getProCountByType" resultMap="ProblemCountByType" parameterClass="java.lang.String">
+           SELECT pbl_type,COUNT(1) proCount FROM cus_problem_tbl WHERE subject_id IN ($subjectid$) GROUP BY pbl_type 
+		  </select>
+        <!--end-->
+</sqlMap>

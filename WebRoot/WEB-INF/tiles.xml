@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions >
+	
+	<!--定义应用的首页面-->
+	<definition name="base.definition" template="/static/usercenter/container/base.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="resource" value=""/>
+		<put-attribute name="header" value="/static/usercenter/container/common/header.jsp"/>
+		<put-attribute name="left" value="/static/usercenter/container/common/left.jsp"/>
+		<put-attribute name="body" value=""/>
+		<put-attribute name="right" value="/static/usercenter/container/common/right.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/common/footer.jsp"/>
+	</definition>
+	
+	<!--消息-->
+	<definition name="msg" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_消息 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/msg/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/msg/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/msg/body.jsp"/>
+		<put-attribute name="right" value=""/>
+		<put-attribute name="footer" value="/static/usercenter/container/msg/footer.jsp"/>
+	</definition>
+	
+	<!--个人中心-->
+	<definition name="usercenter" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_个人中心 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/my_center/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/my_center/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/my_center/body.jsp"/>
+		<put-attribute name="right" value="/static/usercenter/container/my_center/right.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/my_center/footer.jsp"/>
+	</definition>
+	
+	<!--我的课程-->
+	<definition name="mycourse" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_我的课程 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/mycourse/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/mycourse/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/mycourse/body.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/mycourse/footer.jsp"/>
+	</definition>
+	
+	<!--学习计划-->
+	<definition name="studyplan" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_学习计划 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/studyplan/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/studyplan/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/studyplan/body.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/studyplan/footer.jsp"/>
+		<put-attribute name="right" value=""/>
+	</definition>
+	
+	<!--更新学习计划-->
+	<definition name="studyplan_update" extends="studyplan">
+		<put-attribute name="body" value="/static/usercenter/container/studyplan/update_body.jsp"/>
+	</definition>
+	
+	<!--学习计划列表-->
+	<definition name="plan_list" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_学习计划 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/plan_list/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/plan_list/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/plan_list/body.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/plan_list/footer.jsp"/>
+		<put-attribute name="right" value=""/>
+	</definition>
+	
+	<!--订单-->
+	<definition name="contract" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_订单 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/contract/resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/contract/body.jsp"/>
+		<put-attribute name="left" value="/static/usercenter/container/contract/left.jsp"/>
+		<put-attribute name="right" value=""/>
+		<put-attribute name="footer" value="/static/usercenter/container/contract/footer.jsp"/>
+	</definition>
+	
+	<!--学习评估-->
+	<definition name="ass" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_学习评估 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/ass/resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/ass/body.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/ass/header.jsp"/>
+		<put-attribute name="right" value=""/>
+	</definition>
+	
+	<!--测评-->
+	<definition name="test" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_测评 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/test/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/test/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/test/body.jsp"/>
+		<put-attribute name="right" value=""/>
+	</definition>
+	
+	<!--小hi问答-->
+	<definition name="wenda" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_小Hi问答  远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/wenda/resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/wenda/body.jsp"/><!-- 问答页面 -->
+		<put-attribute name="right" value=""/>
+		<put-attribute name="left" value="/static/usercenter/container/wenda/left.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/wenda/footer.jsp"/>
+	</definition>
+	<!--小hi问答-->
+	<definition name="usercenter_my_wenda" extends="base.definition">
+	<put-attribute name="title" value="HighSo嗨学网_小Hi问答  远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/wenda/resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/wenda/usercenter_my_wenda.jsp"/><!-- 我的问答页面 -->
+		<put-attribute name="right" value=""/>
+		<put-attribute name="left" value="/static/usercenter/container/wenda/left.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/wenda/footer.jsp"/>
+	</definition>
+	<!--小hi问答-->
+	<definition name="usercenter_wenda_myanswer" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_小Hi问答  远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/wenda/resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/wenda/usercenter_wenda_myanswer.jsp"/><!-- 我的回答页面 -->
+		<put-attribute name="right" value=""/>
+		<put-attribute name="left" value="/static/usercenter/container/wenda/left.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/wenda/footer.jsp"/>
+	</definition>
+	<!--小hi问答-->
+	<definition name="usercenter_wenda_detail" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_小Hi问答  远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/wenda/usercenter_wenda_detail_resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/wenda/usercenter_wenda_detail.jsp"/><!-- 所有问题详细页面 -->
+		<put-attribute name="right" value=""/>
+		<put-attribute name="left" value="/static/usercenter/container/wenda/left.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/wenda/footer.jsp"/>
+	</definition>
+	<!--小hi问答-->
+	<definition name="usercenter_wenda_myque" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_小Hi问答  远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/wenda/usercenter_wenda_detail_resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/wenda/usercenter_wenda_myque.jsp"/><!-- 我的问题详细页面 -->
+		<put-attribute name="right" value=""/>
+		<put-attribute name="left" value="/static/usercenter/container/wenda/left.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/wenda/footer.jsp"/>
+	</definition>
+	<!--小hi问答-->
+	<definition name="usercenter_wenda_myans" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_小Hi问答  远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/wenda/usercenter_wenda_detail_resource.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/wenda/usercenter_wenda_myans.jsp"/><!-- 我的回答详细页面 -->
+		<put-attribute name="right" value=""/>
+		<put-attribute name="left" value="/static/usercenter/container/wenda/left.jsp"/>
+		<put-attribute name="footer" value="/static/usercenter/container/wenda/footer.jsp"/>
+	</definition>
+	
+	<!--考试中心-->
+	<definition name="exam" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_考试中心 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/exam/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/exam/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/exam/body.jsp"/>
+		<put-attribute name="right" value=""/>
+		<put-attribute name="footer" value="/static/usercenter/container/common/footer.jsp"/>
+	</definition>
+	
+	<!--随机考试-->
+	<definition name="random_exam" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_随机考试 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/random_exam/resource.jsp"/> 
+		<put-attribute name="header" value="/static/usercenter/container/random_exam/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/random_exam/body.jsp"/>
+		<put-attribute name="right" value=""/>
+		<put-attribute name="footer" value="/static/usercenter/container/common/footer.jsp"/>
+	</definition>
+	
+	<!-- 反馈中心 -->
+	<definition name="feedbackCenter" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_反馈中心 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/feedbackCenter/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/feedbackCenter/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/feedbackCenter/body.jsp"/>
+		<put-attribute name="right" value=""/>
+		<put-attribute name="footer" value="/static/usercenter/container/feedbackCenter/footer.jsp"/>
+	</definition>
+	
+	<!-- 个人资料 -->
+	<definition name="userinfo" extends="base.definition">
+		<put-attribute name="title" value="HighSo嗨学网_个人资料 远程网络职业教育领跑者 尚德机构旗下" />
+		<put-attribute name="resource" value="/static/usercenter/container/userinfo/resource.jsp"/>
+		<put-attribute name="header" value="/static/usercenter/container/userinfo/header.jsp"/>
+		<put-attribute name="body" value="/static/usercenter/container/userinfo/body.jsp"/>
+		<put-attribute name="right" value=""/>
+		<put-attribute name="footer" value="/static/usercenter/container/userinfo/footer.jsp"/>
+	</definition>
+	
+</tiles-definitions>
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ActionRecord_NS">
+	<!--table:CUS_ACTION_RECORD_TBL -->
+	<typeAlias alias="ActionRecord"
+		type="com.shangde.edu.freshnews.domain.ActionRecord" />
+	<typeAlias alias="ActionReply"
+		type="com.shangde.edu.freshnews.domain.ActionReply" />
+	<typeAlias alias="QueryActionRecordCondition"
+		type="com.shangde.edu.freshnews.condition.QueryActionRecordCondition" />
+
+	<resultMap id="ActionRecordResult" class="ActionRecord">
+		<result property="id" column="ID" />
+		<result property="relateId" column="RELATE_ID" />
+		<result property="currentType" column="CURRENT_TYPE" />
+		<result property="content" column="CONTENT" />
+		<result property="cusName" column="CUS_NAME" />
+		<result property="cusId" column="CUS_ID" />
+		<result property="cusEmail" column="CUS_EMAIL" />
+		<result property="isAnswer" column="IS_ANSWER" />
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="updateTime" column="UPDATE_TIME" />
+		<result property="otherInfo" column="OTHER_INFO" />
+		<result property="headImg" column="HEAD_IMG" />
+	</resultMap>
+
+	<sql id="CUS_ACTION_RECORD_TBL_columns">
+		CUS_ACTION_RECORD_TBL.ID,
+		CUS_ACTION_RECORD_TBL.RELATE_ID,
+		CUS_ACTION_RECORD_TBL.CURRENT_TYPE,
+		CUS_ACTION_RECORD_TBL.CONTENT,
+		CUS_ACTION_RECORD_TBL.CUS_NAME,
+		CUS_ACTION_RECORD_TBL.CUS_ID,
+		CUS_ACTION_RECORD_TBL.CUS_EMAIL,
+		CUS_ACTION_RECORD_TBL.IS_ANSWER,
+		CUS_ACTION_RECORD_TBL.SUBJECT_ID,
+		CUS_ACTION_RECORD_TBL.CREATE_TIME,
+		CUS_ACTION_RECORD_TBL.UPDATE_TIME,
+		CUS_ACTION_RECORD_TBL.OTHER_INFO,
+		CUS_ACTION_RECORD_TBL.HEAD_IMG
+	</sql>
+
+	<sql id="CUS_ACTION_RECORD_TBL_properties">
+		#id#,
+		#relateId#,
+		#currentType#,
+		#content#,
+		#cusName#,
+		#cusId#,
+		#cusEmail#,
+		#isAnswer#,
+		#subjectId#,
+		#createTime#,
+		#updateTime#,
+		#otherInfo#,
+		#headImg#
+	</sql>
+
+	<insert id="createActionRecord" parameterClass="ActionRecord">
+		INSERT INTO CUS_ACTION_RECORD_TBL (
+		<include refid="ActionRecord_NS.CUS_ACTION_RECORD_TBL_columns" />
+		) VALUES (
+		<include refid="ActionRecord_NS.CUS_ACTION_RECORD_TBL_properties" />
+		)
+		<selectKey resultClass="int" type="post" keyProperty="id">
+			<include refid="public_sql.increment_sql" />
+		</selectKey>
+	</insert>
+
+	<select id="getActionRecordList" resultMap="ActionRecord_NS.ActionRecordResult"
+		parameterClass="QueryActionRecordCondition">
+		SELECT 
+		<include refid="ActionRecord_NS.CUS_ACTION_RECORD_TBL_columns" />
+		FROM CUS_ACTION_RECORD_TBL
+	</select>
+
+	<resultMap id="get-ActionRecord-result" class="ActionRecord">
+		<result property="id" column="Id" />
+		<result property="cusName" column="cus_name" />
+		<result property="updateTime" column="update_time" />
+		<result property="content" column="content" />
+		<result property="cusEmail" column="cus_email" />
+		<result property="otherInfo" column="other_info" />
+		<result property="currentType" column="current_type" />
+		<result property="headImg" column="head_img" />
+		<!-- <result property="arList" column="Id" select="ActionReply_NS.getActionRepley" /> -->
+	</resultMap>
+
+	<select id="getActionRecord" parameterClass="QueryActionRecordCondition" resultMap="get-ActionRecord-result">
+		select 
+		CUS_ACTION_RECORD_TBL.ID,
+		CUS_ACTION_RECORD_TBL.RELATE_ID,
+		CUS_ACTION_RECORD_TBL.CURRENT_TYPE,
+		replace(CUS_ACTION_RECORD_TBL.CONTENT,'\n','') content,
+		CUS_ACTION_RECORD_TBL.CUS_NAME,
+		CUS_ACTION_RECORD_TBL.CUS_ID,
+		CUS_ACTION_RECORD_TBL.CUS_EMAIL,
+		CUS_ACTION_RECORD_TBL.IS_ANSWER,
+		CUS_ACTION_RECORD_TBL.SUBJECT_ID,
+		CUS_ACTION_RECORD_TBL.CREATE_TIME,
+		CUS_ACTION_RECORD_TBL.UPDATE_TIME,
+		CUS_ACTION_RECORD_TBL.OTHER_INFO,
+		CUS_ACTION_RECORD_TBL.HEAD_IMG 
+		from cus_action_record_tbl where content is not null and content != '' 
+		<dynamic> 
+              <isNotNull property="subjectId">
+            	<isNotEqual property="subjectId" compareValue="0" prepend="and">
+		                subject_id = #subjectId#
+			    </isNotEqual>
+			  </isNotNull>
+			  
+			   <isNotNull property="cusId">
+            	<isNotEqual property="cusId" compareValue="0" prepend="and">
+		                CUS_ID = #cusId#
+			    </isNotEqual>
+			  </isNotNull>
+			  
+		</dynamic>
+		order by update_time desc 
+		<include refid="public_sql.page_end" />
+	</select>
+	
+	<select id="getActionRecordCount" resultClass="int" parameterClass="QueryActionRecordCondition">
+		select count(1) from cus_action_record_tbl where content is not null and content != '' 
+		<dynamic> 
+              <isNotNull property="subjectId">
+            	<isNotEqual property="subjectId" compareValue="0" prepend="and">
+		                subject_id = #subjectId#
+			    </isNotEqual>
+			  </isNotNull>
+		</dynamic>
+	</select>
+
+	<!--end -->
+</sqlMap>

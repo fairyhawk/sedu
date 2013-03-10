@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="freshnews" namespace="/freshnews" extends="edu-default">
+		<!-- freshnews -->
+		<action name="fna" class="com.shangde.edu.freshnews.action.FreshNewsAction">
+			<result name="toFreshNews">/static/usercenter/jsp/freshnews/freshnews_list_new.jsp</result>
+			<result name="nextPage" type="json">
+				<param name="root">result</param>
+			</result>
+			<interceptor-ref name="eduStackForWeb" />
+		</action>
+		<!-- freshnews end -->
+	</package>
+</struts>

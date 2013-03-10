@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CustoerFeedback_NS">
+        <!--table:CUS_FEEDBACK_TBL-->
+         <typeAlias alias="CustomerFeedback" type="com.shangde.edu.cus.domain.CustomerFeedback"/> 
+        <insert id="createCustomerFeedback" parameterClass="CustomerFeedback">
+            INSERT INTO  CUS_FEEDBACK_TBL (EMAIL,MOBILE,QQ,PROVINCE,CITY,SUBJECT_ID,SP,BANDWIDTH,DESCRIPTION) 
+            VALUES (#email#,#mobile#,#qq#,#province#,#city#,#subject_id#,#sp#,#bandwidth#,#description#)
+            <selectKey resultClass="java.lang.Integer" keyProperty="id"> 
+        		SELECT LAST_INSERT_ID(); 
+   			</selectKey>
+        </insert>
+</sqlMap> 

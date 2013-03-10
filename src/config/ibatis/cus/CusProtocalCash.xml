@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="CusProtocalCash_NS">
+	<typeAlias alias="CusProtocalCash" type="com.shangde.edu.cus.domain.CusCashProtocal"/>
+	
+	<insert id="createCusProtocalCash" parameterClass="CusProtocalCash">
+		INSERT INTO CUS_CASH_PROTOCAL_TBL (
+			CUS_CASH_PROTOCAL_TBL.CUS_PROTOCAL_ID,CUS_CASH_PROTOCAL_TBL.CASH_ID,PROTOCAL_CONTENT
+		) VALUES (
+			#cusProtocalId#,#cashId#,#protocalContent#
+		)
+		<selectKey resultClass="int" type="post" keyProperty="id">
+			<include refid="public_sql.increment_sql" />
+		</selectKey>
+	</insert>
+</sqlMap>

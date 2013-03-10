@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SellWay_NS">
+        <!--table:COU_SELL_WAY_TBL-->
+        <typeAlias alias="SellWay" type="com.shangde.edu.cou.domain.SellWay"/>
+        <typeAlias alias="QuerySellWayCondition" type="com.shangde.edu.cou.condition.QuerySellWayCondition"/>
+        <typeAlias alias="SellWayDTO" type="com.shangde.edu.cou.dto.SellWayDTO"/>
+        
+		<typeAlias alias="courseDTOTra" type="com.shangde.edu.cou.dto.CourseDTO"/>
+        
+        <resultMap id="SellWayResult" class="SellWay">
+            <result property="sellId" column="SELL_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="sellName" column="SELL_NAME"/>
+            <result property="status" column="STATUS"/>
+            <result property="addTime" column="ADD_TIME"/>
+            <result property="sellPrice" column="SELL_PRICE"/>
+            <result property="sellMark" column="SELL_MARK"/>
+            <result property="teacher" column="TEACHER"/>
+            <result  property="lessonNumber" column="LESSON_NUMBER"/>
+            <result  property="subjectKey" column="SUBJECT_KEY"/>
+            <result property="validity" column="VALIDITY"/>
+            <result property="startTime" column="START_TIME"/>
+            <result property="remark" column="REMARK"/>
+            <result property="shopState" column="SHOP_STATE"/>
+            <result property="disProperty" column="DISPROPERTY"/>
+            <result property="disPosition" column="DISPOSITION"/>
+            <result property="isProtocal" column="IS_PROTOCAL"/>
+             <result property="protocalContent" column="PROTOCAL_CONTENT"/>
+        </resultMap>
+        
+         <!-- Yangning /2012/02/16 new shoping cart -->
+         <resultMap id="SellWayResultNewCart" class="SellWay">
+            <result property="sellId" column="SELL_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="sellName" column="SELL_NAME"/>
+            <result property="status" column="STATUS"/>
+            <result property="addTime" column="ADD_TIME"/>
+            <result property="sellPrice" column="SELL_PRICE"/>
+            <result property="sellMark" column="SELL_MARK"/>
+            <result property="teacher" column="TEACHER"/>
+            <result  property="lessonNumber" column="LESSON_NUMBER"/>
+            <result  property="subjectKey" column="SUBJECT_KEY"/>
+            <result property="validity" column="VALIDITY"/>
+            <result property="startTime" column="START_TIME"/>
+            <result property="remark" column="REMARK"/>
+            <result property="oriPrice" column="NOW_PRICE"/>
+            <result property="shopState" column="SHOP_STATE"/>
+            <result property="disProperty" column="DISPROPERTY"/>
+            <result property="disPosition" column="DISPOSITION"/>
+            <result property="isProtocal" column="IS_PROTOCAL"/>
+             <result property="protocalContent" column="PROTOCAL_CONTENT"/>
+        </resultMap>
+        
+         
+		<resultMap class="SellWayDTO" id="SellWayDTOResult" extends="SellWayResult">
+			<result property="subject" column="SUBJECT_ID" select="Subject_NS.getSubjectById"/>
+		</resultMap>
+        <sql id="COU_SELL_WAY_TBL_columns">
+            COU_SELL_WAY_TBL.SELL_ID,
+            COU_SELL_WAY_TBL.SUBJECT_ID,
+            COU_SELL_WAY_TBL.SELL_NAME,
+            COU_SELL_WAY_TBL.STATUS,
+            COU_SELL_WAY_TBL.ADD_TIME,
+            COU_SELL_WAY_TBL.SELL_PRICE,
+            COU_SELL_WAY_TBL.SELL_MARK,
+            COU_SELL_WAY_TBL.TEACHER,
+            COU_SELL_WAY_TBL.LESSON_NUMBER,
+            COU_SELL_WAY_TBL.SUBJECT_KEY,
+            COU_SELL_WAY_TBL.VALIDITY,
+            COU_SELL_WAY_TBL.START_TIME,
+            COU_SELL_WAY_TBL.SHOP_STATE,
+            COU_SELL_WAY_TBL.REMARK,
+            COU_SELL_WAY_TBL.DISPROPERTY,
+            COU_SELL_WAY_TBL.DISPOSITION,
+            COU_SELL_WAY_TBL.IS_PROTOCAL,
+            COU_SELL_WAY_TBL.PROTOCAL_CONTENT
+        </sql>
+        
+          <!-- Yangning /2012/02/16 new shoping cart -->
+          <sql id="COU_SELL_WAY_TBL_columnsNewShopingCart">
+            COU_SELL_WAY_TBL.SELL_ID,
+            COU_SELL_WAY_TBL.SUBJECT_ID,
+            COU_SELL_WAY_TBL.SELL_NAME,
+            COU_SELL_WAY_TBL.STATUS,
+            COU_SELL_WAY_TBL.ADD_TIME,
+            COU_SELL_WAY_TBL.SELL_PRICE,
+            COU_SELL_WAY_TBL.NOW_PRICE,
+            COU_SELL_WAY_TBL.SELL_MARK,
+            COU_SELL_WAY_TBL.TEACHER,
+            COU_SELL_WAY_TBL.LESSON_NUMBER,
+            COU_SELL_WAY_TBL.SUBJECT_KEY,
+            COU_SELL_WAY_TBL.VALIDITY,
+            COU_SELL_WAY_TBL.START_TIME,
+            COU_SELL_WAY_TBL.SHOP_STATE,
+            COU_SELL_WAY_TBL.REMARK,
+            COU_SELL_WAY_TBL.DISPROPERTY,
+            COU_SELL_WAY_TBL.DISPOSITION,
+            COU_SELL_WAY_TBL.IS_PROTOCAL,
+            COU_SELL_WAY_TBL.PROTOCAL_CONTENT
+        </sql>
+
+        <sql id="COU_SELL_WAY_TBL_properties">
+            #sellId#,
+            #subjectId#,
+            #sellName#,
+            #status#,
+            #addTime#,
+            #sellPrice#,
+            #sellMark#,
+            #teacher#,
+            #lessonNumber#,
+            #subjectKey#,
+            #validity#,
+            #startTime#,
+            #shopState#,
+            #remark#,
+            #disProperty#,
+            #disPosition#
+        </sql>
+
+        <insert id="createSellWay" parameterClass="SellWay">
+            INSERT INTO COU_SELL_WAY_TBL (<include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>) VALUES (<include refid="SellWay_NS.COU_SELL_WAY_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="sellId" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteSellWayById" parameterClass="int">
+            DELETE FROM COU_SELL_WAY_TBL
+            WHERE
+                SELL_ID = #value#
+        </delete>
+
+        <update id="updateSellWay" parameterClass="SellWay">
+            UPDATE COU_SELL_WAY_TBL SET
+                SELL_ID = #sellId#,
+                SUBJECT_ID = #subjectId#,
+                SELL_NAME = #sellName#,
+                STATUS = #status#,
+                ADD_TIME = #addTime#,
+                SELL_PRICE = #sellPrice#,
+                SELL_MARK = #sellMark#,
+                TEACHER=#teacher#,
+                SUBJECT_KEY=#subjectKey#,
+                LESSON_NUMBER=#lessonNumber#,
+                VALIDITY=#validity#,
+                START_TIME=#startTime#,
+                REMARK=#remark#
+            WHERE
+                SELL_ID = #sellId#
+        </update>
+		<!-- Modified by ZHENG QIANG. 2012/05/18 -->
+        <resultMap id="SellWayResult2" class="SellWay">
+            <result property="sellId" column="SELL_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="sellName" column="SELL_NAME"/>
+            <result property="status" column="STATUS"/>
+            <result property="addTime" column="ADD_TIME"/>
+            <result property="sellPrice" column="SELL_PRICE"/>
+            <result property="sellMark" column="SELL_MARK"/>
+            <result property="teacher" column="TEACHER"/>
+            <result property="lessonNumber" column="LESSON_NUMBER"/>
+            <result property="subjectKey" column="SUBJECT_KEY"/>
+            <result property="validity" column="VALIDITY"/>
+            <result property="startTime" column="START_TIME"/>
+            <result property="remark" column="REMARK"/>
+            <result property="shopState" column="SHOP_STATE"/>
+            <result property="disProperty" column="DISPROPERTY"/>
+            <result property="disPosition" column="DISPOSITION"/>
+            <result property="isProtocal" column="IS_PROTOCAL"/>
+			<result property="protocalContent" column="PROTOCAL_CONTENT"/>
+			<result property="validityNum" column="VALIDITY_NUM"/>
+			<result property="stopServiceTime" column="STOP_SERVICE_TIME"/>
+			<result property="validityBeginTime" column="VALIDITY_BEGIN_TIME"/>
+			<result property="validityEndTime" column="VALIDITY_END_TIME"/>
+			<result property="detail" column="DETAIL"/>
+        </resultMap>
+        <select id="getSellWayById" resultMap="SellWay_NS.SellWayResult2" parameterClass="int">
+            SELECT
+            	SELL_ID,SUBJECT_ID,SELL_NAME,STATUS,ADD_TIME,SELL_PRICE,SELL_MARK,TEACHER,LESSON_NUMBER,SUBJECT_KEY,
+            	VALIDITY,START_TIME,REMARK,SHOP_STATE,DISPROPERTY,DISPOSITION,IS_PROTOCAL,PROTOCAL_CONTENT,VALIDITY_NUM,
+            	STOP_SERVICE_TIME,VALIDITY_BEGIN_TIME,VALIDITY_END_TIME,DETAIL
+            FROM COU_SELL_WAY_TBL
+            WHERE
+                SELL_ID = #value#
+        </select>
+        
+        <select id="getSellWayByIdProtocal" resultMap="SellWay_NS.SellWayResult" parameterClass="int">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+            WHERE
+                SELL_ID = #value#
+        </select>
+
+        <select id="getSellWayByIdList" resultMap="SellWay_NS.SellWayResultNewCart" parameterClass="ArrayList">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columnsNewShopingCart"/>
+            FROM COU_SELL_WAY_TBL
+             where
+            	COU_SELL_WAY_TBL.STATUS = 0 
+            <iterate  prepend="AND"  open="(" close=")" conjunction="OR"> 
+				SELL_ID=#value[]# 
+			</iterate> 
+				
+        </select>
+
+       
+        <select id="getSellWayList" resultMap="SellWay_NS.SellWayResult" parameterClass="QuerySellWayCondition">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+        </select>
+        
+        <select id="getSellWayInfoList" resultMap="SellWay_NS.SellWayDTOResult" parameterClass="QuerySellWayCondition">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+            <dynamic prepend="where">
+            	<isNotEqual property="subjectId" compareValue="0">
+            		SUBJECT_ID = #subjectId#
+            	</isNotEqual>
+            </dynamic>         
+        </select>        
+        <!--end-->
+        
+        <!-- fanxin 2011-8-29 获得售卖方式集合 strat -->
+        <select id="getSellWayDisproList" resultMap="SellWay_NS.SellWayResult" parameterClass="QuerySellWayCondition">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+            where
+            	COU_SELL_WAY_TBL.STATUS = 0  And
+            	COU_SELL_WAY_TBL.SHOP_STATE = 1  And
+	            COU_SELL_WAY_TBL.SUBJECT_ID = #subjectId#  And  
+	            COU_SELL_WAY_TBL.DISPOSITION like '%$disPosition$%' 
+            limit 0,6
+        </select>
+        <!-- fanxin 2011-8-29 获得售卖方式集合 end -->
+
+
+        <!-- fanxin 2011-09-01 获得相关课程下 "推荐" 售卖方式集合合  strat -->
+        <select id="getTuiJianSellWay" resultMap="SellWay_NS.SellWayResult" parameterClass="QuerySellWayCondition">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+            where
+            	COU_SELL_WAY_TBL.STATUS = 0  And
+            	COU_SELL_WAY_TBL.SHOP_STATE = 1  And
+	            COU_SELL_WAY_TBL.SUBJECT_ID = #subjectId#  And  
+	            COU_SELL_WAY_TBL.DISPOSITION like '%7%'   
+            limit 0,6
+        </select>
+        <!-- fanxin 2011-09-01 获得相关课程下 "推荐" 售卖方式集合 end --> 
+        
+        <!-- Yangning 2011/01-06 get SellWay by cus and sellWay id -->
+         <select id="getSellWayByCustomerAndSellWayId" resultMap="SellWay_NS.SellWayResult" parameterClass="java.util.HashMap">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+            JOIN FINANCE_CASH_RECORD_TBL ON FINANCE_CASH_RECORD_TBL.PACK_ID = COU_SELL_WAY_TBL.SELL_ID 
+            AND FINANCE_CASH_RECORD_TBL.CUS_ID = #customerId# AND PACK_ID = #sellid# AND FINANCE_CASH_RECORD_TBL.STATUS = 1 limit 1
+        </select>
+        
+        <!--Yangning 2011/02-14 -->  
+        <select id="getLearnCourseBySellWayId" resultClass="courseDTOTra" parameterClass="int">
+            select    cou_course_tbl.TITLE,    cou_kpoint_tbl.NAME pointName,   cou_sell_cou_tbl.course_id courseId, cou_kpoint_tbl.POINT_ID pointId,    cou_kpoint_tbl.P_ID pId,    cou_course_tbl.dpdfurl pdfUrl,    res_books_tbl.BK_URL bkUrl,    res_books_tbl.YP_URL ypUrl,    cou_teacher_tbl.NAME as tcName,    res_vedio_tbl.VO_URL voUrl,    COU_KPOINT_TBL.level,          COU_KPOINT_TBL.leaf        
+            from 
+          	cou_kpoint_tbl        
+          	left join cou_course_tbl      on cou_kpoint_tbl.COURSE_ID=cou_course_tbl.COURSE_ID        
+          	left join  res_books_tbl      on cou_kpoint_tbl.POINT_ID=res_books_tbl.POINTID        
+          	left join res_vedio_tbl    on cou_kpoint_tbl.POINT_ID=res_vedio_tbl.POINTID        
+          	left join cou_teacher_tbl    on res_vedio_tbl.TC_ID=cou_teacher_tbl.TC_ID          
+          	left join cou_sell_cou_tbl   on cou_sell_cou_tbl.course_id = cou_course_tbl.COURSE_ID 
+          	left join cou_sell_way_tbl on  cou_sell_cou_tbl.SELL_ID =  cou_sell_way_tbl.SELL_ID
+          	where cou_sell_cou_tbl.SELL_ID=#value#  and cou_kpoint_tbl.STATUS=0;
+        </select>
+        
+         <!--Yangning 2011/02-27 -->  
+        <select id="getSellWayByCtractNO" resultMap="SellWay_NS.SellWayResult" parameterClass="string">
+            SELECT <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM (SELECT CONTRACT_ID,ID,PACK_ID FROM FINANCE_CASH_RECORD_TBL WHERE CONTRACT_ID = #value#)T,COU_SELL_WAY_TBL WHERE T.PACK_ID = COU_SELL_WAY_TBL.SELL_ID
+        </select>
+        
+        <!-- Yangning 2011/03/06 -->
+         <select id="getPaidCountSellWayListByCusId" resultClass="int" parameterClass="int">
+			<!-- /*SELECT 
+            COUNT(COU_SELL_WAY_TBL.SELL_ID)
+            FROM COU_SELL_WAY_TBL ,finance_cash_record_tbl
+			where 
+			finance_cash_record_tbl.CUS_ID=#value# and
+			finance_cash_record_tbl.PACK_ID=COU_SELL_WAY_TBL.sell_id   and 
+			finance_cash_record_tbl.STATUS=1  */ -->
+			
+			SELECT COUNT(DISTINCT pack_id) FROM finance_cash_record_tbl WHERE cus_id=#value# AND STATUS=1 AND price!=10
+        </select> 
+        
+        <1--
+        <select id="getSellWayList" resultMap="SellWay_NS.SellWayResult" parameterClass="QuerySellWayCondition">
+            SELECT
+            <include refid="SellWay_NS.COU_SELL_WAY_TBL_columns"/>
+            FROM COU_SELL_WAY_TBL
+        </select>
+        
+                     
+</sqlMap>

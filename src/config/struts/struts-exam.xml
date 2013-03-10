@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="exam" namespace="/exam" extends="edu-default">
+    	<!--考试后台action -->
+       <action name="exampaper" class="com.shangde.edu.exam.action.ExamAction">
+       		<interceptor-ref name="eduStack"/>
+	       <result name="addExam">/back/jsp/exam/success.jsp</result>
+	       <result name="UpdateQst">/back/jsp/exam/Exam_Qst_Update.jsp</result>
+	       <result name="toAddExam">/back/jsp/exam/Testpaperadd.jsp</result>
+	       <result name="toUpdateExam">/back/jsp/exam/TestpaperUpdate.jsp</result>
+	       <result name="toPreviewExampaper">/back/jsp/exam/exampaperPreview.jsp</result>
+	       <result name="listExamPaperByCondition">/back/jsp/exam/exampaper_list.jsp</result>
+	       <result name="freezeExampapers" type="redirect">
+	      		exampaper!listExamPaperByCondition.action?queryExampaperCondition.currentPage=1
+	       </result>
+           	<result name="read">/back/jsp/exam/test_read.jsp</result>
+           	<result name="toaddQst" >/back/jsp/exam/Exam_Qst_add.jsp</result>
+           
+		   <param name="savePath">/exam</param>
+		   <interceptor-ref name="fileUpload">  
+	              <!-- 配置允许上传的文件类型，多个用","分隔 -->   
+	              <param name="allowedTypes">  
+	                  　　　　　　image/bmp,image/png,image/gif,image/jpeg,image/jpg,image/x-png,   
+	                  image/pjpeg
+	              </param>  
+	              <!-- 配置允许上传的文件大小，单位字节 -->  
+	              <param name="maximumSize">3072000</param>  
+	        </interceptor-ref>
+	        <result name="reupload" type="redirect">exam!toAddExam.action</result>
+	        <result name="qstlisttb">/back/jsp/exam/qst_list.jsp</result>
+	        <result name="toupdateqst">/back/jsp/exam/qst_update.jsp</result>
+	        
+       </action>
+       
+       <action name="qst" class="com.shangde.edu.exam.action.QstAction">
+       <interceptor-ref name="eduStack" />
+       <result name="toqstadd">/back/jsp/exam/Qst_add.jsp</result>
+       <result name="QstAdd">/back/jsp/exam/success.jsp</result>
+       <result name="Qstlist">/back/jsp/exam/Qstlist.jsp</result>
+        <result name="Qstlisttanchuan">/back/jsp/exam/qst_listtanchuang.jsp</result>
+       <result name="toQstUpdate">/back/jsp/exam/Qst_Upadate.jsp</result>
+       <result name="QstUpdate">/back/jsp/exam/success.jsp</result>
+       <result name="toQstcailiaoAdd">/back/jsp/exam/Qst_Qst_add.jsp</result>
+           <result name="json" type="json">
+				<param name="root">result</param>
+		</result>
+		<result name="toQstcailiaoAdd">/back/jsp/exam/Qst_Qst_add.jsp</result>
+           <result name="qstjson" type="json">
+				<param name="root">result</param>
+		</result>
+       </action>
+       
+       <action name="qstmid" class="com.shangde.edu.exam.action.ExamQstMidAction">
+       <result name="EcxamQstAdd">/back/jsp/exam/success.jsp</result>
+       <result name="json" type="json">
+				<param name="root">result</param>
+		</result>
+       </action>
+        <action name="examrecord" class="com.shangde.edu.exam.action.ExamRecordAction">
+      	<interceptor-ref name="eduStack"/>
+      	<result name="ExamRecordAll">/back/jsp/exam/examrecord_list.jsp</result>
+      </action>
+       
+      <!--考试前台action -->
+      <action name="qstManager" class="com.shangde.edu.exam.web.ExamWebAction">
+      	<result name="json" type="json">
+				<param name="root">result</param>
+		</result>
+		<result name="examjson" type="json">
+			<param name="root">result</param>
+		</result>
+		<result name="favoritesjson" type="json">
+			<param name="root">result</param>
+		</result>
+      	<result name="warning">/static/usercenter/jsp/exam/randomexamResult.jsp</result>
+		<!--<result name="toRandomExam">/static/usercenter/jsp/exam/randomExam.jsp </result>-->
+		 <result name="toRandomExam" type="tiles">random_exam</result> 
+      	<result name="toRandomPaper">/static/usercenter/jsp/exam/randomExamContext.jsp </result>
+      	<result name="randomexamResult">/static/usercenter/jsp/exam/randomexamResult.jsp </result>
+      	<result name="getMyError">/static/usercenter/jsp/exam/myError.jsp</result>
+      	<result name="getErrorQst">/static/usercenter/jsp/exam/showErrorQst.jsp</result>
+		
+      	<interceptor-ref name="defaultStack" />
+		<interceptor-ref name="loginStack"/>
+      	<!-- <result name="showQstPaper">/jsp/exam/qstPaper.jsp</result> -->
+      	<result name="showQstPaper" type="json">
+      		<param name="root">qstPaper</param>
+      	</result>
+      	<result name="showPaperList">/web/jsp/exam/choosePaper.jsp</result>
+      	<result name="judgment">/web/jsp/exam/judgment.jsp</result>
+      	<result name="showQstPaper">/web/jsp/exam/pap_test.jsp</result>
+      		<result name="showQstPaperNoGo">/web/jsp/exam/NOpap_test.jsp</result>
+      	<result name="judgment">/web/jsp/exam/judgment.jsp</result>
+      
+      	<interceptor-ref name="eduStackForWeb" />  
+      	<result name="getExamHistroy">/static/usercenter/jsp/exam/exam_history.jsp</result>
+      	
+      	<!-- add by yanghaibo 2012-07-10 17:24 -->
+      	<result name="getMyFavoritesPaper">/static/usercenter/jsp/exam/exam_favorites_paper.jsp</result>
+      	<!-- add by yanghaibo 2012-07-11 15:25 -->
+      	<result name="getMyFavoritesQst">/static/usercenter/jsp/exam/exam_favorites_qst.jsp</result>
+      	
+      	<result name="fabuexam" type="redirect" >exam/qstManager!toTestPaper.action?epid=${epid}</result>  
+      	<result name="toTestPaper">/static/usercenter/jsp/exam/exam_test_paper.jsp</result>
+      	<result name="nofabuexam">/static/usercenter/jsp/exam/noexam_test_paper.jsp</result>       
+		<!-- <result name="getExamPaperAllList">/static/usercenter/jsp/exam/exam.jsp</result> -->
+		<result name="getExamPaperAllList" type="tiles">exam</result>
+		<result name="examNone"  type="redirect">/cou/courselimit!noCourse.action</result>
+		<result name="getExamPaper">/static/usercenter/jsp/exam/exam_test.jsp</result>
+      	<!-- <result name="showPaperAnalysis">/static/usercenter/jsp/exam/test.jsp</result> -->
+      	<result name="showPaperAnalysis" type="tiles">test</result>
+      	<result name="showok" type="redirect">exam/qstManager!getExamPaper.action?epid=${epids}</result>
+      	<result name="showokok" type="redirect">exam/qstManager!getUserExamPaperByUserEpId.action?userEpId=${userEpId}</result>
+      	<result name="newshowokok" type="redirect">exam/qstManager!getUserExamPaperByUserEpIdnew.action?userEpId=${userEpId}</result>
+      	<result name="showPaperList">/static/web/usercenter/exam/spaceonline.jsp</result>
+      	<result name="examhistorylist">/static/usercenter/jsp/exam/test_history.jsp</result>
+      	<result name="showQstPaper">/static/usercenter/jsp/exam/test_paper.jsp</result>
+      	<result name="showQstPaperNoGo">/static/usercenter/jsp/exam/notest_paper.jsp</result>
+      	<result name="toexamzhuguan">/static/usercenter/jsp/exam/test_showfen.jsp</result>
+      	<result name="newtoexamzhuguan">/static/usercenter/jsp/exam/exam_showfen.jsp</result>
+      	<result name="showQstPaperwei">/static/web/usercenter/exam/spaceexamwei.jsp</result>
+      	<result name="judgment">/static/usercenter/jsp/exam/test_result.jsp</result>
+      	<result name="aaok">/static/usercenter/jsp/exam/aa.jsp</result>
+      	<result name="getUserExamPaperByUserEpId">/static/usercenter/jsp/exam/exam_resultshow.jsp</result>
+      	<result name="getUserExamPaperByUserEpIdnew">/static/usercenter/jsp/exam/exam_history_resultshow.jsp</result>
+      	<result name="wuexam" type="redirect">exam/qstManager!getExampaperAnalysisDTO.action</result>
+      	
+      	
+      	<result name="input" type="redirectAction">
+      	 	<param name="actionName">qstManager!getExamPaperAllList</param>
+      		<param name="queryExampaperCondition.currentPage">1</param>
+      	</result>
+      	
+      </action>
+      
+     
+    </package>
+</struts>

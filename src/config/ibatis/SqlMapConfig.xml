@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+    <settings useStatementNamespaces="true" lazyLoadingEnabled="true" enhancementEnabled="true"/>
+    <sqlMap resource="config/ibatis/public_sql.xml"/>
+    <sqlMap resource="config/ibatis/test_ssi.xml"/>
+    <!-- 系统平台 -->
+    <sqlMap resource="config/ibatis/sys/Function.xml"/>
+    <sqlMap resource="config/ibatis/sys/Grade.xml"/>
+    <sqlMap resource="config/ibatis/sys/Group.xml"/>
+    <sqlMap resource="config/ibatis/sys/RoleFunction.xml"/>
+    <sqlMap resource="config/ibatis/sys/Role.xml"/>
+    <sqlMap resource="config/ibatis/sys/SimpleDic.xml"/>
+    <sqlMap resource="config/ibatis/sys/Subject.xml"/>
+    <sqlMap resource="config/ibatis/sys/UserClass.xml"/>
+    <sqlMap resource="config/ibatis/sys/UserGradeSubjectRole.xml"/>
+    <sqlMap resource="config/ibatis/sys/User.xml"/>
+    <sqlMap resource="config/ibatis/sys/VisitHistory.xml"/>
+    <sqlMap resource="config/ibatis/sys/WebFromAgentLog.xml"/>
+    <sqlMap resource="config/ibatis/sys/SignUp.xml"/>
+    <!-- CMS -->
+    <sqlMap resource="config/ibatis/cms/Article.xml"/>
+	<sqlMap resource="config/ibatis/cms/Columns.xml"/>
+	<sqlMap resource="config/ibatis/cms/Comment.xml"/>
+	<sqlMap resource="config/ibatis/cms/Commentfrom.xml"/>
+	<sqlMap resource="config/ibatis/cms/Template.xml"/>
+	<sqlMap resource="config/ibatis/cms/SqAnswer.xml"/>
+	<sqlMap resource="config/ibatis/cms/SurveyQst.xml"/>
+	<sqlMap resource="config/ibatis/cms/Announcement.xml"/>
+	 <!-- 课程 -->
+	<sqlMap resource="config/ibatis/cou/SellWay.xml"/>
+	<sqlMap resource="config/ibatis/cou/Course.xml"/>
+	<sqlMap resource="config/ibatis/cou/Coursepic.xml"/>
+	<sqlMap resource="config/ibatis/cou/Coursesort.xml"/>
+	<sqlMap resource="config/ibatis/cou/Gmrecord.xml"/>
+	<sqlMap resource="config/ibatis/cou/Kpoint.xml"/>
+	<sqlMap resource="config/ibatis/cou/Tjcourse.xml"/>
+	<sqlMap resource="config/ibatis/cou/TcCouRecord.xml"/>
+	<sqlMap resource="config/ibatis/cou/Teacher.xml"/>
+	<sqlMap resource="config/ibatis/cou/HistoryPrice.xml"/>
+	<sqlMap resource="config/ibatis/cou/Coupon.xml"/>
+	<sqlMap resource="config/ibatis/cou/CpCus.xml"/>
+	<sqlMap resource="config/ibatis/cou/Uncoupon.xml"/>
+	<sqlMap resource="config/ibatis/cou/ClazzCou.xml"/>
+    <sqlMap resource="config/ibatis/cou/Clazz.xml"/>    
+    <sqlMap resource="config/ibatis/cou/SellCou.xml"/>
+	
+	<!-- 资源 -->
+	<sqlMap resource="config/ibatis/res/Books.xml"/>
+	<sqlMap resource="config/ibatis/res/Booksgroup.xml"/>
+	<sqlMap resource="config/ibatis/res/Picture.xml"/>
+	<sqlMap resource="config/ibatis/res/Vedio.xml"/>
+	<sqlMap resource="config/ibatis/res/Vediogroup.xml"/>
+	<sqlMap resource="config/ibatis/res/Notes.xml"/>
+	<sqlMap resource="config/ibatis/res/VedioCount.xml"/>	 
+	<sqlMap resource="config/ibatis/res/TvdTvd.xml"/>
+	<sqlMap resource="config/ibatis/res/TryVedio.xml"/>
+	<!--
+	 -->
+	
+	<!-- 学员 -->
+	<sqlMap resource="config/ibatis/cus/CusProtocalDetail.xml"/>
+	<sqlMap resource="config/ibatis/cus/CusProtocalCash.xml"/>
+	<sqlMap resource="config/ibatis/cus/Customer.xml"/>
+	<sqlMap resource="config/ibatis/cus/StudyPlan.xml"/>
+	<sqlMap resource="config/ibatis/cus/Problem.xml"/>
+    <sqlMap resource="config/ibatis/cus/ReProblem.xml"/>
+    <sqlMap resource="config/ibatis/cus/TotolsScore.xml"/>
+	<sqlMap resource="config/ibatis/cus/TsRecord.xml"/>
+	<sqlMap resource="config/ibatis/cus/LoginRecord.xml"/>
+	<sqlMap resource="config/ibatis/cus/Address.xml"/>
+	<sqlMap resource="config/ibatis/cus/Area.xml"/>
+	<sqlMap resource="config/ibatis/cus/OfficialCustomer.xml"/>
+	
+	<!-- 考试 -->
+	<sqlMap resource="config/ibatis/exam/Exampaper.xml"/>
+	<sqlMap resource="config/ibatis/exam/ExampaperRecord.xml"/>
+	<sqlMap resource="config/ibatis/exam/Options.xml"/>
+	<sqlMap resource="config/ibatis/exam/OptPic.xml"/>
+	<sqlMap resource="config/ibatis/exam/OptRecord.xml"/>
+	<sqlMap resource="config/ibatis/exam/Qst.xml"/>
+	<sqlMap resource="config/ibatis/exam/QstPic.xml"/>
+	<sqlMap resource="config/ibatis/exam/Reviews.xml"/>
+	<sqlMap resource="config/ibatis/exam/QstKb.xml"/>
+	<sqlMap resource="config/ibatis/exam/Qstmiddle.xml"/>
+	<sqlMap resource="config/ibatis/exam/FavoritesPaper.xml"/>
+	<sqlMap resource="config/ibatis/exam/FavoritesQuestion.xml"/>
+	<!-- 学员管理 -->
+	<sqlMap resource="config/ibatis/cusmgr/CusCouKpoint.xml"/>
+	<sqlMap resource="config/ibatis/cusmgr/CusMgr.xml"/>
+	
+	<!-- 账户管理 -->
+	<sqlMap resource="config/ibatis/finance/Account.xml"/>
+	<sqlMap resource="config/ibatis/finance/CashRecord.xml"/>
+	<sqlMap resource="config/ibatis/finance/Contract.xml"/>
+	<sqlMap resource="config/ibatis/finance/Cod.xml"/>
+	<sqlMap resource="config/ibatis/finance/CouponType.xml"/>
+	<sqlMap resource="config/ibatis/finance/Cooperation.xml"/>
+	<sqlMap resource="config/ibatis/finance/Coupon.xml"/>
+	<sqlMap resource="config/ibatis/finance/ChildContract.xml"/>
+	<!-- 任务管理 -->
+	<sqlMap resource="config/ibatis/tk/TaskCus.xml"/>
+	<sqlMap resource="config/ibatis/tk/Task.xml"/>
+
+	<!-- 消息管理 -->
+	<sqlMap resource="config/ibatis/msg/Message.xml"/>
+	<sqlMap resource="config/ibatis/msg/UserMsg.xml"/>
+
+	<!-- 知识库管理 -->
+	<sqlMap resource="config/ibatis/kb/Chapter.xml"/>
+	<sqlMap resource="config/ibatis/kb/Difficulty.xml"/>
+	<sqlMap resource="config/ibatis/kb/KnowledgeSystem.xml"/>
+	<sqlMap resource="config/ibatis/kb/KnowledgeUnit.xml"/>
+	<sqlMap resource="config/ibatis/kb/Professional.xml"/>
+	<sqlMap resource="config/ibatis/kb/Section.xml"/>
+	<sqlMap resource="config/ibatis/kb/StudyCourse.xml"/>
+	<sqlMap resource="config/ibatis/kb/Knowledge.xml"/>
+		<!-- 学习计划-->
+	<sqlMap resource="config/ibatis/stu/VideoStatistics.xml"/>
+	<sqlMap resource="config/ibatis/stu/CourseSummary.xml"/>
+	<sqlMap resource="config/ibatis/stu/ExamStat.xml"/>
+	<sqlMap resource="config/ibatis/stu/ExamSummary.xml"/>
+	<sqlMap resource="config/ibatis/stu/Plan.xml"/>
+	<sqlMap resource="config/ibatis/stu/Planclock.xml"/>
+	<sqlMap resource="config/ibatis/stu/Planitem.xml"/>
+	<sqlMap resource="config/ibatis/stu/VideoStat.xml"/>
+	<!-- 评价管理-->
+	<sqlMap resource="config/ibatis/ass/Assess.xml"/>
+	<sqlMap resource="config/ibatis/ass/Reassess.xml"/>
+	
+	<!-- dis -->
+	<sqlMap resource="config/ibatis/dis/DisArea.xml" />
+	<sqlMap resource="config/ibatis/dis/Discussion.xml" />
+	<sqlMap resource="config/ibatis/dis/Topic.xml" />
+	<sqlMap resource="config/ibatis/dis/TopicReply.xml" />
+	<sqlMap resource="config/ibatis/dis/Vote.xml" />
+	<sqlMap resource="config/ibatis/dis/VoteDetail.xml" />
+	<sqlMap resource="config/ibatis/dis/VoteLog.xml" />
+	<sqlMap resource="config/ibatis/dis/CusUserDis.xml" />
+	<sqlMap resource="config/ibatis/dis/Plate.xml"/>	
+	<sqlMap resource="config/ibatis/dis/DisWord.xml"/>
+        <sqlMap resource="config/ibatis/dis/Tags.xml"/>
+	<sqlMap resource="config/ibatis/dis/TagsRelation.xml"/>
+	<sqlMap resource="config/ibatis/dis/UniqueRecord.xml"/>
+        <!-- ͼÊ -->
+	<sqlMap resource="config/ibatis/book/BuyInfo.xml"/>
+	<!-- 微学习(订阅) -->
+	<sqlMap resource="config/ibatis/feed/SubscribeUser.xml"/>
+	<sqlMap resource="config/ibatis/feed/TaskList.xml"/>
+	<sqlMap resource="config/ibatis/feed/TaskLog.xml"/>
+	<sqlMap resource="config/ibatis/feed/Template.xml"/>
+	<sqlMap resource="config/ibatis/feed/VideoLog.xml"/>
+	<sqlMap resource="config/ibatis/feed/Videoaddress.xml"/>
+	<sqlMap resource="config/ibatis/feed/PlanningMode.xml"/>
+	<sqlMap resource="config/ibatis/feed/UniqueRecord.xml"/>	
+	<sqlMap resource="config/ibatis/feed/Course.xml"/>
+	<sqlMap resource="config/ibatis/feed/TaskSendLog.xml"/>
+	<sqlMap resource="config/ibatis/feed/Review.xml"/>
+	<sqlMap resource="config/ibatis/feed/Ad.xml"/>
+	<sqlMap resource="config/ibatis/feed/AdStat.xml"/>
+	<sqlMap resource="config/ibatis/feed/BrowseLog.xml"/>
+	<sqlMap resource="config/ibatis/feed/UserUse.xml"/>
+	<sqlMap resource="config/ibatis/feed/UserStat.xml"/>
+	<sqlMap resource="config/ibatis/feed/From.xml"/>
+	<sqlMap resource="config/ibatis/feed/UserStatLog.xml"/>
+	<sqlMap resource="config/ibatis/feed/Entrance.xml"/>
+	<sqlMap resource="config/ibatis/feed/StudentStat.xml"/>
+
+	
+	<sqlMap resource="config/ibatis/cus/CustomerFeedback.xml"/>
+	<!-- 指派功能 -->
+ 	<sqlMap resource="config/ibatis/crm/User.xml"/>
+ 	<sqlMap resource="config/ibatis/crm/Chance.xml"/>
+	<sqlMap resource="config/ibatis/crm/Record.xml"/>
+
+	<sqlMap resource="config/ibatis/velocity/Velocity.xml"/>
+	<sqlMap resource="config/ibatis/tmp/TmpStYhj.xml"/>
+	<sqlMap resource="config/ibatis/tmp/TmpStUser.xml"/>
+	
+	
+	<!-- 知识库 -->
+	<sqlMap resource="config/ibatis/kno/NodePreMid.xml"/>
+	<sqlMap resource="config/ibatis/kno/PreItem.xml"/>
+	<sqlMap resource="config/ibatis/kno/PreNode.xml"/>
+	<sqlMap resource="config/ibatis/kno/SysNode.xml"/>
+	<sqlMap resource="config/ibatis/kno/Sys.xml"/>
+	<sqlMap resource="config/ibatis/kno/Resolve.xml"/>
+	<sqlMap resource="config/ibatis/kno/VideoRel.xml"/>
+	<sqlMap resource="config/ibatis/kno/QstRel.xml"/>
+	
+	<!-- 新鲜事 -->
+	<sqlMap resource="config/ibatis/freshnews/ActionRecord.xml"/>
+	<sqlMap resource="config/ibatis/freshnews/ActionReply.xml"/>
+	<!-- 卡管理 -->
+	<sqlMap resource="config/ibatis/card/CardMain.xml"/>
+	<sqlMap resource="config/ibatis/card/CardCourse.xml"/>
+	<sqlMap resource="config/ibatis/card/CardCourseSell.xml"/>
+</sqlMapConfig>

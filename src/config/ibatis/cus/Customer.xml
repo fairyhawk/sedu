@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Customer_NS">
+	<!--table:CUS_CUSTOMER_TBL-->
+	<typeAlias alias="Customer"
+		type="com.shangde.edu.cus.domain.Customer" />
+	<typeAlias alias="SimpleCustomerDTO"
+		type="com.shangde.edu.cus.dto.SimpleCustomerDTO" />
+	<typeAlias alias="QueryCustomerCondition"
+		type="com.shangde.edu.cus.condition.QueryCustomerCondition" />
+	<typeAlias alias="QueryContractCondition"
+		type="com.shangde.edu.finance.condition.QueryContractCondition" />
+	<typeAlias alias="VideoCusRank" type="com.shangde.edu.cus.domain.CusRankInfo"/>
+	
+	<resultMap id="VideoCusRankResult" class="VideoCusRank">
+            <result property="type" column="type"/>
+            <result property="cusid" column="cus_id"/>
+            <result property="count" column="count"/>
+            <result property="rank" column="rank"/>
+    </resultMap>
+        
+	<!-- temp -->
+	<typeAlias alias="Contract1"
+		type="com.shangde.edu.finance.domain.Contract" />
+	<resultMap id="ContractResult" class="Contract1">
+		<result property="cusId" column="CUS_ID" />
+		<result property="id" column="ID" />
+		<result property="contractId" column="CONTRACT_ID" />
+		<result property="contractFrom" column="CONTRACT_FROM" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="status" column="STATUS" />
+		<result property="payType" column="PAY_TYPE" />
+		<result property="remark" column="REMARK" />
+		<result property="contractSumMoney" column="CONTRACT_SUMMONEY" />
+		<result property="contractCutSumMoney"
+			column="CONTRACT_CUTSUMMONEY" />
+		<result property="useCoupon" column="USECOUPON" />
+		<result property="couponMoney" column="COUPON_MONEY" />
+		<result property="payTime" column="PAY_TIME" />
+		<result property="callSum" column="CALL_SUM" />
+	</resultMap>
+
+	<sql id="FINANCE_CONTRACT_TBL_columns">
+		FINANCE_CONTRACT_TBL.CUS_ID, FINANCE_CONTRACT_TBL.ID,
+		FINANCE_CONTRACT_TBL.CONTRACT_ID,
+		FINANCE_CONTRACT_TBL.CONTRACT_FROM,
+		FINANCE_CONTRACT_TBL.CREATE_TIME, FINANCE_CONTRACT_TBL.STATUS,
+		FINANCE_CONTRACT_TBL.PAY_TYPE, FINANCE_CONTRACT_TBL.REMARK,
+		FINANCE_CONTRACT_TBL.CONTRACT_SUMMONEY,
+		FINANCE_CONTRACT_TBL.CONTRACT_CUTSUMMONEY,
+		FINANCE_CONTRACT_TBL.USECOUPON,
+		FINANCE_CONTRACT_TBL.COUPON_MONEY,
+		FINANCE_CONTRACT_TBL.PAY_TIME, FINANCE_CONTRACT_TBL.CALL_SUM
+	</sql>
+	<!-- temp end-->
+
+	<resultMap id="CustomerResult" class="Customer">
+		<result property="cusId" column="CUS_ID" />
+		<result property="cusName" column="CUS_NAME" />
+		<result property="cusPwd" column="CUS_PWD" />
+		<result property="email" column="EMAIL" />
+		<result property="mobile" column="MOBILE" />
+		<result property="realName" column="REAL_NAME" />
+		<result property="sex" column="SEX" />
+		<result property="idNum" column="ID_NUM" />
+		<result property="qq" column="QQ" />
+		<result property="photo" column="PHOTO" />
+		<result property="lastloginIP" column="LASTLOGIN_IP" />
+		<result property="lastloginTime" column="LASTLOGIN_TIME" />
+		<result property="regTime" column="REG_TIME" />
+		<result property="birthday" column="BIRTHDAY" />
+		<result property="loginTimes" column="LOGIN_TIMES" />
+		<result property="isComplete" column="IS_COMPLETE" />
+		<result property="completeTime" column="COMPLETE_TIME" />
+		<result property="MSN" column="MSN" />
+		<result property="address" column="ADDRESS" />
+		<result property="cusType" column="CUS_TYPE" />
+		<result property="studyType" column="STUDY_TYPE" />
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="cusFromUrl" column="CUS_FROM_URL" />
+		<result property="cusWebFrom" column="CUS_WEB_FROM" />
+		<result property="cusWebAgent" column="CUS_WEB_AGENT" />
+		<result property="fromType" column="fromType" />
+		<result property="signature" column="SIGNATURE" />
+	</resultMap>
+
+	<resultMap id="SimpleCustomerDTOResult" class="SimpleCustomerDTO">
+		<result property="cusId" column="CUS_ID" />
+		<result property="cusName" column="CUS_NAME" />
+		<result property="cusType" column="CUS_TYPE" />
+	</resultMap>
+	<resultMap id="SubjectCustomerDTOResult"
+		class="com.shangde.edu.cus.domain.SubjectCustomerDTO">
+		<result property="cusId" column="CUS_ID" />
+		<result property="cusName" column="CUS_NAME" />
+		<result property="contractNumber" column="CUS_ID"
+			select="Contract_NS.getUserContractCount" />
+		<result property="contractNumberPay" column="CUS_ID"
+			select="Contract_NS.getUserContractCountPay" />
+	</resultMap>
+	<resultMap id="CustomerResultWithLoginRecord" class="Customer"
+		extends="CustomerResult">
+		<result property="loginRecordList" column="CUS_ID"
+			select="LoginRecord_NS.getLoginRecordListByCusLimit5" />
+	</resultMap>
+
+	<resultMap id="CustomerWithConSizeResult"
+		class="com.shangde.edu.cus.domain.CustomerWithConSizeDTO"
+		extends="CustomerResultWithLoginRecord">
+		<result property="contractCount" column="CONTRACT_COUNT" />
+		<result property="contractStatus" column="CONTRACT_STATUS" />
+		<result property="cusSubject" column="SUBJECT_ID"
+			select="Subject_NS.getSubjectById" />
+	</resultMap>
+
+	<sql id="CUS_CUSTOMER_TBL_columns">
+		CUS_CUSTOMER_TBL.CUS_ID, CUS_CUSTOMER_TBL.CUS_NAME,
+		CUS_CUSTOMER_TBL.CUS_PWD, CUS_CUSTOMER_TBL.EMAIL,
+		CUS_CUSTOMER_TBL.MOBILE, CUS_CUSTOMER_TBL.REAL_NAME,
+		CUS_CUSTOMER_TBL.SEX, CUS_CUSTOMER_TBL.ID_NUM,
+		CUS_CUSTOMER_TBL.QQ, CUS_CUSTOMER_TBL.PHOTO,
+		CUS_CUSTOMER_TBL.LASTLOGIN_IP, CUS_CUSTOMER_TBL.LASTLOGIN_TIME,
+		CUS_CUSTOMER_TBL.REG_TIME, CUS_CUSTOMER_TBL.BIRTHDAY,
+		CUS_CUSTOMER_TBL.LOGIN_TIMES, CUS_CUSTOMER_TBL.IS_COMPLETE,
+		CUS_CUSTOMER_TBL.COMPLETE_TIME, CUS_CUSTOMER_TBL.MSN,
+		CUS_CUSTOMER_TBL.ADDRESS, CUS_CUSTOMER_TBL.CUS_TYPE,
+		CUS_CUSTOMER_TBL.STUDY_TYPE, CUS_CUSTOMER_TBL.SUBJECT_ID,
+		CUS_CUSTOMER_TBL.CUS_FROM_URL,
+		CUS_CUSTOMER_TBL.CUS_WEB_FROM,
+		CUS_CUSTOMER_TBL.CUS_WEB_AGENT,
+		CUS_CUSTOMER_TBL.fromtype,
+		CUS_CUSTOMER_TBL.SIGNATURE
+	</sql>
+
+	<sql id="CUS_CUSTOMER_TBL_properties">
+		#cusId#, #cusName#, #cusPwd#, #email#, #mobile#, #realName#,
+		#sex#, #idNum#, #qq#, #photo#, #lastloginIP#, #lastloginTime#,
+		#regTime#, #birthday#, #loginTimes#, #isComplete#,
+		#completeTime#, #MSN#, #address#, #cusType#, #studyType#,
+		#subjectId#, #cusFromUrl#,#cusWebFrom#,#cusWebAgent#,#fromType#,
+		#signature#
+	</sql>
+
+	<insert id="createCustomer" parameterClass="Customer">
+		INSERT INTO CUS_CUSTOMER_TBL (
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		) VALUES (
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_properties" />
+		)
+		<selectKey resultClass="int" type="post" keyProperty="cusId">
+			<include refid="public_sql.increment_sql" />
+		</selectKey>
+	</insert>
+
+	<delete id="deleteCustomerById" parameterClass="int">
+		DELETE FROM CUS_CUSTOMER_TBL WHERE CUS_ID = #value#
+	</delete>
+	
+	<select id="getCusVideoRankList" resultMap="VideoCusRankResult" parameterClass="int">
+        	select * from cus_rank_tbl c where c.cus_id = #cusId#
+    </select>
+
+	<update id="updateCustomer" parameterClass="Customer">
+		UPDATE CUS_CUSTOMER_TBL SET CUS_ID = #cusId#, CUS_NAME =
+		#cusName#, CUS_PWD = #cusPwd#, EMAIL = #email#, MOBILE =
+		#mobile#, REAL_NAME = #realName#, SEX = #sex#, ID_NUM = #idNum#,
+		QQ = #qq#, PHOTO = #photo#, LASTLOGIN_IP = #lastloginIP#,
+		LASTLOGIN_TIME = #lastloginTime#, REG_TIME = #regTime#, BIRTHDAY
+		= #birthday#, LOGIN_TIMES = #loginTimes#, IS_COMPLETE =
+		#isComplete#, COMPLETE_TIME = #completeTime#, MSN = #MSN#,
+		ADDRESS = #address#, CUS_TYPE=#cusType#, STUDY_TYPE=#studyType#,
+		SUBJECT_ID=#subjectId#, CUS_FROM_URL=#cusFromUrl# WHERE CUS_ID =
+		#cusId#
+
+	</update>
+		<update id="updateCustomerNewerFlag" parameterClass="Customer">
+		UPDATE CUS_CUSTOMER_TBL SET   newerflag=#newerflag# WHERE CUS_ID =
+		#cusId#
+
+	</update>
+	
+	<update id="updateCustomerName" parameterClass="Customer">
+		UPDATE CUS_CUSTOMER_TBL SET   CUS_NAME =#cusName#  WHERE CUS_ID =#cusId#
+	</update>
+	
+	<update id="updateCusSignature" parameterClass="java.util.HashMap">
+		UPDATE CUS_CUSTOMER_TBL SET   SIGNATURE =#signature#  WHERE CUS_ID =#cusId#
+	</update>
+	
+	
+	<!-- ShiTing PanDuan  -->
+	<select id="isComplete" resultClass="int" parameterClass="int">
+		SELECT count(*) from cus_customer_tbl where
+		cus_customer_tbl.cus_id =#cusId# and
+		cus_customer_tbl.is_complete = 1 and TO_DAYS(now()) -
+		TO_DAYS(cus_customer_tbl.complete_time)
+		<![CDATA[ <= 7 ]]>
+
+	</select>
+	<!-- ShiTing PanDuan  -->
+
+	<select id="getCustomerById" resultClass="Customer"
+		parameterClass="int" >
+		SELECT
+			CUS_CUSTOMER_TBL.CUS_ID  as  cusId,
+			CUS_CUSTOMER_TBL.CUS_NAME  as  cusName,
+			CUS_CUSTOMER_TBL.CUS_PWD  as  cusPwd,
+			CUS_CUSTOMER_TBL.EMAIL  as  email,
+			CUS_CUSTOMER_TBL.MOBILE  as  mobile,
+			CUS_CUSTOMER_TBL.REAL_NAME  as  realName,
+			CUS_CUSTOMER_TBL.SEX  as  sex,
+			CUS_CUSTOMER_TBL.ID_NUM  as  idNum,
+			CUS_CUSTOMER_TBL.QQ  as  qq,
+			CUS_CUSTOMER_TBL.PHOTO  as  photo,
+			CUS_CUSTOMER_TBL.LASTLOGIN_IP  as  lastloginIP,
+			CUS_CUSTOMER_TBL.LASTLOGIN_TIME  as  lastloginTime,
+			CUS_CUSTOMER_TBL.REG_TIME  as  regTime,
+			CUS_CUSTOMER_TBL.BIRTHDAY  as  birthday,
+			CUS_CUSTOMER_TBL.LOGIN_TIMES  as  loginTimes,
+			CUS_CUSTOMER_TBL.IS_COMPLETE  as  isComplete,
+			CUS_CUSTOMER_TBL.COMPLETE_TIME  as  completeTime,
+			CUS_CUSTOMER_TBL.MSN  as  MSN,
+			CUS_CUSTOMER_TBL.ADDRESS  as  address,
+			CUS_CUSTOMER_TBL.CUS_TYPE  as  cusType,
+			CUS_CUSTOMER_TBL.STUDY_TYPE  as  studyType,
+			CUS_CUSTOMER_TBL.SUBJECT_ID  as  subjectId,
+			CUS_CUSTOMER_TBL.CUS_FROM_URL as cusFromUrl,
+			CUS_CUSTOMER_TBL.newerflag as newerflag,
+			CUS_CUSTOMER_TBL.SIGNATURE as signature
+		FROM CUS_CUSTOMER_TBL WHERE CUS_ID = #value#
+	</select>
+
+	<select id="getCustomerCount" resultClass="int"
+		parameterClass="QueryCustomerCondition">
+		SELECT COUNT(*) FROM CUS_CUSTOMER_TBL WHERE
+		SUBJECT_ID=#subjectId#
+		<isNotEqual property="cusType" compareValue="100">
+			AND CUS_TYPE=#cusType#
+		</isNotEqual>
+		<isNotNull prepend="and" property="startCountTime">
+			<isNotEqual property="startCountTime" compareValue="">
+				<![CDATA[  REG_TIME >= #startCountTime# ]]>
+			</isNotEqual>
+		</isNotNull>
+		<isNotNull prepend="and" property="endCountTime">
+			<isNotEqual property="endCountTime" compareValue="">
+				<![CDATA[  REG_TIME <= #endCountTime# ]]>
+			</isNotEqual>
+		</isNotNull>
+		<isNotNull prepend="and" property="cusFromUrl">
+			<isNotEqual property="cusFromUrl" compareValue="">
+				CUS_FROM_URL=#cusFromUrl#
+			</isNotEqual>
+		</isNotNull>
+	</select>
+
+	<select id="getCustomerByView"
+		resultMap="Customer_NS.CustomerResultWithLoginRecord"
+		parameterClass="int">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		FROM CUS_CUSTOMER_TBL WHERE CUS_ID = #value#
+	</select>
+	<select id="getCustomerByEmail"
+		resultMap="Customer_NS.CustomerResult"
+		parameterClass="java.lang.String">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		FROM CUS_CUSTOMER_TBL WHERE EMAIL = #value#
+		limit 1
+	</select>
+	
+	<select id="getCustomerListByMobile" resultMap="Customer_NS.CustomerResult" parameterClass="QueryCustomerCondition">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		FROM CUS_CUSTOMER_TBL WHERE MOBILE = #mobile#	
+	</select>
+	
+	<select id="getCustomerList" resultMap="Customer_NS.CustomerResult"
+		parameterClass="QueryCustomerCondition">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		FROM CUS_CUSTOMER_TBL WHERE 1 = 1
+		<isNotNull prepend="and" property="cusType">
+			<isNotEqual property="cusType" compareValue="">
+				CUS_TYPE=#cusType#
+			</isNotEqual>
+		</isNotNull>
+
+	</select>
+
+	<select id="getSimpleCustomerDTOListByCondition"
+		resultMap="Customer_NS.SimpleCustomerDTOResult"
+		parameterClass="QueryCustomerCondition">
+		SELECT CUS_CUSTOMER_TBL.CUS_ID, CUS_CUSTOMER_TBL.CUS_NAME,
+		CUS_CUSTOMER_TBL.cus_Type FROM CUS_CUSTOMER_TBL WHERE 1=1
+		<isNotNull property="cusName">
+			<isNotEqual property="cusName" compareValue="">
+				AND CUS_NAME LIKE CONCAT('%',#cusName#,'%')
+			</isNotEqual>
+		</isNotNull>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="getCustomerListByCondition"
+		resultMap="Customer_NS.CustomerWithConSizeResult"
+		parameterClass="QueryCustomerCondition">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		, ( SELECT COUNT(1) FROM FINANCE_CONTRACT_TBL WHERE
+		FINANCE_CONTRACT_TBL.CUS_ID = CUS_CUSTOMER_TBL.CUS_ID )
+		CONTRACT_COUNT, (SELECT COUNT(1) FROM FINANCE_CONTRACT_TBL WHERE
+		FINANCE_CONTRACT_TBL.CUS_ID = CUS_CUSTOMER_TBL.CUS_ID AND
+		FINANCE_CONTRACT_TBL.STATUS=1) CONTRACT_STATUS FROM
+		CUS_CUSTOMER_TBL WHERE 1=1
+		<isNotNull property="email">
+			<isNotEqual property="email" compareValue="">
+				AND EMAIL LIKE CONCAT('%',#email#,'%')
+			</isNotEqual>
+		</isNotNull>
+		<isNotNull property="mobile">
+			<isNotEqual property="mobile" compareValue="">
+				AND MOBILE LIKE CONCAT('%',#mobile#,'%')
+			</isNotEqual>
+		</isNotNull>
+
+		<isNotNull prepend="and" property="startTime">
+			<![CDATA[  REG_TIME >= #startTime# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="endTime">
+			<![CDATA[  REG_TIME <= #endTime# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="startNumber">
+			<![CDATA[  LOGIN_TIMES >= #startNumber# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="endNumber">
+			<![CDATA[  LOGIN_TIMES <= #endNumber# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="regTime">
+			REG_TIME LIKE '%$regTime$%'
+		</isNotNull>
+		<isNotNull property="cusType">
+			<isNotEqual property="cusType" compareValue=""
+				prepend="and">
+				CUS_TYPE=#cusType#
+			</isNotEqual>
+		</isNotNull>
+		<isNotNull prepend="and" property="dateDay">
+			REG_TIME LIKE '%$dateDay$%'
+		</isNotNull>
+		<isNotEqual prepend="and" property="subjectId"
+			compareValue="-1">
+			SUBJECT_ID = #subjectId#
+		</isNotEqual>
+		<isNotNull property="cusFromUrl">
+			<isNotEqual property="cusFromUrl" compareValue=""
+				prepend="and">
+				CUS_FROM_URL=#cusFromUrl#
+			</isNotEqual>
+		</isNotNull>
+		ORDER BY CUS_ID DESC
+		<include refid="public_sql.page_end" />
+	</select>
+	<select id="getCustomerCountByCondition" resultClass="int"
+		parameterClass="QueryCustomerCondition">
+		SELECT COUNT(1) FROM CUS_CUSTOMER_TBL WHERE 1=1
+		<isNotNull property="email">
+			<isNotEqual property="email" compareValue="">
+				AND EMAIL LIKE CONCAT('%',#email#,'%')
+			</isNotEqual>
+		</isNotNull>
+		<isNotNull property="mobile">
+			<isNotEqual property="mobile" compareValue="">
+				AND MOBILE LIKE CONCAT('%',#mobile#,'%')
+			</isNotEqual>
+		</isNotNull>
+
+		<isNotNull prepend="and" property="startTime">
+			<![CDATA[  REG_TIME >= #startTime# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="endTime">
+			<![CDATA[  REG_TIME <= #endTime# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="startNumber">
+			<![CDATA[  LOGIN_TIMES >= #startNumber# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="endNumber">
+			<![CDATA[  LOGIN_TIMES <= #endNumber# ]]>
+		</isNotNull>
+		<isNotNull prepend="and" property="regTime">
+			REG_TIME LIKE '%$regTime$%'
+		</isNotNull>
+		<isNotNull property="cusType">
+			<isNotEqual property="cusType" compareValue=""
+				prepend="and">
+				CUS_TYPE=#cusType#
+			</isNotEqual>
+		</isNotNull>
+		<isNotNull prepend="and" property="dateDay">
+			REG_TIME LIKE '%$dateDay$%'
+		</isNotNull>
+		<isNotEqual prepend="and" property="subjectId"
+			compareValue="-1">
+			SUBJECT_ID = #subjectId#
+		</isNotEqual>
+		<isNotNull property="cusFromUrl">
+			<isNotEqual property="cusFromUrl" compareValue=""
+				prepend="and">
+				CUS_FROM_URL=#cusFromUrl#
+			</isNotEqual>
+		</isNotNull>
+	</select>
+
+	<select id="checkEmail" resultClass="int"
+		parameterClass="java.lang.String">
+		SELECT COUNT(1) FROM CUS_CUSTOMER_TBL WHERE EMAIL = #value#
+	</select>
+	<select id="checkMobile" resultClass="int"
+		parameterClass="java.lang.String">
+		SELECT COUNT(1) FROM CUS_CUSTOMER_TBL WHERE Mobile = #value#
+	</select>
+	
+	<select id="checkOldPwd" resultClass="int"
+		parameterClass="Customer">
+		SELECT COUNT(1) FROM CUS_CUSTOMER_TBL WHERE CUS_ID = #cusId# AND
+		CUS_PWD = #cusPwd#
+	</select>
+
+	<select id="getUIDByLogin" resultClass="java.lang.Integer"
+		parameterClass="Customer">
+		SELECT CUS_ID FROM CUS_CUSTOMER_TBL WHERE EMAIL = #email# AND
+		CUS_PWD = #cusPwd#
+	</select>
+
+	<select id="getSubjectListByCus"
+		resultMap="Subject_NS.SubjectResult" parameterClass="int">
+		SELECT DISTINCT
+		<include refid="Subject_NS.SYS_SUBJECT_TBL_columns" />
+		FROM CUS_CUS_COU_KPOINT_TBL CCK INNER JOIN COU_COURSE_TBL COU ON
+		CCK.COURSE_ID = COU.COURSE_ID INNER JOIN SYS_SUBJECT_TBL ON
+		COU.SUBJECT_ID = SYS_SUBJECT_TBL.SUBJECT_ID INNER JOIN
+		CMS_COLUMNS_TBL COL ON SYS_SUBJECT_TBL.SUBJECT_ID =
+		COL.SUBJECT_ID WHERE CCK.CUS_ID = #value# ORDER BY COL.SEQUENCE
+	</select>
+	<select id="getRegistNumber" resultClass="int"
+		parameterClass="QueryCustomerCondition">
+		SELECT COUNT(*) FROM CUS_CUSTOMER_TBL
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="startCountTime">
+				<![CDATA[  REG_TIME >= #startCountTime# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="endCountTime">
+				<![CDATA[  REG_TIME <= #endCountTime# ]]>
+			</isNotNull>
+			<isNotNull property="cusType">
+				<isNotEqual property="cusType" compareValue="3"
+					prepend="and">
+					CUS_TYPE=#cusType#
+				</isNotEqual>
+				<isEqual property="cusType" compareValue="3"
+					prepend="and">
+					CUS_TYPE!=#cusType#
+				</isEqual>
+			</isNotNull>
+			<isNotNull prepend="and" property="email">
+				EMAIL LIKE CONCAT('%',#email#,'%')
+			</isNotNull>
+			<isNotEqual property="subjectId" compareValue="0"
+				prepend="and">
+				SUBJECT_ID=#subjectId#
+			</isNotEqual>
+		</dynamic>
+	</select>
+	<select id="getRegistNumberList"
+		resultMap="Customer_NS.SubjectCustomerDTOResult"
+		parameterClass="QueryCustomerCondition">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		FROM CUS_CUSTOMER_TBL
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="startCountTime">
+				<![CDATA[  REG_TIME >= #startCountTime# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="endCountTime">
+				<![CDATA[  REG_TIME <= #endCountTime# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="cusType">
+				CUS_TYPE=#cusType#
+			</isNotNull>
+			<isNotNull prepend="and" property="email">
+				EMAIL LIKE CONCAT('%',#email#,'%')
+			</isNotNull>
+			<isNotEqual property="subjectId" compareValue="0"
+				prepend="and">
+				SUBJECT_ID=#subjectId#
+			</isNotEqual>
+		</dynamic>
+	</select>
+
+	<select id="getWeekRegistNumber" resultClass="java.lang.Integer"
+		parameterClass="String">
+		SELECT COUNT(*) FROM CUS_CUSTOMER_TBL WHERE
+		<![CDATA[  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(REG_TIME) ]]>
+	</select>
+	<select id="getMonthRegistNumber" resultClass="java.lang.Integer"
+		parameterClass="String">
+		SELECT COUNT(*) FROM CUS_CUSTOMER_TBL WHERE
+		<![CDATA[  DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= date(REG_TIME) ]]>
+	</select>
+	<select id="getThreeMonthRegistNumber"
+		resultClass="java.lang.Integer" parameterClass="String">
+		SELECT COUNT(*) FROM CUS_CUSTOMER_TBL WHERE
+		<![CDATA[  DATE_SUB(CURDATE(), INTERVAL 90 DAY) <= date(REG_TIME) ]]>
+	</select>
+	<select id="getMonthList" resultMap="Customer_NS.CustomerResult"
+		parameterClass="String">
+		SELECT * FROM CUS_CUSTOMER_TBL GROUP BY
+		DATE_FORMAT(CUS_CUSTOMER_TBL.`REG_TIME`,'%Y-%m') ORDER BY CUS_ID
+		DESC
+	</select>
+	<select id="getMonthRegist" resultClass="int"
+		parameterClass="String">
+		SELECT COUNT(*) FROM CUS_CUSTOMER_TBL WHERE CUS_TYPE=0 AND EMAIL
+		NOT LIKE 'cs%sunland.org.cn' AND REG_TIME LIKE '%$month$%'
+	</select>
+	<select id="getMonthDay" resultMap="Customer_NS.CustomerResult"
+		parameterClass="String">
+		SELECT * FROM CUS_CUSTOMER_TBL WHERE REG_TIME LIKE '%$month$%'
+		GROUP BY DATE_FORMAT(CUS_CUSTOMER_TBL.`REG_TIME`,'%Y-%m-%d')
+	</select>
+	<select id="getDay" resultMap="Customer_NS.CustomerResult"
+		parameterClass="String">
+		SELECT * FROM CUS_CUSTOMER_TBL WHERE REG_TIME LIKE '%$dateDay$%'
+	</select>
+	<!--end-->
+
+	<!-- fix data -->
+	<select id="getTestCustomerList"
+		resultMap="Customer_NS.CustomerResult"
+		parameterClass="QueryCustomerCondition">
+		SELECT distinct
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		from finance_contract_tbl,cus_customer_tbl where
+		finance_contract_tbl.CUS_ID = cus_customer_tbl.CUS_ID and
+		finance_contract_tbl.CONTRACT_ID = '---'
+	</select>
+
+	<select id="getPayContractListByCusId"
+		resultMap="Customer_NS.ContractResult"
+		parameterClass="QueryContractCondition">
+		SELECT
+		<include refid="Customer_NS.FINANCE_CONTRACT_TBL_columns" />
+		FROM FINANCE_CONTRACT_TBL where FINANCE_CONTRACT_TBL.cus_id =
+		#userId# and FINANCE_CONTRACT_TBL.status = 1
+	</select>
+
+	<select id="getQuestionContractListByCusId"
+		resultMap="Customer_NS.ContractResult"
+		parameterClass="QueryContractCondition">
+		SELECT
+		<include refid="Customer_NS.FINANCE_CONTRACT_TBL_columns" />
+		FROM FINANCE_CONTRACT_TBL where FINANCE_CONTRACT_TBL.cus_id =
+		#userId# and FINANCE_CONTRACT_TBL.status = 2 and
+		FINANCE_CONTRACT_TBL.CONTRACT_ID = '---'
+	</select>
+
+	<select id="getCourseListByContractId"
+		resultMap="Course_NS.CourseResult"
+		parameterClass="QueryContractCondition">
+		SELECT
+		<include refid="Course_NS.COU_COURSE_TBL_columns" />
+		from finance_contract_tbl,cou_course_tbl,
+		finance_cash_record_tbl where finance_contract_tbl.CONTRACT_ID =
+		finance_cash_record_tbl.CONTRACT_ID and cou_course_tbl.COURSE_ID
+		= finance_cash_record_tbl.COURSE_ID and
+		finance_contract_tbl.CONTRACT_ID = #contractId#;
+	</select>
+
+	<select id="getCusTypeCustomerList"
+		resultMap="Customer_NS.CustomerResult"
+		parameterClass="QueryCustomerCondition">
+		SELECT
+		<include refid="Customer_NS.CUS_CUSTOMER_TBL_columns" />
+		from cus_customer_tbl inner join cus_cus_cou_kpoint_tbl on
+		cus_customer_tbl.cus_id = cus_cus_cou_kpoint_tbl.cus_id where
+		not exists (select cus_customer_tbl.CUS_ID from
+		finance_cash_record_tbl where cus_customer_tbl.cus_id =
+		finance_cash_record_tbl.cus_id and
+		cus_cus_cou_kpoint_tbl.COURSE_ID =
+		finance_cash_record_tbl.COURSE_ID ) group by
+		cus_customer_tbl.CUS_ID
+	</select>
+	
+	 <typeAlias alias="Address" type="com.shangde.edu.cus.domain.Address"/>
+       <typeAlias alias="AddressDTO" type="com.shangde.edu.cus.dto.AddressDTO"/>
+      <resultMap id="AddressResult" class="Address">
+            <result property="id" column="ID"/>
+            <result property="cusId" column="CUS_ID"/>
+            <result property="receiver" column="RECEIVER"/>
+            <result property="address" column="ADDRESS"/>
+            <result property="postCode" column="POST_CODE"/>
+            <result property="mobile" column="MOBILE"/>
+            <result property="isFirst" column="IS_FIRST"/>
+            <result property="sendTime" column="SEND_TIME"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="provinceId" column="PROVINCE_ID"/>
+            <result property="cityId" column="CITY_ID"/>
+            <result property="townId" column="TOWN_ID"/>
+        </resultMap>
+        
+         <resultMap id="AddressDTOResult" class="AddressDTO" extends="AddressResult">
+        	<result property="provinceName" column="PROVINCE_NAME"/>
+            <result property="cityName" column="CITY_NAME"/>
+            <result property="townName" column="TOWN_NAME"/>
+        </resultMap>
+	<select id="getAddrByUserId" parameterClass="Integer" resultMap="Customer_NS.AddressDTOResult"  >
+	select *, 
+	(SELECT AREA_NAME FROM CUS_AREA_TBL WHERE CUS_AREA_TBL.ID = CUS_ADDRESS_TBL.PROVINCE_ID) AS PROVINCE_NAME,
+            (SELECT AREA_NAME FROM CUS_AREA_TBL WHERE CUS_AREA_TBL.ID = CUS_ADDRESS_TBL.CITY_ID) AS CITY_NAME,
+            (SELECT AREA_NAME FROM CUS_AREA_TBL WHERE CUS_AREA_TBL.ID = CUS_ADDRESS_TBL.TOWN_ID) AS TOWN_NAME 
+            from cus_address_tbl where CUS_ID=#value#
+	</select>
+	
+	 <select id="getCustomerRegNum" resultClass="int" parameterClass="QueryCustomerCondition">
+            select count(cus_id) from cus_customer_tbl 
+            <dynamic prepend="WHERE">
+            	<isNotEmpty prepend="AND" property="cusWebFrom">
+            		( CUS_CUSTOMER_TBL.CUS_WEB_FROM LIKE '%$cusWebFrom$%')
+            	</isNotEmpty>
+            	<isNotEmpty prepend="AND" property="cusWebAgent">
+            		( CUS_CUSTOMER_TBL.CUS_WEB_AGENT LIKE '%$cusWebAgent$%')
+            	</isNotEmpty>
+            </dynamic>
+     </select>
+	<update id="updateCustomerSubject" parameterClass="Customer">
+     	update cus_customer_tbl set SUBJECT_ID=#subjectId# where cus_id=#cusId#
+     </update>
+	<!-- fix data -->
+	
+	<select id="getCustomerRegTimeById" resultClass="Date"
+		parameterClass="int" >
+		SELECT
+			CUS_CUSTOMER_TBL.REG_TIME  as  regTime
+		FROM CUS_CUSTOMER_TBL WHERE CUS_ID = #value#
+	</select>
+	<select id="checkFreezeStatus" parameterClass="java.lang.Integer" resultClass="java.lang.Integer">
+		SELECT CUS_CUSTOMER_TBL.FREEZE_STATUS FROM CUS_CUSTOMER_TBL WHERE CUS_ID = #value#
+	</select>
+	
+	<select id="getCustomerClassmate" parameterClass="java.lang.Integer" resultClass="java.lang.Integer">
+		SELECT count(1) FROM CUS_CUSTOMER_TBL WHERE SUBJECT_ID = #value#
+	</select>
+</sqlMap>

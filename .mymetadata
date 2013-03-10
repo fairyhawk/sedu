@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="seduTemp"
+  id="myeclipse.1257130666526"
+  context-root="/sedu"
+  j2ee-spec="5.0"
+  archive="seduTemp.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

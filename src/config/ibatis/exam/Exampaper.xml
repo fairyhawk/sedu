@@ -1,0 +1,2179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Exampaper_NS">
+        <!--table:EXAM_EXAMPAPER_TBL-->
+        <typeAlias alias="Exampaper" type="com.shangde.edu.exam.domain.Exampaper"/>
+        <typeAlias alias="Coursesort" type="com.shangde.edu.cou.domain.Coursesort"/>
+        <typeAlias alias="Subject" type="com.shangde.edu.sys.domain.Subject" />
+        <typeAlias alias="exampaperCount" type="com.shangde.edu.exam.dto.ExampaperCountLastDay" />
+        <typeAlias alias="QueryExampaperCondition" type="com.shangde.edu.exam.condition.QueryExampaperCondition"/>
+		<typeAlias alias="exampaperSubjectId" type="com.shangde.edu.exam.dto.ExampaperSubjectId"/>
+		<typeAlias alias="exampaperListDTO" type="com.shangde.edu.exam.dto.ExampaperListDTO"/>
+		<typeAlias alias="SubjectExampaperNum" type="com.shangde.edu.exam.dto.SubjectExampaperNumDTO"/>
+		<typeAlias alias="ExamQst" type="com.shangde.edu.exam.dto.ExampaperQstDTO"/>
+		
+		<resultMap class="Subject" id="userBuySubject">
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="subjectName" column="SUBJECT_NAME" />
+		
+		</resultMap>
+		
+		<!-- 前台用户购买课程id -->
+		<resultMap class="exampaperSubjectId" id="SubjectIdResultWeb">
+			<result property="subjectId" column="SUBJECT_ID"/>
+		</resultMap>
+		
+		<resultMap class="SubjectExampaperNum" id="SubjectExampaperNum">
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="subjectName" column="SUBJECT_NAME" />
+		<result property="num" column="NUM" />
+		</resultMap>
+		
+				
+		<resultMap id="SubjectResultWeb" class="Subject">
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="subjectName" column="SUBJECT_NAME" />
+		<result property="status" column="STATUS" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="updateTime" column="UPDATE_TIME" />
+		<result property="testTime" column="TEST_TIME" />
+		</resultMap>
+		
+		<resultMap class="exampaperListDTO" id="exampaperList">
+			<result property="avgfen" column="AVGFEN"/>
+			<result property="sortId" column="SORT_ID"/>
+			<result property="counts" column="COUNTS"/>
+			<result property="epName" column="EP_NAME"/>
+			<result property="epId" column="EP_ID"/>
+			<result property="subjectId" column="SUBJECT_ID"/>
+			<result property="createTime" column="CREATE_TIME"/>
+			<result property="jifen" column="JIFEN"/>
+			<result property="coeffcient" column="COEFFCIENT"/>
+			<result property="joinNum" column="JOIN_NUM"/>
+			<result property="qstCount" column="QST_COUNT"/>
+		</resultMap>
+		
+        <resultMap id="ExampaperResult" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+            <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+            <result property="examqsttype" column="EXAMQSTTYPE"/>
+            <result property="qstmiddlecount" column="QST_COUNT"/>
+        </resultMap>
+        
+        <resultMap class="exampaperCount" id="exampaperCountLastDay">
+        	<result property="count" column="COUNTS"/>
+        	<result property="subjectName" column="SUBJECT_NAME"/>
+        </resultMap>
+        
+        <resultMap class="Exampaper" id="ExampaperDTOResult">
+        <result property="jifen" column="JIFEN"/>
+        <result property="epName" column="EP_NAME"/>
+        <result property="epId" column="EP_ID"/>
+        <result property="coeffcient" column="COEFFCIENT"/>
+        <result property="joinNum" column="JOIN_NUM"/>
+        <result property="coursesortName" column="COURSESORT_NAME"/>
+		<result property="isDone" column="done_num"/>
+		<result property="flag" column="FLAG"/>
+        </resultMap>
+        
+        <resultMap class="Exampaper" id="FavoritesExampaperDTO">
+        <result property="jifen" column="JIFEN"/>
+        <result property="epName" column="EP_NAME"/>
+        <result property="type" column="EP_TYPE"/>
+        <result property="coeffcient" column="COEFFCIENT"/>
+        <result property="level" column="LEVEL"/>
+        <result property="coursesortName" column="COURSESORT_NAME"/>
+        </resultMap>
+        
+        <!-- 前台getExampaperAlll -->
+         <resultMap id="ExampaperAlllResult" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+            <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+            <result property="examqsttype" column="EXAMQSTTYPE"/>
+            <result property="qstmiddlecount" column="QST_COUNT"/>
+        </resultMap>
+        
+        
+        
+         <!-- 前台getUserExamPaperByUserEpIdnew -->
+         <resultMap id="ExampaperAlllResultUserEp" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+            <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+             <result property="examqsttype" column="EXAMQSTTYPE"/>
+            <result property="qstmiddlecount" column="QST_COUNT"/>
+            </resultMap>
+        
+        
+         <!-- 前台ExampaperPaperResult -->
+         <resultMap id="ExampaperPaperResult" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+            <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+            <result property="examqsttype" column="EXAMQSTTYPE"/>
+            <result property="flag" column="FLAG"/>
+        </resultMap>
+        
+        <!-- 前台NewjudgmentPaper -->
+         <resultMap id="NewjudgmentPaper" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+            <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+            <result property="examqsttype" column="EXAMQSTTYPE"/>
+            <result property="reviewsList" column="EP_ID" select="Reviews_NS.getReviewsListByEpId"/>
+        </resultMap>
+        
+        <!-- 后台试卷管理查询 -->
+        <resultMap id="listExamPaperByConditionexamResult" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+            <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+            <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+            <result property="examqsttype" column="EXAMQSTTYPE"/>
+            <result property="subject" column="SUBJECT_ID" select="Subject_NS.getSubjectById"/>
+            <result property="qstmiddlecount" column="QST_COUNT" />
+            <result property="author" column="AUTHOR"/>
+             <result property="lastEditTime" column="LAST_EDIT_TIME"/>
+         </resultMap>
+        
+          <resultMap id="ExampaperResult1" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="courseId" column="COURSE_ID"/>
+             <result property="sortId" column="SORT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epInfo" column="EP_INFO"/>
+            <result property="epKeyword" column="EP_KEYWORD"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="epNum" column="EP_NUM"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="epState" column="EP_STATE"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="passNum" column="PASS_NUM"/>
+            <result property="kOrCouId" column="K_OR_COU_ID"/>
+            <result property="type" column="TYPE"/>
+            <result property="level" column="LEVEL"/>
+             <result property="eptypekeyword" column="EP_TYPE_KEYWORD"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="cid" column="C_ID"/>
+            <result property="zkId" column="Z_K_ID"/>
+            <result property="zzhuanyeId" column="ZZHUANYEID"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="endTime" column="ENDTIME"/>
+            <result property="examqsttype" column="EXAMQSTTYPE"/>
+             <result property="qstmiddlecount" column="QST_COUNT"/>
+             <result property="author" column="AUTHOR"/>
+             <result property="lastEditTime" column="LAST_EDIT_TIME"/>
+        </resultMap>
+        
+        <resultMap id="CoursesortResult" class="Coursesort">
+            <result property="coursesortId" column="COURSESORT_ID"/>
+            <result property="pId" column="P_ID"/>
+            <result property="coursesortName" column="COURSESORT_NAME"/>
+            <result property="addTime" column="ADD_TIME"/>
+            <result property="sortNum" column="SORT_NUM"/>
+            <result property="status" column="STATUS"/>
+            <result property="level" column="LEVEL"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="sortPicUrl" column="SORT_PIC_URL"/>
+        </resultMap>
+        
+        
+        <resultMap class="ExamQst" id="ExamQstResult">
+       		<result property="qstId" column="qst_id"/>
+	        <result property="score" column="SCORE"/>
+	        <result property="qstContent" column="QST_CONTENT"/>
+	        <result property="optOrder" column="OPT_ORDER"/>
+	        <result property="optContent" column="OPT_CONTENT"/>
+	        <result property="qstType" column="eqm.QST_TYPE"/>
+	        <result property="ziQstType" column="eq.qst_type"/>
+	        <result property="percent" column="RIGHT_PERCENT"/>
+	        <result property="flag" column="FLAG"/>
+	        <result property="isAsr" column="IS_ASR"/>
+	        <result property="wrongJude" column="WRONG_JUDE"/>
+        </resultMap>
+        
+        <!-- add by yanghaibo -->
+        <resultMap class="ExamQst" id="ExamQstDetail">
+       		<result property="qstId" column="qst_id"/>
+	        <result property="score" column="SCORE"/>
+	        <result property="qstContent" column="QST_CONTENT"/>
+	        <result property="optOrder" column="OPT_ORDER"/>
+	        <result property="optContent" column="OPT_CONTENT"/>
+	        <result property="qstType" column="eqm.QST_TYPE"/>
+	        <result property="ziQstType" column="eq.qst_type"/>
+	        <result property="percent" column="RIGHT_PERCENT"/>
+	        <result property="isAsr" column="IS_ASR"/>
+	        <result property="wrongJude" column="WRONG_JUDE"/>
+        </resultMap>
+
+		<resultMap class="Exampaper" id="ExampaperInfoResult">
+			<result property="epId" column="EP_ID"/>
+            <result property="epName" column="EP_NAME"/>
+            <result property="epTotelScore" column="EP_TOTEL_SCORE"/>
+            <result property="qstmiddlecount" column="QST_COUNT"/>
+            <result property="replyTime" column="REPLY_TIME"/>
+            <result property="eptype" column="EP_TYPE"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="coursesortName" column="COURSESORT_NAME"/>
+            <result property="level" column="LEVEL"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="maxfen" column="maxScore"/>
+            <result property="avgScore" column="avgScore"/>
+            <result property="minfen" column="minScore"/>
+		</resultMap>
+
+		<resultMap id="SubjectResultWeb" class="Subject">
+		<result property="subjectId" column="SUBJECT_ID" />
+		<result property="subjectName" column="SUBJECT_NAME" />
+		<result property="status" column="STATUS" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="updateTime" column="UPDATE_TIME" />
+		<result property="testTime" column="TEST_TIME" />
+		</resultMap>
+		
+		 <sql id="COU_COURSESORT_TBL_columns">
+            COU_COURSESORT_TBL.COURSESORT_ID,
+            COU_COURSESORT_TBL.P_ID,
+            COU_COURSESORT_TBL.COURSESORT_NAME,
+            COU_COURSESORT_TBL.ADD_TIME,
+            COU_COURSESORT_TBL.SORT_NUM,
+            COU_COURSESORT_TBL.STATUS,
+            COU_COURSESORT_TBL.LEVEL,
+            COU_COURSESORT_TBL.SUBJECT_ID,
+            COU_COURSESORT_TBL.SORT_PIC_URL
+        </sql>
+		
+        <sql id="EXAM_EXAMPAPER_TBL_columns">
+            EXAM_EXAMPAPER_TBL.EP_ID,
+            EXAM_EXAMPAPER_TBL.SUBJECT_ID,
+            EXAM_EXAMPAPER_TBL.COURSE_ID,
+            EXAM_EXAMPAPER_TBL.SORT_ID,
+            EXAM_EXAMPAPER_TBL.EP_NAME,
+            EXAM_EXAMPAPER_TBL.EP_INFO,
+            EXAM_EXAMPAPER_TBL.EP_KEYWORD,
+            EXAM_EXAMPAPER_TBL.REPLY_TIME,
+            EXAM_EXAMPAPER_TBL.EP_TOTEL_SCORE,
+            EXAM_EXAMPAPER_TBL.EP_NUM,
+            EXAM_EXAMPAPER_TBL.CREATE_TIME,
+            EXAM_EXAMPAPER_TBL.EP_STATE,
+            EXAM_EXAMPAPER_TBL.USER_ID,
+            EXAM_EXAMPAPER_TBL.COEFFCIENT,
+            EXAM_EXAMPAPER_TBL.JOIN_NUM,
+            EXAM_EXAMPAPER_TBL.PASS_NUM,
+            EXAM_EXAMPAPER_TBL.K_OR_COU_ID,
+            EXAM_EXAMPAPER_TBL.TYPE,
+            EXAM_EXAMPAPER_TBL.LEVEL,
+            EXAM_EXAMPAPER_TBL.EP_TYPE_KEYWORD,
+            EXAM_EXAMPAPER_TBL.EP_TYPE,
+            EXAM_EXAMPAPER_TBL.C_ID,
+            EXAM_EXAMPAPER_TBL.Z_K_ID,
+            EXAM_EXAMPAPER_TBL.ZZHUANYEID,
+            EXAM_EXAMPAPER_TBL.JIFEN,
+            EXAM_EXAMPAPER_TBL.ENDTIME,
+            EXAM_EXAMPAPER_TBL.EXAMQSTTYPE,
+            EXAM_EXAMPAPER_TBL.QST_COUNT,
+            EXAM_EXAMPAPER_TBL.AUTHOR,
+            EXAM_EXAMPAPER_TBL.LAST_EDIT_TIME
+        </sql>
+
+        <sql id="EXAM_EXAMPAPER_TBL_properties">
+            #epId#,
+            #subjectId#,
+            #courseId#,
+            #sortId#,
+            #epName#,
+            #epInfo#,
+            #epKeyword#,
+            #replyTime#,
+            #epTotelScore#,
+            #epNum#,
+            #createTime#,
+            #epState#,
+            #userId#,
+            #coeffcient#,
+            #joinNum#,
+            #passNum#,
+            #kOrCouId#,
+            #type#,
+            #level#,
+            #eptypekeyword#,
+            #eptype#,
+            #cid#,
+            #zkId#,
+            #zzhuanyeId#,
+            #jifen#,
+            #endTime#,
+            #examqsttype#,
+            #qstmiddlecount#,
+            #author#,
+            #lastEditTime#
+        </sql>
+		
+		 <resultMap id="ExampaperResultTest" class="Exampaper">
+            <result property="epId" column="EP_ID"/>
+            <result property="subjectId" column="SUBJECT_ID"/>
+            <result property="epName" column="EP_NAME"/>
+         </resultMap>
+
+		<sql id="EXAM_EXAMPAPER_TBL_columnsTest">
+            EXAM_EXAMPAPER_TBL.EP_ID,
+            EXAM_EXAMPAPER_TBL.SUBJECT_ID,
+            EXAM_EXAMPAPER_TBL.EP_NAME
+        </sql>
+        
+        <sql id="SYS_SUBJECT_TBL_columns">
+		SYS_SUBJECT_TBL.SUBJECT_ID, SYS_SUBJECT_TBL.SUBJECT_NAME,
+		SYS_SUBJECT_TBL.STATUS, SYS_SUBJECT_TBL.CREATE_TIME,
+		SYS_SUBJECT_TBL.UPDATE_TIME,SYS_SUBJECT_TBL.TEST_TIME
+	    </sql>
+		<!-- 后台
+		后台
+		后台
+		
+		
+		
+		
+		后台
+		 -->
+        <insert id="createExampaper" parameterClass="Exampaper">
+            INSERT INTO EXAM_EXAMPAPER_TBL (<include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>) VALUES (<include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="epId" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteExampaperById" parameterClass="int">
+            DELETE FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                EP_ID = #value#
+        </delete>
+        
+        <update id="updateExampaper" parameterClass="Exampaper">
+            UPDATE EXAM_EXAMPAPER_TBL SET
+                EP_ID = #epId#,
+                SUBJECT_ID = #subjectId#,
+                COURSE_ID =#courseId#,
+                SORT_ID = #sortId#,
+                EP_NAME = #epName#,
+                EP_INFO = #epInfo#,
+                EP_KEYWORD = #epKeyword#,
+                REPLY_TIME = #replyTime#,
+                EP_TOTEL_SCORE = #epTotelScore#,
+                EP_NUM = #epNum#,
+                CREATE_TIME = #createTime#,
+                EP_STATE = #epState#,
+                USER_ID = #userId#,
+                COEFFCIENT = #coeffcient#,
+                JOIN_NUM = #joinNum#,
+                PASS_NUM = #passNum#,
+                K_OR_COU_ID = #kOrCouId#,
+                TYPE = #type#,
+                LEVEL = #level#,
+                EP_TYPE_KEYWORD = #eptypekeyword#,
+                EP_TYPE = #eptype#,
+                C_ID = #cid#,
+               	Z_K_ID = #zkId#,
+            	ZZHUANYEID = #zzhuanyeId#,
+            	JIFEN = #jifen#,
+            	ENDTIME = #endTime#,
+            	EXAMQSTTYPE = #examqsttype#,
+            	QST_COUNT=#qstmiddlecount#
+            	<isNotNull property="author">
+	            	, AUTHOR=#author#
+	        	</isNotNull>
+            	<isNotNull property="lastEditTime">
+	            	,LAST_EDIT_TIME=#lastEditTime#
+	        	</isNotNull>
+            WHERE
+                EP_ID = #epId#
+
+        </update>
+        
+		<select id="getcourseotByPi" resultMap="Exampaper_NS.CoursesortResult" parameterClass="int">
+		    SELECT 
+		    <include refid="Exampaper_NS.COU_COURSESORT_TBL_columns"/>
+		    FROM COU_COURSESORT_TBL
+		    WHERE P_ID = 4 and SUBJECT_ID=#value# and status=0
+		</select>
+		
+		<select id="getExampaperCount" resultClass="int" parameterClass="int">
+			SELECT 
+				sum(epm.QST_COUNT) 
+				FROM
+				  exam_exampaper_tbl e 
+				  JOIN exam_exampaper_record_tbl epm 
+				    ON epm.EP_ID = e.EP_ID
+				    AND e.SUBJECT_ID = #value#
+		</select>
+		
+		<select id="getExampaperTotal" resultClass="int" parameterClass="int">
+		    select count(DISTINCT q.qst_id) from exam_opt_record_tbl q where  q.CUS_ID = #value#
+		</select>
+		
+        <select id="getExampaperById" resultMap="Exampaper_NS.ExampaperAlllResult" parameterClass="int">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                EP_ID = #value#
+
+        </select>
+		  <select id="getExampaperByIdUserEp" resultMap="Exampaper_NS.ExampaperAlllResultUserEp" parameterClass="int">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                EP_ID = #value#
+
+        </select>
+
+		 <select id="getExampaperPaperResult" resultMap="Exampaper_NS.ExampaperPaperResult" parameterClass="QueryExampaperCondition">
+           SELECT
+            e.EP_ID,
+            e.SUBJECT_ID,
+            e.COURSE_ID,
+            e.SORT_ID,
+            e.EP_NAME,
+            e.EP_INFO,
+            e.EP_KEYWORD,
+            e.REPLY_TIME,
+            e.EP_TOTEL_SCORE,
+            e.EP_NUM,
+            e.CREATE_TIME,
+            e.EP_STATE,
+            e.USER_ID,
+            e.COEFFCIENT,
+            e.JOIN_NUM,
+            e.PASS_NUM,
+            e.K_OR_COU_ID,
+            e.TYPE,
+            e.LEVEL,
+            e.EP_TYPE_KEYWORD,
+            e.EP_TYPE,
+            e.C_ID,
+            e.Z_K_ID,
+            e.ZZHUANYEID,
+            e.JIFEN,
+            e.ENDTIME,
+            e.EXAMQSTTYPE,
+            e.QST_COUNT,
+            e.AUTHOR,
+            e.LAST_EDIT_TIME,
+            t.FLAG
+            FROM EXAM_EXAMPAPER_TBL e  left join exam_favorites_paper_tbl t on e.EP_ID=t.PAPER_ID and t.USER_ID=#userId#
+            WHERE
+                e.EP_ID = #epId#
+			limit 1
+        </select>
+        
+        <!-- 根据用户id返回用户积分 -->
+         <select id="getUserjifen" resultClass="int" parameterClass="int">
+            SELECT
+          	EXAM_EXAMPAPER_TBL.JIFEN
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                EP_ID = #value#
+
+        </select>
+        
+
+		  <select id="getExampaperByIdhhq" resultMap="Exampaper_NS.ExampaperResult" parameterClass="int">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                EP_ID = #value# AND EP_STATE=0
+
+        </select>
+        
+        
+        	  <select id="getNewjudgmentPaper" resultMap="Exampaper_NS.NewjudgmentPaper" parameterClass="int">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                EP_ID = #value# AND EP_STATE=0
+
+        </select>
+	
+		 <select id="getExampaperKpoint" resultMap="Exampaper_NS.ExampaperResult1" parameterClass="int">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE
+                K_OR_COU_ID = #value# AND TYPE=2
+
+        </select>
+        
+        <select id="getRodeam" resultMap="Exampaper_NS.ExampaperResultTest" parameterClass="QueryExampaperCondition">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columnsTest"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE EXAM_EXAMPAPER_TBL.EP_STATE=0
+           
+	          <isNotNull property="subjectId">
+	            	 <isNotEqual   prepend="and"  property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isNotEqual>
+	        </isNotNull>
+	        
+	        <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        </isNotNull>
+	        
+	           <isNotNull property="eptypekeyword">
+	            	 <isNotEqual prepend="and" property="eptypekeyword" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE_KEYWORD=#eptypekeyword#
+	                </isNotEqual>
+	        </isNotNull>
+	        
+	        <isNotNull property="courseId">
+	            	 <isNotEqual prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isNotEqual>
+	        </isNotNull>
+
+        </select>
+        
+        <select id="getExampaperCountLastDay" resultMap="Exampaper_NS.exampaperCountLastDay" parameterClass="QueryExampaperCondition">
+        	SELECT COUNT(1) as COUNTS,SYS_SUBJECT_TBL.SUBJECT_NAME as SUBJECT_NAME
+        	FROM EXAM_EXAMPAPER_TBL,SYS_SUBJECT_TBL
+        	WHERE  EXAM_EXAMPAPER_TBL.SUBJECT_ID=SYS_SUBJECT_TBL.SUBJECT_ID AND
+                 EXAM_EXAMPAPER_TBL.LEVEL=2
+        	 <isNotNull property="startTime" prepend="and">
+			    <![CDATA[  EXAM_EXAMPAPER_TBL.CREATE_TIME >= #startTime# ]]>
+			</isNotNull>
+			<isNotNull  property="endTime" prepend="and">
+				<![CDATA[  EXAM_EXAMPAPER_TBL.CREATE_TIME <= #endTime# ]]>
+			</isNotNull>
+			GROUP BY EXAM_EXAMPAPER_TBL.SUBJECT_ID ORDER BY COUNTS DESC
+        </select>
+        
+        <select id="getExampaperList" resultMap="Exampaper_NS.ExampaperResult" parameterClass="QueryExampaperCondition">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+        </select>
+        <!-- 前台查询 -->
+        <select id="listExamPaperByCondition" resultMap="Exampaper_NS.ExampaperAlllResult" parameterClass="QueryExampaperCondition">
+            <include refid="public_sql.page_begin"/>
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+              WHERE
+                EXAM_EXAMPAPER_TBL.EP_STATE  != 1 and EXAM_EXAMPAPER_TBL.LEVEL=2
+                 <isNotNull property="level">
+	            	 <isGreaterThan prepend="and" property="level" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.LEVEL=#level#
+	                </isGreaterThan>
+	        	</isNotNull>
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  EXAM_EXAMPAPER_TBL.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT ASC 
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                		order by EXAM_EXAMPAPER_TBL.EP_ID desc 
+	                </isEqual>
+	                
+	        	</isNotNull>
+            <include refid="public_sql.page_end"/>
+        </select>
+        
+       <select id="listExamPaperCountByCondition" resultClass="int" parameterClass="QueryExampaperCondition">
+            SELECT COUNT(1)
+           	FROM EXAM_EXAMPAPER_TBL
+              WHERE
+                EXAM_EXAMPAPER_TBL.EP_STATE  != 1 and EXAM_EXAMPAPER_TBL.LEVEL=2
+                <isNotNull property="level">
+	            	 <isGreaterThan prepend="and" property="level" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.LEVEL=#level#
+	                </isGreaterThan>
+	        	</isNotNull>
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  EXAM_EXAMPAPER_TBL.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        </isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT ASC 
+	                </isEqual>
+	                  <isEqual  property="paixu" compareValue="0">
+	                		order by EXAM_EXAMPAPER_TBL.EP_ID desc 
+	                </isEqual>
+	        	</isNotNull>
+	        	
+	        	
+        </select>
+        
+        
+        
+         <!-- 前台查询单元练习的试卷 -->
+        <select id="listExamPaperByConditionDYLX" resultMap="Exampaper_NS.ExampaperAlllResult" parameterClass="QueryExampaperCondition">
+            <include refid="public_sql.page_begin"/>
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM  
+		 EXAM_EXAMPAPER_TBL,
+		 (
+		   SELECT `cou_sell_cou_tbl`.COURSE_ID AS COURSE_ID FROM  `finance_cash_record_tbl`,
+		  `cou_sell_cou_tbl` WHERE `finance_cash_record_tbl`.CUS_ID=#userId#  AND  `cou_sell_cou_tbl`.SELL_ID=`finance_cash_record_tbl`.PACK_ID and `finance_cash_record_tbl`.status=1 GROUP  BY `cou_sell_cou_tbl`.COURSE_ID  
+		  )   ma 
+ 			WHERE EXAM_EXAMPAPER_TBL.`COURSE_ID`=ma.COURSE_ID and
+                EXAM_EXAMPAPER_TBL.EP_STATE  != 1 and EXAM_EXAMPAPER_TBL.LEVEL=2
+                 <isNotNull property="level">
+	            	 <isGreaterThan prepend="and" property="level" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.LEVEL=#level#
+	                </isGreaterThan>
+	        	</isNotNull>
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  EXAM_EXAMPAPER_TBL.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT ASC 
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                		order by EXAM_EXAMPAPER_TBL.EP_ID desc 
+	                </isEqual>
+	                
+	        	</isNotNull>
+            <include refid="public_sql.page_end"/>
+        </select>
+        
+       <select id="listExamPaperCountByConditionDYLX" resultClass="int" parameterClass="QueryExampaperCondition">
+            SELECT COUNT(1)
+              FROM  
+			 EXAM_EXAMPAPER_TBL,
+			 (
+			   SELECT `cou_sell_cou_tbl`.COURSE_ID AS COURSE_ID FROM  `finance_cash_record_tbl`,
+			  `cou_sell_cou_tbl` WHERE `finance_cash_record_tbl`.CUS_ID=#userId#  AND  `cou_sell_cou_tbl`.SELL_ID=`finance_cash_record_tbl`.PACK_ID and `finance_cash_record_tbl`.status=1 GROUP  BY `cou_sell_cou_tbl`.COURSE_ID  
+			  )   ma 
+ 			WHERE EXAM_EXAMPAPER_TBL.`COURSE_ID`=ma.COURSE_ID and
+                EXAM_EXAMPAPER_TBL.EP_STATE  != 1 and EXAM_EXAMPAPER_TBL.LEVEL=2
+                <isNotNull property="level">
+	            	 <isGreaterThan prepend="and" property="level" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.LEVEL=#level#
+	                </isGreaterThan>
+	        	</isNotNull>
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  EXAM_EXAMPAPER_TBL.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        </isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT ASC 
+	                </isEqual>
+	                  <isEqual  property="paixu" compareValue="0">
+	                		order by EXAM_EXAMPAPER_TBL.EP_ID desc 
+	                </isEqual>
+	        	</isNotNull>
+	        	
+	        	
+        </select>
+        
+       <!-- 返回用户注册时候的专业id -->
+       
+       <select id="customrsubjectid" resultClass="int" parameterClass="int">
+	       SELECT CUS_CUSTOMER_TBL.SUBJECT_ID FROM CUS_CUSTOMER_TBL 
+	       WHERE CUS_CUSTOMER_TBL.CUS_ID=#value#
+       
+       </select>
+        <!-- 返回用户注册时候的专业 -->
+        <select id="customersubject" resultMap="userBuySubject" parameterClass="int">
+	       SELECT  SYS_SUBJECT_TBL.SUBJECT_ID,SYS_SUBJECT_TBL.SUBJECT_NAME from SYS_SUBJECT_TBL JOIN  CUS_CUSTOMER_TBL ON SYS_SUBJECT_TBL.SUBJECT_ID=CUS_CUSTOMER_TBL.SUBJECT_ID
+	       WHERE CUS_CUSTOMER_TBL.CUS_ID=#value# and SYS_SUBJECT_TBL.STATUS=0;
+       
+       </select>
+       
+       <!-- 会员购买过的专业 -->
+       <select id="getcustomerbuySubject" resultMap="userBuySubject" parameterClass="int">
+       
+       
+          SELECT DISTINCT SYS_SUBJECT_TBL.SUBJECT_ID,SYS_SUBJECT_TBL.SUBJECT_NAME from SYS_SUBJECT_TBL LEFT JOIN finance_cash_record_tbl 
+                ON  finance_cash_record_tbl.cr_subject_id=SYS_SUBJECT_TBL.subject_id and finance_cash_record_tbl.cus_id=#value#
+                where finance_cash_record_tbl.status=1 AND finance_cash_record_tbl.price!=10
+                   
+      
+              
+       </select>
+       
+        
+        
+        <!-- 后台分页 -->
+         <select id="listExamPaperByConditionexam" resultMap="Exampaper_NS.listExamPaperByConditionexamResult" parameterClass="QueryExampaperCondition">
+            <include refid="public_sql.page_begin"/>
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+              WHERE	1=1
+              
+                	<isNotNull property="tiaojian">
+	            	 <isEqual  property="tiaojian" compareValue="1" prepend="and" >
+			                  EXAM_EXAMPAPER_TBL.EP_NAME like    '%$searchKey$%' 
+			          </isEqual>
+			          <isEqual  property="tiaojian" compareValue="2" prepend="and" >
+			                  EXAM_EXAMPAPER_TBL.JOIN_NUM  =#searchKey# 
+				      </isEqual>
+				      <isEqual  property="tiaojian" compareValue="3" prepend="and"  >
+			                  EXAM_EXAMPAPER_TBL.JIFEN  =#searchKey#
+					  </isEqual>
+					</isNotNull>
+				
+                 <isNotNull property="level">
+	            	 <isGreaterThan prepend="and" property="level" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.LEVEL=#level#
+	                </isGreaterThan>
+	        	 </isNotNull>
+	        	
+                
+	        	
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	
+	        <isNotNull property="startTime" prepend="and">
+			    <![CDATA[  EXAM_EXAMPAPER_TBL.CREATE_TIME >= #startTime# ]]>
+			</isNotNull>
+			<isNotNull  property="endTime" prepend="and">
+				<![CDATA[  EXAM_EXAMPAPER_TBL.CREATE_TIME <= #endTime# ]]>
+			</isNotNull>
+	        	
+	       <isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT ASC 
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                		order by EXAM_EXAMPAPER_TBL.EP_ID desc 
+	                </isEqual>
+	                
+	        	</isNotNull> 
+	        	
+            <include refid="public_sql.page_end"/>
+        </select>
+        
+       <select id="listExamPaperCountByConditionexam" resultClass="int" parameterClass="QueryExampaperCondition">
+            SELECT COUNT(1)
+           	FROM EXAM_EXAMPAPER_TBL
+              WHERE 1=1
+               <isNotNull property="epState">
+	            	 <isEqual  property="epState" compareValue="0" prepend="and" >
+			                  EXAM_EXAMPAPER_TBL.EP_STATE=0
+			          </isEqual>
+			          <isEqual  property="epState" compareValue="1" prepend="and" >
+			                  EXAM_EXAMPAPER_TBL.EP_STATE  =1
+				      </isEqual>
+					</isNotNull>
+                <isNotNull property="tiaojian">
+	            	 <isEqual  property="tiaojian" compareValue="1" prepend="and" >
+			                  EXAM_EXAMPAPER_TBL.EP_NAME like    '%$searchKey$%' 
+			          </isEqual>
+			          <isEqual  property="tiaojian" compareValue="2" prepend="and" >
+			                  EXAM_EXAMPAPER_TBL.JOIN_NUM   =#searchKey#
+				      </isEqual>
+				      <isEqual  property="tiaojian" compareValue="3" prepend="and"  >
+			                  EXAM_EXAMPAPER_TBL.JIFEN  =#searchKey#
+					  </isEqual>
+					 
+				</isNotNull>
+                <isNotNull property="level">
+	            	 <isGreaterThan prepend="and" property="level" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.LEVEL=#level#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        </isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		EXAM_EXAMPAPER_TBL.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        
+	        	<isNotNull  property="startTime" prepend="and">
+			    <![CDATA[  EXAM_EXAMPAPER_TBL.CREATE_TIME >= #startTime# ]]>
+			</isNotNull>
+			<isNotNull  property="endTime" prepend="and">
+				<![CDATA[  EXAM_EXAMPAPER_TBL.CREATE_TIME <= #endTime# ]]>
+			</isNotNull>
+	        	
+	        		<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by EXAM_EXAMPAPER_TBL.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by EXAM_EXAMPAPER_TBL.COEFFCIENT ASC 
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                		order by EXAM_EXAMPAPER_TBL.EP_ID desc 
+	                </isEqual>
+	                
+	        	</isNotNull>
+        </select>
+        
+       <select id="getExampaperListBySid" resultMap="Exampaper_NS.ExampaperResult" parameterClass="int">
+            SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            	WHERE SUBJECT_ID=#VALUE# and EXAM_EXAMPAPER_TBL.EP_STATE = 0
+        </select>
+        <!--end-->
+        <select id="getExampaperListByCourseId" resultMap="Exampaper_NS.ExampaperResult" parameterClass="int">        
+        	  (SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL
+            WHERE EXAM_EXAMPAPER_TBL.TYPE=1 AND EXAM_EXAMPAPER_TBL.K_OR_COU_ID=#VALUE# and EXAM_EXAMPAPER_TBL.EP_STATE != 1 order by EXAM_EXAMPAPER_TBL.EP_ID desc)
+            UNION (SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL,COU_KPOINT_TBL            
+            WHERE EXAM_EXAMPAPER_TBL.TYPE=2 AND EXAM_EXAMPAPER_TBL.K_OR_COU_ID=COU_KPOINT_TBL.POINT_ID
+            AND COU_KPOINT_TBL.COURSE_ID =#VALUE# and EXAM_EXAMPAPER_TBL.EP_STATE = 0
+            
+            order by EXAM_EXAMPAPER_TBL.EP_ID desc )
+        </select>
+        
+        <!-- by kpointId search -->
+        <select id="getExampaperListByKpointId" resultMap="Exampaper_NS.ExampaperResult" parameterClass="int">        
+        	SELECT
+            <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+            FROM EXAM_EXAMPAPER_TBL,COU_KPOINT_TBL            
+	            WHERE EXAM_EXAMPAPER_TBL.TYPE=2 AND EXAM_EXAMPAPER_TBL.K_OR_COU_ID=COU_KPOINT_TBL.POINT_ID
+		            AND COU_KPOINT_TBL.point_id =#VALUE# and EXAM_EXAMPAPER_TBL.EP_STATE = 0
+		            order by EXAM_EXAMPAPER_TBL.EP_ID desc
+        </select>
+        
+        
+        	<!-- 根据用户ID查询用户所购包所属的专业list,评价中心使用 -->
+        <select id="getSubjectListForUnAss" resultMap="Exampaper_NS.SubjectResultWeb" parameterClass="int">
+        	SELECT <include refid="SYS_SUBJECT_TBL_columns"/> 
+        	FROM SYS_SUBJECT_TBL WHERE SUBJECT_ID IN
+        	(SELECT SUBJECT_ID FROM COU_SELL_WAY_TBL WHERE SELL_ID IN
+        	(SELECT DISTINCT PACK_ID FROM FINANCE_CASH_RECORD_TBL WHERE CUS_ID=#value#)
+        	)
+        </select>
+        
+        
+        <!-- 根据用户id查询购买课程专业id顺序 -->
+               <select id="getSubjectIdListForUnAss" resultMap="Exampaper_NS.SubjectIdResultWeb" parameterClass="int">
+        	<!-- /* SELECT DISTINCT cou_sell_way_tbl.SUBJECT_ID FROM
+			cou_sell_way_tbl
+			Left Join finance_cash_record_tbl ON 
+			cou_sell_way_tbl.SELL_ID = finance_cash_record_tbl.PACK_ID
+			where finance_cash_record_tbl.CUS_ID =#value# and finance_cash_record_tbl.status=1  */ -->
+        	SELECT cr_subject_id AS SUBJECT_ID FROM finance_cash_record_tbl WHERE cus_id=#value# and status=1 AND price!=10 order by id desc
+        </select>
+        
+        <!-- 查询前8条记录-->
+        <select id="getExampaperTop8" resultMap="Exampaper_NS.ExampaperResult1" parameterClass="int">
+        select <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+        from exam_exampaper_tbl 
+        where exam_exampaper_tbl.subject_id=#VALUE# 
+        and EXAM_EXAMPAPER_TBL.EP_STATE  != 1 
+        and EXAM_EXAMPAPER_TBL.LEVEL=2 
+        order by  exam_exampaper_tbl.join_num ASC LIMIT 8 
+        </select>
+        
+        <!-- 查询前10条记录-->
+        <select id="getExampaperTop10" resultMap="Exampaper_NS.ExampaperResult1" parameterClass="java.util.HashMap">
+        select <include refid="Exampaper_NS.EXAM_EXAMPAPER_TBL_columns"/>
+        from exam_exampaper_tbl 
+        where exam_exampaper_tbl.subject_id=#subjectId# 
+        and EXAM_EXAMPAPER_TBL.EP_STATE  != 1 and EXAM_EXAMPAPER_TBL.CREATE_TIME between #startTime#
+        and #endTime#
+        order by  exam_exampaper_tbl.EP_ID ASC LIMIT 10
+        </select>
+        
+        <select id="getExampaperNumInDay" resultClass="int" parameterClass="java.util.HashMap">
+        	SELECT COUNT(1)
+        FROM exam_exampaper_tbl 
+        WHERE exam_exampaper_tbl.subject_id=#subjectId#
+        AND EXAM_EXAMPAPER_TBL.EP_STATE  != 1 AND EXAM_EXAMPAPER_TBL.CREATE_TIME LIKE '%$createTime$%'
+        </select>
+        
+        <!--<select id="iskaoshi" resultClass="int" parameterClass="QueryExampaperCondition">
+        
+        SELECT  COUNT(1)
+		from finance_cash_record_tbl cash 
+		left join cou_sell_cou_tbl sell on sell.sell_id=cash.pack_id
+		left join cou_course_tbl course on course.course_id=sell.course_id
+		left join cus_customer_tbl cus on cus.cus_id=cash.cus_id
+		where cus.cus_id=#cusId# 
+		and cash.status=1
+		and course.course_id=#courseId#
+		order by cash.pack_id desc;
+        
+        </select>
+        -->
+        
+        <select id="iskaoshi" resultClass="int" parameterClass="QueryExampaperCondition">
+			   SELECT 
+				  COUNT(1) 
+				FROM
+				  FINANCE_CASH_RECORD_TBL CASH,
+				  COU_SELL_COU_TBL SELL,
+				  COU_COURSE_TBL COURSE 
+				WHERE CASH.CUS_ID = #cusId# 
+				  AND CASH.PACK_ID = SELL.SELL_ID 
+				  AND COURSE.COURSE_ID = SELL.COURSE_ID 
+				  AND COURSE.COURSE_ID = #courseId#
+				  AND CASH.STATUS = 1
+        </select>
+        
+        
+        <!-- by kpointId search end -->
+        
+       
+           <!-- by kpointId search -->
+           <update id="updateExampaperByEndtime" parameterClass="Exampaper">
+				UPDATE EXAM_EXAMPAPER_TBL SET   EXAM_EXAMPAPER_TBL.LEVEL=3 WHERE
+					<isNotNull prepend="and" property="endTime">
+						<![CDATA[  now() >= #endTime# ]]>
+					</isNotNull>
+
+		</update>
+       
+       
+       <!-- 查询试卷专业，并统计个个专业下的试卷数量 -->
+       <select id="getAllSubject" resultClass="int" parameterClass="int">
+       	SELECT COUNT(1)
+       	FROM exam_exampaper_tbl where exam_exampaper_tbl.SUBJECT_ID= #value# 
+       	AND  EXAM_EXAMPAPER_TBL.EP_STATE  != 1 and EXAM_EXAMPAPER_TBL.LEVEL=2;
+       
+       </select>
+       
+       <!-- 通过用户id查询用户是否购买过课程 -->
+       <select id="isbuy" resultClass="int" parameterClass="QueryExampaperCondition">
+       SELECT count(1) FROM `exam_exampaper_tbl`,
+       ( SELECT `finance_cash_record_tbl`.COURSE_ID as COURSE_ID  FROM `finance_cash_record_tbl` where `finance_cash_record_tbl`.STATUS=1 and `finance_cash_record_tbl`.CUS_ID=#userId# group by `finance_cash_record_tbl`.COURSE_ID) as cash
+ 		where  cash.COURSE_ID=`exam_exampaper_tbl`.COURSE_ID and `exam_exampaper_tbl`.SUBJECT_ID=#subjectId#;
+       </select>
+        
+       <!-- 前台单元试卷查询（2011.8.19） -->
+        <select id="dylistExamPaper" resultMap="Exampaper_NS.exampaperList" parameterClass="QueryExampaperCondition">
+            <include refid="public_sql.page_begin"/>
+             SELECT 
+            ms.AVGFEN AVGFEN,
+	   	    ms.SORT_ID SORT_ID,
+            md.COUNTS COUNTS,
+            ms.EP_NAME EP_NAME,
+            ms.EP_ID EP_ID,
+            ms.SUBJECT_ID SUBJECT_ID,
+            ms.CREATE_TIME CREATE_TIME,
+            ms.JIFEN JIFEN,
+            ms.COEFFCIENT COEFFCIENT,
+            ms.JOIN_NUM JOIN_NUM,
+            ms.QST_COUNT QST_COUNT
+            FROM 
+           (SELECT 
+             COUNT(exam_exampaper_record_tbl.`user_score`) counts,EXAM_EXAMPAPER_TBL.`EP_ID` 
+             FROM   
+             EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+			 ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+			 AND exam_exampaper_record_tbl.CUS_ID=#userId# 
+			 GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+		    )md,
+	   	   (SELECT
+	   	  	  EXAM_EXAMPAPER_TBL.K_OR_COU_ID,
+	   	      EXAM_EXAMPAPER_TBL.C_ID,
+	   	 	  EXAM_EXAMPAPER_TBL.TYPE,
+	   	   	  EXAM_EXAMPAPER_TBL.EP_TYPE,
+	  		  EXAM_EXAMPAPER_TBL.LEVEL,
+	  		  EXAM_EXAMPAPER_TBL.EP_STATE,  
+	 		  EXAM_EXAMPAPER_TBL.`COURSE_ID`,
+	  		  EXAM_EXAMPAPER_TBL.SORT_ID ,
+	 		  EXAM_EXAMPAPER_TBL.EP_NAME ,
+              EXAM_EXAMPAPER_TBL.EP_ID ,
+              EXAM_EXAMPAPER_TBL.SUBJECT_ID ,
+              EXAM_EXAMPAPER_TBL.CREATE_TIME ,
+              EXAM_EXAMPAPER_TBL.JIFEN ,
+              EXAM_EXAMPAPER_TBL.COEFFCIENT ,
+              EXAM_EXAMPAPER_TBL.JOIN_NUM ,
+              EXAM_EXAMPAPER_TBL.QST_COUNT,
+              AVG(exam_exampaper_record_tbl.user_score) AVGFEN 
+              FROM EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+	  	      ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+    		  GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+     	    ) ms ,
+            ( SELECT 
+               cou_sell_cou_tbl.COURSE_ID AS COURSE_ID 
+			   FROM  `finance_cash_record_tbl`,`cou_sell_cou_tbl`
+			   WHERE `finance_cash_record_tbl`.CUS_ID=#userId#  AND  `cou_sell_cou_tbl`.SELL_ID=`finance_cash_record_tbl`.PACK_ID 
+			   AND `finance_cash_record_tbl`.status=1
+			   GROUP  BY `cou_sell_cou_tbl`.COURSE_ID 
+			 ) ma
+              WHERE 
+                ms.`COURSE_ID`=ma.COURSE_ID AND
+                ms.EP_ID=md.EP_ID AND
+                ms.LEVEL=2 AND
+                ms.QST_COUNT!=0
+                
+                
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  ms.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		ms.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		ms.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		ms.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		ms.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		ms.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		ms.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		ms.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	            	 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT ASC 
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.EP_ID desc 
+	                </isEqual>
+	                
+	        	</isNotNull>
+	        	
+            <include refid="public_sql.page_end"/>
+        </select>
+        
+       <select id="dylistExamPaperCount" resultClass="int" parameterClass="QueryExampaperCondition">
+            SELECT COUNT(1)
+            FROM (  SELECT 
+            ms.AVGFEN AVGFEN,
+	   	    ms.SORT_ID SORT_ID,
+            md.COUNTS COUNTS,
+            ms.EP_NAME EP_NAME,
+            ms.EP_ID EP_ID,
+            ms.SUBJECT_ID SUBJECT_ID,
+            ms.CREATE_TIME CREATE_TIME,
+            ms.JIFEN JIFEN,
+            ms.COEFFCIENT COEFFCIENT,
+            ms.JOIN_NUM JOIN_NUM,
+            ms.QST_COUNT QST_COUNT
+            FROM 
+           (SELECT 
+             COUNT(exam_exampaper_record_tbl.`user_score`) counts,EXAM_EXAMPAPER_TBL.`EP_ID` 
+             FROM   
+             EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+			 ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+			 AND exam_exampaper_record_tbl.CUS_ID=#userId# 
+			 GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+		    )md,
+	   	   (SELECT
+	   	  	  EXAM_EXAMPAPER_TBL.K_OR_COU_ID,
+	   	      EXAM_EXAMPAPER_TBL.C_ID,
+	   	 	  EXAM_EXAMPAPER_TBL.TYPE,
+	   	   	  EXAM_EXAMPAPER_TBL.EP_TYPE,
+	  		  EXAM_EXAMPAPER_TBL.LEVEL,
+	  		  EXAM_EXAMPAPER_TBL.EP_STATE,  
+	 		  EXAM_EXAMPAPER_TBL.`COURSE_ID`,
+	  		  EXAM_EXAMPAPER_TBL.SORT_ID ,
+	 		  EXAM_EXAMPAPER_TBL.EP_NAME ,
+              EXAM_EXAMPAPER_TBL.EP_ID ,
+              EXAM_EXAMPAPER_TBL.SUBJECT_ID ,
+              EXAM_EXAMPAPER_TBL.CREATE_TIME ,
+              EXAM_EXAMPAPER_TBL.JIFEN ,
+              EXAM_EXAMPAPER_TBL.COEFFCIENT ,
+              EXAM_EXAMPAPER_TBL.JOIN_NUM ,
+              EXAM_EXAMPAPER_TBL.QST_COUNT,
+              AVG(exam_exampaper_record_tbl.user_score) AVGFEN 
+              FROM EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+	  	      ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+    		  GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+     	    ) ms ,
+            ( SELECT 
+               cou_sell_cou_tbl.COURSE_ID AS COURSE_ID 
+			   FROM  `finance_cash_record_tbl`,`cou_sell_cou_tbl`
+			   WHERE `finance_cash_record_tbl`.CUS_ID=#userId#  AND  `cou_sell_cou_tbl`.SELL_ID=`finance_cash_record_tbl`.PACK_ID 
+			   AND `finance_cash_record_tbl`.status=1
+			   GROUP  BY `cou_sell_cou_tbl`.COURSE_ID 
+			 ) ma
+              WHERE 
+                ms.`COURSE_ID`=ma.COURSE_ID AND
+                ms.EP_ID=md.EP_ID AND
+                ms.LEVEL=2 AND
+                ms.QST_COUNT!=0
+                
+                
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  ms.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		ms.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		ms.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		ms.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		ms.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		ms.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		ms.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		ms.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	            	 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM desc )a
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM ASC )a
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT desc )a
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT ASC )a
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.EP_ID desc )a
+	                </isEqual>
+	                
+	        	</isNotNull>
+	        	
+	        	
+        </select>
+      
+        
+         <!-- 前台查询（2011.8.19） -->
+        <select id="listExamPaper" resultMap="Exampaper_NS.exampaperList" parameterClass="QueryExampaperCondition">
+            <include refid="public_sql.page_begin"/>
+             SELECT 
+            ms.AVGFEN AVGFEN,
+	   	    ms.SORT_ID SORT_ID,
+            md.COUNTS COUNTS,
+            ms.EP_NAME EP_NAME,
+            ms.EP_ID EP_ID,
+            ms.SUBJECT_ID SUBJECT_ID,
+            ms.CREATE_TIME CREATE_TIME,
+            ms.JIFEN JIFEN,
+            ms.COEFFCIENT COEFFCIENT,
+            ms.JOIN_NUM JOIN_NUM,
+            ms.QST_COUNT QST_COUNT
+            FROM 
+           (SELECT 
+             COUNT(exam_exampaper_record_tbl.`user_score`) counts,EXAM_EXAMPAPER_TBL.`EP_ID` 
+             FROM   
+             EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+			 ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+			 AND exam_exampaper_record_tbl.CUS_ID=#userId# 
+			 GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+		    )md,
+	   	   (SELECT
+	   	  	  EXAM_EXAMPAPER_TBL.K_OR_COU_ID,
+	   	      EXAM_EXAMPAPER_TBL.C_ID,
+	   	 	  EXAM_EXAMPAPER_TBL.TYPE,
+	   	   	  EXAM_EXAMPAPER_TBL.EP_TYPE,
+	  		  EXAM_EXAMPAPER_TBL.LEVEL,
+	  		  EXAM_EXAMPAPER_TBL.EP_STATE,  
+	 		  EXAM_EXAMPAPER_TBL.`COURSE_ID`,
+	  		  EXAM_EXAMPAPER_TBL.SORT_ID ,
+	 		  EXAM_EXAMPAPER_TBL.EP_NAME ,
+              EXAM_EXAMPAPER_TBL.EP_ID ,
+              EXAM_EXAMPAPER_TBL.SUBJECT_ID ,
+              EXAM_EXAMPAPER_TBL.CREATE_TIME ,
+              EXAM_EXAMPAPER_TBL.JIFEN ,
+              EXAM_EXAMPAPER_TBL.COEFFCIENT ,
+              EXAM_EXAMPAPER_TBL.JOIN_NUM ,
+              EXAM_EXAMPAPER_TBL.QST_COUNT,
+              AVG(exam_exampaper_record_tbl.user_score) AVGFEN 
+              FROM EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+	  	      ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+    		  GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+     	    ) ms 
+              WHERE 
+                 ms.EP_ID=md.EP_ID AND
+                 ms.LEVEL=2 AND
+                 ms.QST_COUNT!=0
+                
+                
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  ms.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		ms.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		ms.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		ms.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		ms.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		ms.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		ms.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		ms.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	            	 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT desc 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT ASC 
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.EP_ID desc 
+	                </isEqual>
+	                
+	        	</isNotNull>
+	        	
+            <include refid="public_sql.page_end"/>
+        </select>
+        
+       <select id="listExamPaperCount" resultClass="int" parameterClass="QueryExampaperCondition">
+            SELECT COUNT(1)
+            FROM ( SELECT 
+            ms.AVGFEN AVGFEN,
+	   	    ms.SORT_ID SORT_ID,
+            md.COUNTS COUNTS,
+            ms.EP_NAME EP_NAME,
+            ms.EP_ID EP_ID,
+            ms.SUBJECT_ID SUBJECT_ID,
+            ms.CREATE_TIME CREATE_TIME,
+            ms.JIFEN JIFEN,
+            ms.COEFFCIENT COEFFCIENT,
+            ms.JOIN_NUM JOIN_NUM,
+            ms.QST_COUNT QST_COUNT
+            FROM 
+           (SELECT 
+             COUNT(exam_exampaper_record_tbl.`user_score`) counts,EXAM_EXAMPAPER_TBL.`EP_ID` 
+             FROM   
+             EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+			 ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+			 AND exam_exampaper_record_tbl.CUS_ID=#userId# 
+			 GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+		    )md,
+	   	   (SELECT
+	   	  	  EXAM_EXAMPAPER_TBL.K_OR_COU_ID,
+	   	      EXAM_EXAMPAPER_TBL.C_ID,
+	   	 	  EXAM_EXAMPAPER_TBL.TYPE,
+	   	   	  EXAM_EXAMPAPER_TBL.EP_TYPE,
+	  		  EXAM_EXAMPAPER_TBL.LEVEL,
+	  		  EXAM_EXAMPAPER_TBL.EP_STATE,  
+	 		  EXAM_EXAMPAPER_TBL.`COURSE_ID`,
+	  		  EXAM_EXAMPAPER_TBL.SORT_ID ,
+	 		  EXAM_EXAMPAPER_TBL.EP_NAME ,
+              EXAM_EXAMPAPER_TBL.EP_ID ,
+              EXAM_EXAMPAPER_TBL.SUBJECT_ID ,
+              EXAM_EXAMPAPER_TBL.CREATE_TIME ,
+              EXAM_EXAMPAPER_TBL.JIFEN ,
+              EXAM_EXAMPAPER_TBL.COEFFCIENT ,
+              EXAM_EXAMPAPER_TBL.JOIN_NUM ,
+              EXAM_EXAMPAPER_TBL.QST_COUNT,
+              AVG(exam_exampaper_record_tbl.user_score) AVGFEN 
+              FROM EXAM_EXAMPAPER_TBL LEFT JOIN  exam_exampaper_record_tbl         
+	  	      ON exam_exampaper_record_tbl.EP_ID=exam_exampaper_tbl.EP_ID  
+    		  GROUP BY EXAM_EXAMPAPER_TBL.`EP_ID`
+     	    ) ms 
+              WHERE 
+                 ms.EP_ID=md.EP_ID AND
+                 ms.LEVEL=2 AND
+                 ms.QST_COUNT!=0
+                
+                
+                <isNotNull property="searchKey">
+	            	<isNotEqual property="searchKey" compareValue="0" prepend="and">
+			                  ms.EP_NAME like  CONCAT('%',#searchKey#,'%')
+				    </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="type">
+	            	 <isGreaterThan prepend="and" property="type" compareValue="0">
+	                		ms.TYPE=#type#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	  <isNotNull property="eptype">
+	            	 <isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		ms.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="cid">
+	            	 <isGreaterThan prepend="and" property="cid" compareValue="0">
+	                		ms.C_ID=#cid#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		ms.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="kOrCouId">
+	            	 <isGreaterThan prepend="and" property="kOrCouId" compareValue="0">
+	                		ms.K_OR_COU_ID=#kOrCouId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="courseId">
+	            	 <isGreaterThan prepend="and" property="courseId" compareValue="0">
+	                		ms.COURSE_ID=#courseId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		ms.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	            	 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM desc )a
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.JOIN_NUM ASC )a
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT desc )a
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.COEFFCIENT ASC )a
+	                </isEqual>
+	                
+	                 <isEqual  property="paixu" compareValue="0">
+	                 GROUP BY ms.`EP_ID`
+	                		order by ms.EP_ID desc )a
+	                </isEqual>
+	                
+	        	</isNotNull>
+	        	
+	        	
+        </select>
+        
+        <!-- 考试中心优化开始 王超 -->
+        <!-- 获取开始考试的试卷信息 -->
+        <select id="getExamQstList" resultMap="ExamQstResult" parameterClass="QueryExampaperCondition">
+        	SELECT 
+        	  eq.qst_id,
+			  eqm.QST_SCORE SCORE,
+			  eq.QST_CONTENT,
+			  eo.OPT_ORDER,
+			  eo.OPT_CONTENT,
+			  eq.qst_type ,
+			  eqm.QST_TYPE,
+			  eq.RIGHT_PERCENT,
+			  t.FLAG,
+			  eq.IS_ASR,
+			  eq.WRONG_JUDE
+			FROM
+			  exam_exampaper_tbl e 
+			  JOIN exam_qstmiddle_tbl eqm 
+			    ON e.EP_ID = eqm.EP_ID AND e.EP_ID=#epId#
+			  JOIN exam_qst_tbl eq 
+			    ON eqm.QST_ID = eq.QST_ID 
+			  JOIN exam_options_tbl eo 
+			    ON eo.QST_ID = eq.QST_ID left join exam_favorites_qst_tbl t  on eq.qst_id = t.question_id and t.USER_ID=#userId#
+			    order by eqm.qst_type asc, eqm.qst_id asc
+        </select>
+        
+        <!-- 获取试卷试题的详细信息  add by yanghaibo -->
+        <select id="getExamQstDetail" resultMap="ExamQstDetail" parameterClass="QueryExampaperCondition">
+        	SELECT 
+        	  eq.qst_id,
+				eqm.QST_SCORE SCORE,
+			  eq.QST_CONTENT,
+			  eo.OPT_ORDER,
+			  eo.OPT_CONTENT,
+			  eq.qst_type ,
+			  eqm.QST_TYPE,
+			  eq.RIGHT_PERCENT,
+			  eq.IS_ASR,
+			  eq.WRONG_JUDE
+		          
+			FROM
+			 exam_exampaper_tbl e 
+			  JOIN exam_qstmiddle_tbl eqm 
+			    ON e.EP_ID = eqm.EP_ID AND e.EP_ID=#epId#
+			  JOIN
+			   exam_qst_tbl eq 
+			   ON eqm.QST_ID = eq.QST_ID 
+			  JOIN exam_options_tbl eo 
+			    ON eo.QST_ID = eq.QST_ID AND eq.`QST_ID`=#qstId#
+        </select>
+        
+        
+        
+        <!-- 获取试卷列表 -->
+        <select id="getExampaperListQian" resultMap="ExampaperDTOResult" parameterClass="QueryExampaperCondition">
+        	
+			SELECT 
+			  e.jifen,
+			  e.EP_NAME,
+			  e.EP_ID,
+			  e.coeffcient,
+			  e.JOIN_NUM,
+			  sn.node_name as COURSESORT_NAME ,
+			  IFNULL(COUNT(er.ep_id),0) done_num,
+			  d.FLAG
+			FROM
+			  exam_exampaper_tbl e 
+			  LEFT JOIN kno_sys_node_tbl sn 
+			    ON sn.ksn_id = e.c_id 
+			    left join exam_favorites_paper_tbl d on e.EP_ID = d.PAPER_ID and d.USER_ID=#userId#
+				 LEFT JOIN exam_exampaper_record_tbl er ON er.EP_ID=e.EP_ID AND er.CUS_ID=#userId#
+	        	<isNotNull property="eptype">
+	            	<isEqual  property="eptype" compareValue="3">
+	                		JOIN cou_sell_cou_tbl s ON s.COURSE_ID=e.COURSE_ID
+			    			JOIN finance_cash_record_tbl fc ON fc.PACK_ID=s.SELL_ID 
+			    			AND fc.STATUS=1 AND fc.CUS_ID=#userId#
+			    		 
+	                </isEqual>
+	        	</isNotNull>
+				
+				 WHERE e.LEVEL=2 AND e.QST_COUNT>0
+			    <isNotNull property="eptype">
+	            	<isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		e.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		e.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="ksnId">
+	            	 <isGreaterThan prepend="and" property="ksnId" compareValue="0">
+	                		e.C_ID=#ksnId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="year">
+	            	 <isGreaterThan prepend="and" property="year" compareValue="0">
+	                		e.year=#year#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		e.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+				
+				 
+			   GROUP BY e.EP_ID    
+	        	<isNotNull property="paixu">
+	            	 <isEqual  property="paixu" compareValue="1">
+	                		order by e.JOIN_NUM desc  
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="2">
+	                		order by e.JOIN_NUM ASC 
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="3">
+	                		order by e.COEFFCIENT desc  
+	                </isEqual>
+	                 <isEqual  property="paixu" compareValue="4">
+	                		order by e.COEFFCIENT ASC  
+	                </isEqual>
+	                
+	                <isEqual  property="paixu" compareValue="0">
+	                		order by e.EP_ID desc  
+	                </isEqual>
+	                
+	        	</isNotNull>
+			    
+			<include refid="public_sql.page_end"/>
+        </select>
+        <!-- 获取试卷数量 -->
+        <select id="getExampaperCountQian" resultClass="int" parameterClass="QueryExampaperCondition">
+        	
+			SELECT 
+			  COUNT(DISTINCT e.EP_ID)
+			FROM
+			   exam_exampaper_tbl e 
+			   LEFT JOIN kno_sys_node_tbl sn 
+			    ON sn.ksn_id = e.c_id 
+	        	<isNotNull property="eptype">
+	            	<isEqual  property="eptype" compareValue="3">
+	                		JOIN cou_sell_cou_tbl s ON s.COURSE_ID=e.COURSE_ID
+			    			JOIN finance_cash_record_tbl fc ON fc.PACK_ID=s.SELL_ID 
+			    			AND fc.STATUS=1 AND fc.CUS_ID=#userId#
+	                </isEqual>
+	        	</isNotNull> 
+				WHERE  e.LEVEL=2 AND e.QST_COUNT>0
+			     <isNotNull property="eptype">
+	            	<isNotEqual prepend="and" property="eptype" compareValue="0">
+	                		e.EP_TYPE=#eptype#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	<isNotNull property="sortId">
+	            	 <isGreaterThan prepend="and" property="sortId" compareValue="0">
+	                		e.SORT_ID=#sortId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="ksnId">
+	            	 <isGreaterThan prepend="and" property="ksnId" compareValue="0">
+	                		e.C_ID=#ksnId#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="year">
+	            	 <isGreaterThan prepend="and" property="year" compareValue="0">
+	                		e.year=#year#
+	                </isGreaterThan>
+	        	</isNotNull>
+	        	<isNotNull property="subjectId">
+	            	 <isGreaterThan prepend="and" property="subjectId" compareValue="0">
+	                		e.SUBJECT_ID=#subjectId#
+	                </isGreaterThan>
+	        	</isNotNull>
+        </select>
+        <!-- 考试中心优化结束  王超 -->
+        
+         <!-- 查询专业试卷数量 -->
+       <select id="getSubjectExampaperNum" resultMap="Exampaper_NS.SubjectExampaperNum" parameterClass="int">
+	     	SELECT 
+			s.SUBJECT_ID SUBJECT_ID,
+	        s.SUBJECT_NAME SUBJECT_NAME,
+	        COUNT(DISTINCT exam_exampaper_tbl.EP_ID) NUM
+			FROM  sys_subject_tbl s
+			JOIN finance_cash_record_tbl fc ON fc.CR_SUBJECT_ID=s.SUBJECT_ID AND fc.CUS_ID=#value# AND fc.STATUS=1
+			LEFT JOIN exam_exampaper_tbl 
+			ON exam_exampaper_tbl.subject_id=s.subject_id AND exam_exampaper_tbl.LEVEL=2 AND  exam_exampaper_tbl.QST_COUNT>0
+			WHERE s.SUBJECT_ID!=6
+			GROUP BY s.SUBJECT_ID 
+
+       </select>
+       
+       <select id="getExampaperInfo" resultMap="FavoritesExampaperDTO" parameterClass="int">
+         	SELECT 
+			  e.JIFEN,
+			  e.EP_NAME,
+			  e.LEVEL,
+			  e.COEFFCIENT,
+			  e.EP_TYPE,
+			  sn.node_name as COURSESORT_NAME
+			FROM
+			  exam_exampaper_tbl e 
+			  LEFT JOIN kno_sys_node_tbl sn 
+			    ON sn.ksn_id = e.c_id 
+			    where e.ep_id=#value#
+         </select>
+      
+       <select id="getExampaperInfoByEpId" resultMap="ExampaperInfoResult" parameterClass="int">
+       		SELECT 
+			  e.EP_ID,
+			  e.EP_NAME,
+			  e.EP_TOTEL_SCORE,
+			  e.QST_COUNT,
+			  e.REPLY_TIME,
+			  e.EP_TYPE,
+			  e.JOIN_NUM,
+			  e.JIFEN ,
+			  e.coeffcient,
+			  e.LEVEL,
+  			  e.SUBJECT_ID,
+			  IFNULL(sn.NODE_NAME,'') AS COURSESORT_NAME,
+			  IFNULL(MAX(er.user_score),0) maxScore,
+			  IFNULL(AVG(er.user_score),0) AS avgScore,
+			  IFNULL(MIN(er.user_score),0) AS minScore
+			FROM
+			  exam_exampaper_tbl e 			  
+			  LEFT JOIN kno_sys_node_tbl sn 
+			   ON sn.ksn_id = e.c_id    AND e.LEVEL=2 AND e.QST_COUNT>0
+			  LEFT JOIN exam_exampaper_record_tbl er 
+			  ON er.EP_ID = e.EP_ID 
+			  WHERE e.EP_ID =#value#
+       </select>
+       
+       <select id="getCourseListBySubjectId" resultMap="Course_NS.CourseResult" parameterClass="QueryExampaperCondition">
+       		SELECT 
+		    cc.COURSE_ID,
+            cc.SORT_ID,
+            cc.TEACHER_ID,
+            cc.PRICE,
+            cc.TJ_MODE,
+            cc.LESSION_TIME,
+            cc.CONTENT,
+            cc.ADDTIME,
+            cc.TITLE,
+            cc.INTRODUCE,
+            cc.PRECOURSE_ID,
+            cc.FLOWCOURSE_ID,
+            cc.STATUS,
+            cc.GM_NUM,
+            cc.SC_NUM,
+            cc.TG_NUM,
+            cc.CLICK_NUM,
+            cc.VALID_TIME,
+            cc.GRADE_ID,
+            cc.SUBJECT_ID,
+            cc.OLD_PRICE,
+            cc.PASS_FLAG,
+            cc.QA_FLAG,
+            cc.LEARN_RES_FLAG,
+            cc.PPT_FLAG,
+            cc.EXAM_RES_FLAG,
+            cc.TJ_VEDIO_ID,
+            cc.TEACHER_TJ_COURSE,
+            cc.VEDIO_PIC_URL,
+            cc.THINK_MAP,
+            cc.LEARN_ADVICE,
+            cc.SUPPORT_NUM,
+            cc.UNSUPPORT_NUM,
+            cc.FOR_PEOPLE,
+            cc.INCLUDE_MODULE,
+            cc.INCLUDE_SERVICE,
+            cc.dppturl,
+            cc.dpdfurl,
+            cc.dmp3Url  
+			  FROM
+		    	finance_cash_record_tbl fc 
+		   		JOIN cou_course_tbl cc 
+		      	ON cc.COURSE_ID = fc.COURSE_ID
+		      	AND fc.CR_SUBJECT_ID =#subjectId# and fc.status=1 and fc.cus_id=#userId#
+		      	<isNotNull property="sortId">
+		      	<isNotEqual property="sortId" compareValue="0" prepend="and">
+		      	 cc.sort_id=#sortId#
+		      	</isNotEqual>
+		      	</isNotNull>
+		      	GROUP BY cc.COURSE_ID
+       </select>
+	    <!-- 根据用户id查询最近购买课程专业的一个id -->
+               <select id="getSubjectIdBylatestSell" resultClass="int" parameterClass="int">
+        	SELECT DISTINCT cou_sell_way_tbl.SUBJECT_ID FROM
+			cou_sell_way_tbl
+			Left Join finance_cash_record_tbl ON 
+			cou_sell_way_tbl.SELL_ID = finance_cash_record_tbl.PACK_ID
+			where finance_cash_record_tbl.CUS_ID =#value# and finance_cash_record_tbl.status=1
+			      order by finance_cash_record_tbl.create_time desc limit 1
+        	
+        </select>
+</sqlMap>

@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Comment_NS">
+        <!--table:CMS_COMMENT_TBL-->
+        <typeAlias alias="Comment" type="com.shangde.edu.cms.domain.Comment"/>
+        <typeAlias alias="QueryCommentCondition" type="com.shangde.edu.cms.condition.QueryCommentCondition"/>
+
+        <resultMap id="CommentResult" class="Comment">
+            <result property="cmtId" column="CMT_ID"/>
+            <result property="cmtParentId" column="CMT_PARENT_ID"/>
+            <result property="cmtInfo" column="CMT_INFO"/>
+            <result property="cfId" column="CF_ID"/>
+            <result property="checkState" column="CHECK_STATE"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="updateTime" column="UPDATE_TIME"/>
+            <result property="checkmanId" column="CHECKMAN_ID"/>
+            <result property="checkmanType" column="CHECKMAN_TYPE"/>
+            <result property="sourceId" column="SOURCE_ID"/>
+            <result property="grade" column="GRADE"/>
+            <result property="visitorName" column="VISITOR_NAME"/>
+            <result property="customer" column="CHECKMAN_ID" select="Customer_NS.getCustomerById"/>
+            <result property="is_top" column="IS_TOP" />
+            <result property="is_freeze" column="IS_FREEZE" />
+            <result property="author" column="AUTHOR" />
+            <result property="topTime" column="TOP_TIME"/>
+            <result property="subjectId" column="subject_id"/>
+            <result property="sellName" column="sell_name"/>
+        </resultMap>
+		  <resultMap id="CommentResultnew" class="Comment">
+            <result property="cmtId" column="CMT_ID" />
+            <result property="cmtParentId" column="CMT_PARENT_ID"/>
+            <result property="cmtInfo" column="CMT_INFO"/>
+            <result property="cfId" column="CF_ID"/>
+            <result property="checkState" column="CHECK_STATE"/>
+            <result property="createTime" column="CREATE_TIME"/>
+            <result property="updateTime" column="UPDATE_TIME"/>
+            <result property="checkmanId" column="CHECKMAN_ID"/>
+            <result property="checkmanType" column="CHECKMAN_TYPE"/>
+            <result property="sourceId" column="SOURCE_ID"/>
+            <result property="grade" column="GRADE"/>
+            <result property="visitorName" column="VISITOR_NAME"/>
+            <result property="is_top" column="IS_TOP" />
+            <result property="is_freeze" column="IS_FREEZE" />
+            <result property="author" column="AUTHOR" />
+            <result property="topTime" column="TOP_TIME"/>
+             <result property="mgr_info" column="MGR_INFO"/>
+             <result property="mgr_creatime" column="MGR_CREATIME"/>
+             <result property="mgrName" column="mgr_name"/>
+             <result property="subjectId" column="subject_id"/>
+             <result property="subjectName" column="subject_name"/>
+             <result property="replyList" column="CMT_ID" select="Comment_NS.getRplyList"/>
+             <result property="customer" column="CHECKMAN_ID" select="Customer_NS.getCustomerById"/>
+             
+             
+        </resultMap>
+        <sql id="CMS_COMMENT_TBL_columns">
+            CMS_COMMENT_TBL.CMT_ID,
+            CMS_COMMENT_TBL.CMT_PARENT_ID,
+            CMS_COMMENT_TBL.CMT_INFO,
+            CMS_COMMENT_TBL.CF_ID,
+            CMS_COMMENT_TBL.CHECK_STATE,
+            CMS_COMMENT_TBL.CREATE_TIME,
+            CMS_COMMENT_TBL.UPDATE_TIME,
+            CMS_COMMENT_TBL.CHECKMAN_ID,
+            CMS_COMMENT_TBL.CHECKMAN_TYPE,
+            CMS_COMMENT_TBL.SOURCE_ID,
+            CMS_COMMENT_TBL.GRADE,
+            CMS_COMMENT_TBL.VISITOR_NAME,
+            CMS_COMMENT_TBL.AUTHOR,
+            CMS_COMMENT_TBL.IS_TOP,
+            CMS_COMMENT_TBL.IS_FREEZE,
+            CMS_COMMENT_TBL.TOP_TIME,
+            CMS_COMMENT_TBL.SUBJECT_ID,
+            CMS_COMMENT_TBL.SELL_NAME
+        </sql>
+
+        <sql id="CMS_COMMENT_TBL_properties">
+            #cmtId#,
+            #cmtParentId#,
+            #cmtInfo#,
+            #cfId#,
+            #checkState#,
+            #createTime#,
+            #updateTime#,
+            #checkmanId#,
+            #checkmanType#,
+            #sourceId#,
+            #grade#,
+            #visitorName#,
+            #author#,
+            #is_top#,
+            #is_freeze#,
+            #topTime#,
+            #subjectId#,
+            #sellName#
+        </sql>
+		
+		
+        <insert id="createComment" parameterClass="Comment">
+            INSERT INTO CMS_COMMENT_TBL (<include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>) VALUES (<include refid="Comment_NS.CMS_COMMENT_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="cmtId" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteCommentById" parameterClass="int">
+            DELETE FROM CMS_COMMENT_TBL
+            WHERE
+                CMT_ID = #value#
+        </delete>
+
+        <update id="updateComment" parameterClass="Comment">
+            UPDATE CMS_COMMENT_TBL SET
+                CMT_ID = #cmtId#,
+                CMT_PARENT_ID = #cmtParentId#,
+                CMT_INFO = #cmtInfo#,
+                CF_ID = #cfId#,
+                CHECK_STATE = #checkState#,
+                CREATE_TIME = #createTime#,
+                UPDATE_TIME = #updateTime#,
+                CHECKMAN_ID = #checkmanId#,
+                CHECKMAN_TYPE = #checkmanType#,
+                SOURCE_ID = #sourceId#,
+                GRADE = #grade#,
+                VISITOR_NAME = #visitorName#,
+                SUBJECT_ID=#subjectId#,
+                SELL_NAME=#sellName#
+            WHERE
+                CMT_ID = #cmtId#
+        </update>
+
+        <select id="getCommentById" resultMap="Comment_NS.CommentResult" parameterClass="int">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE
+                CMT_ID = #value#
+        </select>
+
+        <select id="getCommentList" resultMap="Comment_NS.CommentResult" parameterClass="QueryCommentCondition">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE 
+            	CMS_COMMENT_TBL.CF_ID = #cfId#
+            	AND CMS_COMMENT_TBL.SOURCE_ID = #sourceId#
+            	ORDER BY CMS_COMMENT_TBL.CREATE_TIME
+        </select>
+
+	<!-- 后台评论管理查询 -->
+        <select id="getCommentListByCondition" resultMap="Comment_NS.CommentResult" parameterClass="QueryCommentCondition">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID != 5
+            AND CF_ID != 6
+		    <isNotNull property="cmtInfo">
+            	<isNotEqual property="cmtInfo" compareValue="">
+		        	AND CMS_COMMENT_TBL.CMT_INFO like  CONCAT('%',#cmtInfo#,'%')
+			    </isNotEqual>
+	        </isNotNull>
+	        <isNotEqual property="checkState" compareValue="-1">
+	        	AND CHECK_STATE = #checkState#
+	        </isNotEqual>
+		    <isNotNull property="cfId">
+            	<isGreaterThan property="cfId" compareValue="0">
+		        	AND CMS_COMMENT_TBL.CF_ID =  #cfId#
+			    </isGreaterThan>
+	        </isNotNull>
+            	ORDER BY CREATE_TIME DESC
+            	<include refid="public_sql.page_end"/>
+        </select>
+
+        <select id="getCommentCountByCondition" resultClass="int" parameterClass="QueryCommentCondition">
+            SELECT COUNT(1)
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID != 5
+            AND CF_ID != 6
+		    <isNotNull property="cmtInfo">
+            	<isNotEqual property="cmtInfo" compareValue="">
+		        	AND CMS_COMMENT_TBL.CMT_INFO like  CONCAT('%',#cmtInfo#,'%')
+			    </isNotEqual>
+	        </isNotNull>
+	        <isNotEqual property="checkState" compareValue="-1">
+	        	AND CHECK_STATE = #checkState#
+	        </isNotEqual>
+		    <isNotNull property="cfId">
+            	<isGreaterThan property="cfId" compareValue="0">
+		        	AND CMS_COMMENT_TBL.CF_ID =  #cfId#
+			    </isGreaterThan>
+	        </isNotNull>
+        </select>
+        
+        
+	<!-- 后台评论管理查询 end //-->
+
+
+	<!-- 后台意见管理查询 -->
+        <select id="getAdviceListByCondition" resultMap="Comment_NS.CommentResult" parameterClass="QueryCommentCondition">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 5
+	           	AND SOURCE_ID = 1
+		    <isNotNull property="cmtInfo">
+            	<isNotEqual property="cmtInfo" compareValue="" prepend="and">
+		                  CMS_COMMENT_TBL.CMT_INFO like  CONCAT('%',#cmtInfo#,'%')
+			    </isNotEqual>
+	        </isNotNull>
+	        <isNotEqual property="checkState" compareValue="-1">
+	        	AND CHECK_STATE = #checkState#
+	        </isNotEqual>
+            	ORDER BY CREATE_TIME DESC
+            	<include refid="public_sql.page_end"/>
+        </select>
+
+        <select id="getAdviceCountByCondition" resultClass="int" parameterClass="QueryCommentCondition">
+            SELECT COUNT(1)
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 5
+            	AND SOURCE_ID = 1
+		    <isNotNull property="cmtInfo">
+            	<isNotEqual property="cmtInfo" compareValue="" prepend="and">
+		                  CMS_COMMENT_TBL.CMT_INFO like  CONCAT('%',#cmtInfo#,'%')
+			    </isNotEqual>
+	        </isNotNull>
+	        <isNotEqual property="checkState" compareValue="-1">
+	        	AND CHECK_STATE = #checkState#
+	        </isNotEqual>
+        </select>
+        
+        
+	<!-- 后台意见管理查询 end //-->
+	
+	<!-- 前台评论列表 -->
+        <select id="getCommentListBySource" resultMap="Comment_NS.CommentResult" parameterClass="QueryCommentCondition">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE 1=1
+		    <isNotNull property="cfId">
+            	<isGreaterThan property="cfId" compareValue="0" prepend="and">
+		                  CMS_COMMENT_TBL.CF_ID =  #cfId#
+			    </isGreaterThan>
+	        </isNotNull>
+		       <isNotNull property="sourceId">
+            	<isGreaterThan property="sourceId" compareValue="0" prepend="and">
+		                  CMS_COMMENT_TBL.SOURCE_ID = #sourceId#
+			    </isGreaterThan>
+	        </isNotNull>
+            	ORDER BY CREATE_TIME DESC
+            	<include refid="public_sql.page_end"/>
+        </select>
+
+        <select id="getCommentCountBySource" resultClass="int" parameterClass="QueryCommentCondition">
+            SELECT COUNT(1)
+            FROM CMS_COMMENT_TBL
+            WHERE 1=1
+			<isNotNull property="cfId">
+				<isGreaterThan property="cfId" compareValue="0" prepend="and">
+				           CMS_COMMENT_TBL.CF_ID =  #cfId#
+				</isGreaterThan>
+			</isNotNull>
+			<isNotNull property="sourceId">
+				<isGreaterThan property="sourceId" compareValue="0" prepend="and">
+					CMS_COMMENT_TBL.SOURCE_ID = #sourceId#
+				</isGreaterThan>
+			</isNotNull>
+        </select>
+	<!-- 前台评论列表 end //-->
+	
+        <select id="getGradeCountBySource" resultClass="int" parameterClass="QueryCommentCondition">
+			SELECT COUNT(1)
+				FROM CMS_COMMENT_TBL
+				WHERE CF_ID = #cfId# 
+					AND SOURCE_ID = #sourceId#
+					AND GRADE = 1
+				UNION ALL
+				SELECT COUNT(1)
+				FROM CMS_COMMENT_TBL
+				WHERE CF_ID = #cfId# 
+					AND SOURCE_ID = #sourceId#
+					AND GRADE = 2
+				UNION ALL
+				SELECT COUNT(1)
+				FROM CMS_COMMENT_TBL
+				WHERE CF_ID = #cfId# 
+					AND SOURCE_ID = #sourceId#
+					AND GRADE = 3
+        </select>
+
+        <select id="getNewCommentBySource" resultClass="java.lang.String" parameterClass="QueryCommentCondition">
+			SELECT CMT_INFO
+				FROM CMS_COMMENT_TBL
+				WHERE CF_ID = #cfId# 
+					AND SOURCE_ID = #sourceId#
+					AND GRADE IN (1,2,3)
+					ORDER BY CREATE_TIME DESC
+					LIMIT 0, 1
+        </select>
+
+        <select id="getCmtCount" resultClass="java.lang.Integer" parameterClass="QueryCommentCondition">
+			SELECT COUNT(1)
+				FROM CMS_COMMENT_TBL
+				WHERE CF_ID = #cfId# 
+					AND SOURCE_ID = #sourceId#
+        </select>
+        
+	<!-- 意见列表 -->
+        <select id="getAdviceList" resultMap="Comment_NS.CommentResult" parameterClass="QueryCommentCondition">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 5 AND SOURCE_ID = 1
+            	ORDER BY CREATE_TIME DESC
+            	<include refid="public_sql.page_end"/>
+        </select>
+
+        <select id="getAdviceCount" resultClass="int" parameterClass="QueryCommentCondition">
+            SELECT COUNT(1)
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 5 AND SOURCE_ID = 1
+        </select>
+	<!-- 反馈意见begin -->
+        <select id="getRplyList" resultMap="Comment_NS.CommentResult" parameterClass="int">
+        	SELECT   <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+        	 FROM  cms_comment_tbl  WHERE   CF_ID=5 and  source_id=#value#
+        </select>
+        
+        <!-- 个人中心用户反馈 -->
+        <select id="getCommentListUCenter" resultMap="Comment_NS.CommentResultnew" parameterClass="QueryCommentCondition">
+				SELECT  c.*,
+				  cm.CMT_INFO AS mgr_info,
+				  cm.CREATE_TIME as mgr_creatime,
+				  cm.VISITOR_NAME as mgr_name,
+				  c.subject_id,
+				  s.SUBJECT_NAME
+				FROM
+				  cms_comment_tbl c 
+				  LEFT JOIN cms_comment_tbl cm 
+				    ON c.CMT_ID = cm.SOURCE_ID 
+				    AND cm.CF_ID = 6 
+				    JOIN sys_subject_tbl s ON s.SUBJECT_ID=c.subject_id
+				WHERE 
+				<isEqual property="isLimit" compareValue="1">
+							(
+					</isEqual>
+					c.CF_ID in ( 5,7,8,9)
+				  AND c.SOURCE_ID = 1 
+				  and c.IS_FREEZE=0
+				  
+				  <isEqual property="isTop" compareValue="1" prepend="and">
+				  	c.is_top=#isTop#
+				  </isEqual>
+				  <isNotEqual property="subjectId" compareValue="0" prepend="and">
+				  	s.subject_id=#subjectId#
+				  </isNotEqual>
+				
+				<isNotEqual property="cusId" compareValue="0" prepend="and">
+				  	 c.CHECKMAN_ID=#cusId#
+				  	</isNotEqual>
+				  	
+				  	<isEqual property="isLimit" compareValue="1">
+						) or (
+						c.CF_ID = #cfId# 
+				  		AND c.SOURCE_ID = 1 
+						AND c.CHECKMAN_ID=#userId# 
+						  <isEqual property="isTop" compareValue="1" prepend="and">
+						  	c.is_top=#isTop#
+						  </isEqual>
+						  <isNotEqual property="subjectId" compareValue="0" prepend="and">
+						  	c.subject_id=#subjectId#
+						  </isNotEqual>
+						)
+					</isEqual>
+				<!--    <isEqual property="isLimit" compareValue="1" prepend="and">
+				    c.CHECKMAN_ID=#cusId#
+				  </isEqual>
+				   <isEqual property="isLimit" compareValue="0" prepend="and">
+				  	c.is_freeze=0
+				  	<isNotEqual property="cusId" compareValue="0" prepend="and">
+				  	 c.CHECKMAN_ID=#cusId#
+				  	</isNotEqual>
+				  </isEqual> -->
+				  	ORDER BY c.TOP_TIME DESC
+            	<include refid="public_sql.page_end"/>
+        </select>
+        
+        
+		<select id="getCommentListNew" resultMap="Comment_NS.CommentResultnew" parameterClass="QueryCommentCondition">
+				SELECT  c.*,
+				  cm.CMT_INFO AS mgr_info,
+				  cm.CREATE_TIME as mgr_creatime,
+				  cm.VISITOR_NAME as mgr_name,
+				  c.subject_id,
+				  s.SUBJECT_NAME
+				FROM
+				  cms_comment_tbl c 
+				  LEFT JOIN cms_comment_tbl cm 
+				    ON c.CMT_ID = cm.SOURCE_ID 
+				    AND cm.CF_ID = 6 
+				    JOIN sys_subject_tbl s ON s.SUBJECT_ID=c.subject_id
+				WHERE 
+					<isEqual property="isLimit" compareValue="1">
+							(
+					</isEqual>
+					c.CF_ID = #cfId# 
+				  	AND c.SOURCE_ID = 1 
+				   	and c.IS_FREEZE=0
+				  
+				  <isEqual property="isTop" compareValue="1" prepend="and">
+				  	c.is_top=#isTop#
+				  </isEqual>
+				  <isNotEqual property="subjectId" compareValue="0" prepend="and">
+				  	s.subject_id=#subjectId#
+				  </isNotEqual>
+				
+					<isNotEqual property="cusId" compareValue="0" prepend="and">
+				  	 c.CHECKMAN_ID=#cusId#
+				  	</isNotEqual>
+				  	
+					<isEqual property="isLimit" compareValue="1">
+						) or (
+						c.CF_ID = #cfId# 
+				  		AND c.SOURCE_ID = 1 
+						AND c.CHECKMAN_ID=#userId# 
+						  <isEqual property="isTop" compareValue="1" prepend="and">
+						  	c.is_top=#isTop#
+						  </isEqual>
+						  <isNotEqual property="subjectId" compareValue="0" prepend="and">
+						  	s.subject_id=#subjectId#
+						  </isNotEqual>
+						)
+					</isEqual>
+					
+				<!--    <isEqual property="isLimit" compareValue="1" prepend="and">
+				    c.CHECKMAN_ID=#cusId#
+				  </isEqual>
+				   <isEqual property="isLimit" compareValue="0" prepend="and">
+				  	c.is_freeze=0
+				  	<isNotEqual property="cusId" compareValue="0" prepend="and">
+				  	 c.CHECKMAN_ID=#cusId#
+				  	</isNotEqual>
+				  </isEqual> -->
+				  	ORDER BY c.TOP_TIME DESC
+            	<include refid="public_sql.page_end"/>
+        </select>
+        <select id="getAdviceListNewCount" resultClass="int" parameterClass="QueryCommentCondition">
+            SELECT count(distinct c.cmt_id)
+				FROM
+				  cms_comment_tbl c 
+				  LEFT JOIN cms_comment_tbl cm 
+				    ON c.CMT_ID = cm.SOURCE_ID 
+				    AND cm.CF_ID = 6 
+				WHERE 
+					<isEqual property="isLimit" compareValue="1">
+							(
+					</isEqual>
+					c.CF_ID = #cfId# 
+				  	AND c.SOURCE_ID = 1 
+				    AND c.is_freeze=0
+				  <isEqual property="isTop" compareValue="1" prepend="and">
+				  	c.is_top=#isTop#
+				  </isEqual>
+				  <isNotEqual property="subjectId" compareValue="0" prepend="and">
+				  	c.subject_id=#subjectId#
+				  </isNotEqual>
+				   <isNotEqual property="cusId" compareValue="0" prepend="and">
+				   c.CHECKMAN_ID=#cusId#
+				  </isNotEqual>
+				  	
+					<isEqual property="isLimit" compareValue="1">
+						) or (
+						c.CF_ID = #cfId# 
+				  		AND c.SOURCE_ID = 1 
+						AND c.CHECKMAN_ID=#userId# 
+						  <isEqual property="isTop" compareValue="1" prepend="and">
+						  	c.is_top=#isTop#
+						  </isEqual>
+						  <isNotEqual property="subjectId" compareValue="0" prepend="and">
+						  	c.subject_id=#subjectId#
+						  </isNotEqual>
+						)
+					</isEqual>
+				<!--    <isEqual property="isLimit" compareValue="1" prepend="and">
+				    c.CHECKMAN_ID=#cusId#
+				  </isEqual>
+				   <isEqual property="isLimit" compareValue="0" prepend="and">
+				  	c.is_freeze=0
+				  	<isNotEqual property="cusId" compareValue="0" prepend="and">
+				  	 c.CHECKMAN_ID=#cusId#
+				  	</isNotEqual>
+				  </isEqual> -->
+        </select>
+		<!-- 反馈意见end -->
+        <select id="getReplyById" resultMap="Comment_NS.CommentResult" parameterClass="java.util.Map">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            <![CDATA[
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 6 
+            AND SOURCE_ID = #id#
+            AND CMT_ID <=#rid#
+            ORDER BY CREATE_TIME DESC
+            ]]>
+        </select>
+        <select id="getLastAdviceByCus" resultMap="Comment_NS.CommentResult" parameterClass="int">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 5 
+            	AND SOURCE_ID = 1
+            	AND CHECKMAN_ID = #value#
+            	ORDER BY CREATE_TIME DESC
+            	LIMIT 0, 1
+        </select>
+        
+        
+        <select id="getCommentListByClazzIdForTag" resultMap="Comment_NS.CommentResult" parameterClass="QueryCommentCondition">
+            SELECT
+            <include refid="Comment_NS.CMS_COMMENT_TBL_columns"/>
+            FROM CMS_COMMENT_TBL
+            <dynamic prepend="WHERE">
+		    <isNotNull property="cfId">
+            	<isGreaterThan property="cfId" compareValue="0" prepend="and">
+		                  CMS_COMMENT_TBL.CF_ID =  #cfId#
+			    </isGreaterThan>
+	        </isNotNull>
+		       <isNotNull property="sourceId">
+            	<isGreaterThan property="sourceId" compareValue="0" prepend="and">
+		                  CMS_COMMENT_TBL.SOURCE_ID = #sourceId#
+			    </isGreaterThan>
+	        </isNotNull>
+	        </dynamic>
+            	ORDER BY CREATE_TIME DESC
+            <isNotEqual property="pageSize" compareValue="0">
+            	LIMIT 0, #pageSize#
+            </isNotEqual>
+        </select>
+        
+        <delete id="delAdviceReply" parameterClass="int">
+        	DELETE FROM CMS_COMMENT_TBL
+            WHERE CF_ID = 6 
+            AND SOURCE_ID = #value#
+        </delete>
+        <!--end-->
+</sqlMap>

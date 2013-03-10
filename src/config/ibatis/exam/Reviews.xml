@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Reviews_NS">
+        <!--table:EXAM_REVIEWS_TBL-->
+        <typeAlias alias="Reviews" type="com.shangde.edu.exam.domain.Reviews"/>
+        <typeAlias alias="QueryReviewsCondition" type="com.shangde.edu.exam.condition.QueryReviewsCondition"/>
+
+        <resultMap id="ReviewsResult" class="Reviews">
+            <result property="epId" column="EP_ID"/>
+            <result property="rvId" column="RV_ID"/>
+            <result property="rvInfo" column="RV_INFO"/>
+            <result property="evaType" column="EVA_TYPE"/>
+        </resultMap>
+
+        <sql id="EXAM_REVIEWS_TBL_columns">
+            EXAM_REVIEWS_TBL.EP_ID,
+            EXAM_REVIEWS_TBL.RV_ID,
+            EXAM_REVIEWS_TBL.RV_INFO,
+            EXAM_REVIEWS_TBL.EVA_TYPE
+        </sql>
+
+        <sql id="EXAM_REVIEWS_TBL_properties">
+            #epId#,
+            #rvId#,
+            #rvInfo#,
+            #evaType#
+        </sql>
+
+        <insert id="createReviews" parameterClass="Reviews">
+            INSERT INTO EXAM_REVIEWS_TBL (<include refid="Reviews_NS.EXAM_REVIEWS_TBL_columns"/>) VALUES (<include refid="Reviews_NS.EXAM_REVIEWS_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="rvId" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+
+        <delete id="deleteReviewsById" parameterClass="int">
+            DELETE FROM EXAM_REVIEWS_TBL
+            WHERE
+                
+RV_ID = #value#
+
+
+        </delete>
+
+        <update id="updateReviews" parameterClass="Reviews">
+            UPDATE EXAM_REVIEWS_TBL SET
+                EP_ID = #epId#,
+                RV_ID = #rvId#,
+                RV_INFO = #rvInfo#,
+                EVA_TYPE = #evaType#
+            WHERE
+                
+RV_ID = #rvId#
+
+
+        </update>
+
+        <select id="getReviewsById" resultMap="Reviews_NS.ReviewsResult" parameterClass="int">
+            SELECT
+            <include refid="Reviews_NS.EXAM_REVIEWS_TBL_columns"/>
+            FROM EXAM_REVIEWS_TBL
+            WHERE
+				RV_ID = #value#
+
+        </select>
+
+        <select id="getReviewsList" resultMap="Reviews_NS.ReviewsResult" parameterClass="QueryReviewsCondition">
+            SELECT
+            <include refid="Reviews_NS.EXAM_REVIEWS_TBL_columns"/>
+            FROM EXAM_REVIEWS_TBL WHERE 1=1
+            <isNotNull property="epId">
+	            	 <isGreaterThan prepend="and" property="epId" compareValue="0">
+	                		EXAM_REVIEWS_TBL.EP_ID=#epId#
+	                </isGreaterThan>
+	        </isNotNull>
+        </select>
+        <select id="getReviewsListByEpId" resultMap="Reviews_NS.ReviewsResult" parameterClass="int">
+            SELECT
+            <include refid="Reviews_NS.EXAM_REVIEWS_TBL_columns"/>
+            FROM EXAM_REVIEWS_TBL WHERE 1=1
+	                		AND EXAM_REVIEWS_TBL.EP_ID=#VALUE#
+	     	
+        </select>
+        <!--end-->
+</sqlMap>

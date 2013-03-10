@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="FavoritesPaper_NS">
+        <!--table:exam_favorites_paper_tbl-->
+        <typeAlias alias="FavoritesPaper" type="com.shangde.edu.exam.domain.FavoritesPaper"/>
+        <typeAlias alias="QueryFavoritesCondition" type="com.shangde.edu.exam.condition.QueryFavoritesCondition"/>
+
+        <resultMap id="FavoritesPaperResult" class="FavoritesPaper">
+            <result property="subjectName" column="SUBJECT_NAME"/>
+            <result property="paperName" column="PAPER_NAME"/>
+            <result property="paperId" column="PAPER_ID"/>
+            <result property="flag" column="FLAG"/>
+            <result property="jifen" column="JIFEN"/>
+            <result property="coeffcient" column="COEFFCIENT"/>
+            <result property="joinNum" column="JOIN_NUM"/>
+        </resultMap>
+        
+        <resultMap id="NewFavoritesPaperResult" class="FavoritesPaper">
+            <result property="subjectName" column="SUBJECT_NAME"/>
+            <result property="paperName" column="PAPER_NAME"/>
+            <result property="paperId" column="PAPER_ID"/>
+            <result property="type" column="TYPE"/>
+        </resultMap>
+
+        <sql id="EXAM_FAVORITES_PAPER_TBL_columns">
+            EXAM_FAVORITES_PAPER_TBL.ID,
+            EXAM_FAVORITES_PAPER_TBL.USER_ID,
+            EXAM_FAVORITES_PAPER_TBL.SUBJECT_NAME,
+            EXAM_FAVORITES_PAPER_TBL.PAPER_NAME,
+            EXAM_FAVORITES_PAPER_TBL.TYPE,
+            EXAM_FAVORITES_PAPER_TBL.LEVEL,
+            EXAM_FAVORITES_PAPER_TBL.PAPER_ID,
+            EXAM_FAVORITES_PAPER_TBL.FLAG,
+            EXAM_FAVORITES_PAPER_TBL.CREATE_DATE,
+            EXAM_FAVORITES_PAPER_TBL.DELETE_DATE,
+            EXAM_FAVORITES_PAPER_TBL.JIFEN,
+            EXAM_FAVORITES_PAPER_TBL.COEFFCIENT
+        </sql>
+
+        <sql id="EXAM_FAVORITES_PAPER_TBL_properties">
+            #id#,
+            #userId#,
+            #subjectName#,
+            #paperName#,
+            #type#,
+            #level#,
+            #paperId#,
+            #flag#,
+            #createDate#,
+            #deleteDate#,
+            #jifen#,
+            #coeffcient#
+        </sql>
+		<!-- 添加试卷到收藏 -->
+        <insert id="createFavorites" parameterClass="FavoritesPaper">
+            INSERT INTO EXAM_FAVORITES_PAPER_TBL (<include refid="FavoritesPaper_NS.EXAM_FAVORITES_PAPER_TBL_columns"/>) VALUES (<include refid="FavoritesPaper_NS.EXAM_FAVORITES_PAPER_TBL_properties"/>)
+            <selectKey resultClass="int" type="post" keyProperty="id" >   
+                <include refid="public_sql.increment_sql"/>
+            </selectKey>
+        </insert>
+        
+		<!-- 移除收藏试卷 -->
+        <update id="deleteFavorites" parameterClass="QueryFavoritesCondition">
+            DELETE FROM exam_favorites_paper_tbl WHERE FLAG='1' AND PAPER_ID=#epId# and USER_ID=#userId#
+        </update>
+        
+         <!-- 我的收藏试卷列表 add by yanghaibo 2012-07-10 16:43 -->
+        <select id="getMyFavoritesList" resultMap="FavoritesPaperResult" parameterClass="QueryFavoritesCondition">
+        	SELECT e.`SUBJECT_NAME`,
+        	e.`PAPER_NAME`,
+        	e.`PAPER_ID`,
+        	e.`FLAG`,
+        	e.`JIFEN`,
+        	e.`COEFFCIENT`,
+        	<!--  IFNULL(COUNT(er.ep_id),0) done_num,
+                  er.USER_EP_ID,
+        	-->
+        	t.`JOIN_NUM`
+			FROM exam_favorites_paper_tbl e JOIN exam_exampaper_tbl t ON e.`PAPER_ID` = t.`EP_ID`
+			<!--  LEFT JOIN exam_exampaper_record_tbl er ON er.EP_ID=t.EP_ID AND er.CUS_ID=#userId# -->
+			WHERE e.`USER_ID`=#userId#
+			    <isNotNull property="type">
+	            	<isNotEqual prepend="and" property="type" compareValue="0">
+	                		e.TYPE=#type#
+	                </isNotEqual>
+	        	</isNotNull>
+			    <isNotNull property="coeffcient">
+	            	<isNotEqual prepend="and" property="coeffcient" compareValue="0">
+	                		e.COEFFCIENT=#coeffcient#
+	                </isNotEqual>
+	        	</isNotNull>
+	        	ORDER BY e.CREATE_DATE DESC
+	            <include refid="public_sql.page_end"/>
+        </select>
+        
+        <!-- 最近被收藏的试卷 -->
+        <select id="getNewFavoritesList" resultMap="NewFavoritesPaperResult" parameterClass="QueryFavoritesCondition">
+        	SELECT e.`SUBJECT_NAME`,
+        	e.`PAPER_NAME`,
+        	e.`PAPER_ID`,
+        	e.`TYPE`
+			FROM exam_favorites_paper_tbl e JOIN exam_exampaper_tbl t ON e.`PAPER_ID` = t.`EP_ID`
+			WHERE e.`USER_ID`=#userId#
+			    
+	        ORDER BY e.CREATE_DATE DESC
+	        LIMIT 0,3
+        </select>
+        
+         <!-- 我的收藏试卷数量 add by yanghaibo 2012-07-10 17:16 -->
+        <select id="getMyFavoritesCount" resultClass="int" parameterClass="QueryFavoritesCondition">
+        	SELECT COUNT('x')
+			FROM exam_favorites_paper_tbl e JOIN exam_exampaper_tbl t ON e.`PAPER_ID` = t.`EP_ID`
+			WHERE e.`USER_ID`=#userId#
+			    <isNotNull property="type">
+	            	<isNotEqual prepend="and" property="type" compareValue="0">
+	                		e.TYPE=#type#
+	                </isNotEqual>
+	        	</isNotNull>
+			    <isNotNull property="coeffcient">
+	            	<isNotEqual prepend="and" property="coeffcient" compareValue="0">
+	                		e.COEFFCIENT=#coeffcient#
+	                </isNotEqual>
+	        	</isNotNull>
+        </select>
+        
+        <!--end-->
+</sqlMap>
